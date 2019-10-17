@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="11710911_cs308@cs308.leeeung.com:22">
+    <serverData>
+      <paths name="11710911_cs308@cs308.leeeung.com:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/11710911_cs308/jupyter/BetterOJ" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
