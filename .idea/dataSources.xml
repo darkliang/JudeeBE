@@ -10,5 +10,11 @@
         <property name="enable_load_extension" value="true" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="postgres@10.20.1.155" uuid="e1f4f908-bab3-46c4-8729-c43bc80f8b62">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://10.20.1.155:54321/postgres</jdbc-url>
+    </data-source>
   </component>
 </project>

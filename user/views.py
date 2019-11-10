@@ -122,15 +122,18 @@ class UserRegisterAPIView(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
-    throttle_scope = "post"
-    throttle_classes = [ScopedRateThrottle, ]
+    throttle_scope = "register"
+    throttle_classes = [ScopedRateThrottle]   # 控制api使用流量
 
-    def post(self, request, format=None):
+    def post(self, request):
         data = request.data.copy()
         data['type'] = 1
         username = data.get('username')
+        email = data.get('email')
         if User.objects.filter(username__exact=username):
-            return Response("usererror", HTTP_200_OK)
+            return Response("userError", HTTP_200_OK)
+        if User.objects.filter(email__exact=email):
+            return Response("emailError", HTTP_200_OK)
         serializer = UserSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()

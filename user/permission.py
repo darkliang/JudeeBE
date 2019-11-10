@@ -2,9 +2,10 @@
 from rest_framework import permissions
 from .models import User
 
+
 class ManagerOnly(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS or request.method=="POST":
+        if request.method in permissions.SAFE_METHODS or request.method == "POST":
             return True
 
         type = request.session.get('type', 1)
@@ -12,6 +13,7 @@ class ManagerOnly(permissions.BasePermission):
             return True
         else:
             return False
+
 
 class UserSafePostOnly(permissions.BasePermission):
     def has_permission(self, request, view):
