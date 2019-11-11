@@ -1,71 +1,35 @@
-# 后端与数据库部署
+# 后端开发环境配置
 
-## Docker部署
-非专业用户不推荐使用Docker单独部署
-修改Dockerfile中的ENV为你的数据库地址和密码等
-```
-docker build -t lpojbackend .
-docker run -d -p 8000:8000 lpojbackend
-```
+## 一般配置
 
-## 一般部署
+1. clone项目到本地
 
-1. 首先安装Django
-```
-pip install django
+2. 安装Django相关环境
 
-pip install djangorestframework
+   ```
+   pip install django
+   
+   pip install djangorestframework
+   
+   pip install django-filter
+   
+   pip install djangorestframework-stubs
+   
+   pip install django-cors-headers
+   ```
 
-pip install django-filter
+   
 
-sudo apt-get install python-django
+3. 修改`/BetterOJ/settings.py`，配置数据库HOST为`10.20.1.255`
 
-pip install django-cors-headers
+4. 管理员账户为`admin`       `ljh123456`
 
-pip install mysqlclient
-```
-2. 安装数据库，已安装的可跳过
-```
-sudo apt-get install mysql-server 
+## （optional）使用服务器的interpreter
 
-mysql -uroot -p
-mysql > CREATE DATABASE LPOJ DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-mysql > USE mysql
-mysql > GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'  IDENTIFIED BY 'your_password'  WITH GRANT OPTION;
-mysql > ALTER user 'root'@'%' IDENTIFIED WITH mysql_native_password by 'your_password';
-mysql > flush privileges;
+使用服务器的interpreter（解释器），则不需要第2步。以下为`Pycharm`配置步骤
 
-sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf 
+1. 在File->Settings->Project->Project interpreter, add一个新的interpreter
+2. 选择SSH Interpreter->New server configuration, 输入用户名密码
+3. 选择interpreter路径，一般在 `/home/1171xxxx_cs308/anaconda3/envs/cs309/bin/python3.7` 
+4. （optional）选择 `mapping` 路径，会将本地的项目实时同步到远程服务器上
 
-#修改bind-address 为 0.0.0.0
-```
-3. 部署后端
-```
-cd Backend
-
-cd Backend
-
-sudo nano setting.py
-# 修改数据库配置为你自己的数据库IP和用户名密码
-
-cd ..
-
-python manage.py makemigrations
-
-python manage.py migrate
-
-echo "from django.contrib.auth.models import User; User.objects.filter(email=\"admin@example.com\").delete(); User.objects.create_superuser(\"admin\", \"admin@example.com\", \"admin\")" | python manage.py shell
-
-python manage.py runserver 0.0.0.0:8000
-```
-4. 安装sftp服务（不安装无法判题,一般云服务器会自动安装）
-```
-sudo apt-get install openssh-server
-sftp yourusername@localhost # 验证是否安装成功！
-```
-5. 添加管理员
-> 安装成功后，先通过IP:80访问OJ，注册一个用户
-> 
-> 然后进入 IP:8000/admin 以用户名admin 密码admin 登录后台（请及时修改后台密码）
-> 
-> 修改User表中，你注册的超级用户的type为3，使得你注册的用户变为超级管理员
