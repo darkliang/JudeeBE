@@ -29,7 +29,7 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = UserNoPassSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     filter_fields = ('username',)
-    search_fields = ('username', 'name', 'realname', 'course', 'classes', 'school', 'number', 'qq')
+    search_fields = ('username', 'nickname')
     permission_classes = (UserSafePostOnly,)
     pagination_class = LimitOffsetPagination
     throttle_scope = "post"
@@ -64,11 +64,12 @@ class UserLoginDataView(viewsets.ModelViewSet):
     throttle_classes = [ScopedRateThrottle, ]
 
 
+#   登录API
 class UserLoginAPIView(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
-    throttle_scope = "post"
+    throttle_scope = "login"
     throttle_classes = [ScopedRateThrottle, ]
 
     def post(self, request, format=None):
@@ -76,15 +77,15 @@ class UserLoginAPIView(APIView):
         username = data.get('username')
         password = data.get('password')
         user = User.objects.get(username__exact=username)
-        userdata = UserData.objects.get(username__exact=username)
+        user_data = UserData.objects.get(username__exact=username)
         if user.password == password:
             serializer = UserSerializer(user)
             new_data = serializer.data
             request.session['user_id'] = user.username
             request.session['type'] = user.type
-            request.session['rating'] = userdata.rating
+            request.session['rating'] = user_data.rating
             return Response(new_data, status=HTTP_200_OK)
-        return Response('passworderror', HTTP_200_OK)
+        return Response('pwdError', HTTP_200_OK)
 
 
 class UserUpdateRatingAPIView(APIView):
@@ -134,8 +135,12 @@ class UserRegisterAPIView(APIView):
             return Response("userError", HTTP_200_OK)
         if User.objects.filter(email__exact=email):
             return Response("emailError", HTTP_200_OK)
-        serializer = UserSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=HTTP_200_OK)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+        user_serializer = UserSerializer(data=data)
+        user_data_serializer = UserDataSerializer(data=data)
+        # user_data_serializer.save()
+        if user_serializer.is_valid(raise_exception=True) and user_data_serializer.is_valid():
+            user_serializer.save()
+            user_data_serializer.save()
+            return Response(user_serializer.data, status=HTTP_200_OK)
+        return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)

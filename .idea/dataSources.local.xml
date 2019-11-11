@@ -4,7 +4,11 @@
     <data-source name="db" uuid="63609c36-6c3c-4256-a9f3-0bb078946690">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="SQLITE" exact-version="0" />
       <auth-required>false</auth-required>
-      <introspection-schemas>*:</introspection-schemas>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="" />
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
     <data-source name="postgres@10.20.1.155" uuid="e1f4f908-bab3-46c4-8729-c43bc80f8b62">
       <database-info product="PostgreSQL" version="12.0 (Debian 12.0-2.pgdg100+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="12.0" exact-driver-version="42.2">
@@ -13,7 +17,13 @@
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
-      <introspection-schemas>@:@</introspection-schemas>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
   </component>
 </project>

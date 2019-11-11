@@ -12,10 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -27,7 +25,6 @@ SECRET_KEY = '@x8t=y8%*+y1#=%15=01dh@$8hqh0%&&2f1ntk&e$olprw1fkq'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -57,12 +54,13 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.AnonRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
+        'login': '100/day',
         'register': '10/day',
         'anon': '180000/m',
         'judge': '180000/m',
         'post': '180000/m',
     },
-    'DEFAULT_AUTHENTICATION_CLASSES':(
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication'
     ),
@@ -99,7 +97,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BetterOJ.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -114,7 +111,6 @@ DATABASES = {
         'PORT': '54321',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -134,7 +130,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -147,7 +142,6 @@ USE_I18N = True
 
 USE_L10N = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
@@ -156,6 +150,6 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-SESSION_COOKIE_AGE = 60 * 60 * 24  
+SESSION_COOKIE_AGE = 60 * 60 * 24
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
