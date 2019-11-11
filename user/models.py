@@ -32,7 +32,7 @@ class UserData(models.Model):
     score = models.IntegerField(default=0)
     desc = models.CharField(max_length=50, null=True)
     rating = models.IntegerField(default=1500)
-    ac_probs = models.TextField(null=True, default="")  # 竖线分割
+    ac_prob = models.TextField(null=True, default="")  # 竖线分割
 
     # objects = models.Manager()
 
