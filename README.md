@@ -13,6 +13,8 @@
    
    pip install django-filter
    
+   pip install psycopg2
+   
    pip install djangorestframework-stubs
    
    pip install django-cors-headers
