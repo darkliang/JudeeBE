@@ -40,7 +40,7 @@ class UserView(viewsets.ModelViewSet):
 
 class UserChangeView(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserNoTypeSerializer
+    serializer_class = UserDataSerializer
     permission_classes = (UserPUTOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
@@ -71,9 +71,10 @@ class UserLoginDataAPIView(APIView):
     throttle_classes = [ScopedRateThrottle, ]
 
     def post(self, request, format=None):
+
         data = request.data.copy()
         if data.get("ip"):
-            if data["ip"].find("chrome") >= 0 and request.META.get('HTTP_X_FORWARDED_FOR'):
+            if data["ip"].find("unknown") >= 0 and request.META.get('HTTP_X_FORWARDED_FOR'):
                 data["ip"] = request.META.get("HTTP_X_FORWARDED_FOR")
 
         serializer = UserLoginDataSerializer(data=data)

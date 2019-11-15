@@ -1,5 +1,5 @@
 """
-WSGI config for BetterOJ project.
+WSGI config for JudeeBE project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BetterOJ.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "JudeeBE.settings")
 
 application = get_wsgi_application()

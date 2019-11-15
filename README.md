@@ -22,7 +22,7 @@
 
    
 
-3. 修改`/BetterOJ/settings.py`，配置数据库HOST为`10.20.1.255`
+3. 修改`/JudeeBE/settings.py`，配置数据库HOST为`10.20.1.255`
 
 4. 管理员账户为`admin`       `ljh123456`
 
