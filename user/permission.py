@@ -1,6 +1,5 @@
 # coding=utf-8
 from rest_framework import permissions
-from .models import User
 
 
 class ManagerOnly(permissions.BasePermission):
@@ -8,8 +7,8 @@ class ManagerOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS or request.method == "POST":
             return True
 
-        type = request.session.get('type', 1)
-        if type == 2 or type == 3:
+        user_type = request.session.get('type', 1)
+        if user_type == 2 or user_type == 3:
             return True
         else:
             return False

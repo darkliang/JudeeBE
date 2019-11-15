@@ -8,13 +8,7 @@ class User(models.Model):
     password = models.CharField(max_length=50, null=False)
     nickname = models.CharField(max_length=50, null=False)  # 名称
     reg_time = models.DateTimeField(auto_now=True)
-    login_time = models.DateTimeField(auto_now=True)
-    # school = models.CharField(max_length=50, null=False)
-    # course = models.CharField(max_length=50, null=False)
-    # classes = models.CharField(max_length=50, null=False)
-    # number = models.CharField(max_length=50, null=False)
-    # realname = models.CharField(max_length=50, null=False)
-    # qq = models.CharField(max_length=50, null=True, default="")
+    login_time = models.DateTimeField(null=True, auto_now=False)
     email = models.EmailField(max_length=50, null=False, default="")
     type = models.IntegerField(null=False, default=1,
                                validators=[MaxValueValidator(3), MinValueValidator(1)])  # 1 普通 2 题目管理员 3 超级管理员

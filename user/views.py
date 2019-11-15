@@ -11,10 +11,12 @@ from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserNoTypeSerializer, \
     UserLoginDataSerializer
 from .permission import UserSafePostOnly, UserPUTOnly, AuthPUTOnly, ManagerOnly
+from django.db.models import Q
 
 
 class UserDataView(viewsets.ModelViewSet):
-    queryset = UserData.objects.extra(select={'_has': 'if(rating=1500,0,rating)'}).order_by('-_has')
+    # queryset = UserData.objects.extra(select={'_has': 'if(rating=1500,0,rating)'}).order_by('-_has')
+    queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('username',)
@@ -55,13 +57,29 @@ class UserChangeAllView(viewsets.ModelViewSet):
 class UserLoginDataView(viewsets.ModelViewSet):
     queryset = UserLoginData.objects.all().order_by('-id')
     serializer_class = UserLoginDataSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filter_fields = ('username', 'ip',)
     search_fields = ('username', 'ip')
     permission_classes = (ManagerOnly,)
     pagination_class = LimitOffsetPagination
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
+
+
+class UserLoginDataAPIView(APIView):
+    throttle_scope = "post"
+    throttle_classes = [ScopedRateThrottle, ]
+
+    def post(self, request, format=None):
+        data = request.data.copy()
+        if data.get("ip"):
+            if data["ip"].find("chrome") >= 0 and request.META.get('HTTP_X_FORWARDED_FOR'):
+                data["ip"] = request.META.get("HTTP_X_FORWARDED_FOR")
+
+        serializer = UserLoginDataSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+        return Response('ok', status=HTTP_200_OK)
 
 
 #   登录API
@@ -76,8 +94,12 @@ class UserLoginAPIView(APIView):
         data = request.data
         username = data.get('username')
         password = data.get('password')
-        user = User.objects.get(username__exact=username)
-        user_data = UserData.objects.get(username__exact=username)
+        try:
+            user = User.objects.get(Q(username__exact=username) | Q(email__exact=username))
+        except User.DoesNotExist:
+            return Response('userError', HTTP_200_OK)
+
+        user_data = UserData.objects.get(username__exact=user.username)
         if user.password == password:
             serializer = UserSerializer(user)
             new_data = serializer.data
@@ -124,7 +146,7 @@ class UserRegisterAPIView(APIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
     throttle_scope = "register"
-    throttle_classes = [ScopedRateThrottle]   # 控制api使用流量
+    throttle_classes = [ScopedRateThrottle]  # 控制api使用流量
 
     def post(self, request):
         data = request.data.copy()
@@ -144,3 +166,5 @@ class UserRegisterAPIView(APIView):
             user_data_serializer.save()
             return Response(user_serializer.data, status=HTTP_200_OK)
         return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
