@@ -40,7 +40,7 @@ class UserView(viewsets.ModelViewSet):
 
 class UserChangeView(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserDataSerializer
+    serializer_class = UserNoTypeSerializer
     permission_classes = (UserPUTOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
@@ -58,6 +58,8 @@ class UserLoginDataView(viewsets.ModelViewSet):
     queryset = UserLoginData.objects.all().order_by('-id')
     serializer_class = UserLoginDataSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    # filter_fields做相等查询
+    # search_fields做模糊查询
     filter_fields = ('username', 'ip',)
     search_fields = ('username', 'ip')
     permission_classes = (ManagerOnly,)
@@ -73,10 +75,8 @@ class UserLoginDataAPIView(APIView):
     def post(self, request, format=None):
 
         data = request.data.copy()
-        if data.get("ip"):
-            if data["ip"].find("unknown") >= 0 and request.META.get('HTTP_X_FORWARDED_FOR'):
-                data["ip"] = request.META.get("HTTP_X_FORWARDED_FOR")
 
+        data["ip"] = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
         serializer = UserLoginDataSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
