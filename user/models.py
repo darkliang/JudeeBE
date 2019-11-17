@@ -13,6 +13,7 @@ class User(models.Model):
     phone_number = PhoneNumberField(max_length=14, null=True)
     qq_number = models.CharField('QQ number', max_length=13, null=True)
     github_username = models.CharField(max_length=50, null=True)
+    desc = models.CharField(max_length=50, null=True)
     type = models.IntegerField(null=False, default=1,
                                validators=[MaxValueValidator(3), MinValueValidator(1)])  # 1 普通 2 题目管理员 3 超级管理员
 
@@ -27,7 +28,6 @@ class UserData(models.Model):
     ac = models.IntegerField(null=False, default=0)
     submit = models.IntegerField(null=False, default=0)
     score = models.IntegerField(default=0)
-    desc = models.CharField(max_length=50, null=True)
     rating = models.IntegerField(default=1500)
     ac_prob = models.TextField(null=True, default="")  # 竖线分割
     # objects = models.Manager()
