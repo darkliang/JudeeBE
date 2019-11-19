@@ -54,29 +54,35 @@ class UserSafePostOnly(permissions.BasePermission):
             return False
 
 
-class UserPUTOnly(permissions.BasePermission):
+class UserAuthPUTOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
     def has_permission(self, request, view):
         if request.method != "PUT":
             return False
+        return self.request.session.get('user_id') is not None
 
-        data = request.data
-        username = data.get('username')
-        userid = request.session.get('user_id', None)
-        if userid == username or request.session.get('type', 1) == 3:
+    def has_object_permission(self, request, view, obj):
+        if obj.password == request.data.get('password'):
             return True
         else:
             return False
 
-    def has_object_permission(self, request, view, blog):
+
+class UserPUTOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
+    def has_permission(self, request, view):
         if request.method != "PUT":
             return False
-        data = request.data
-        username = data.get('username')
-        userid = request.session.get('user_id', None)
-        if userid == username or request.session.get('type', 1) == 3:
-            return True
-        else:
-            return False
+        print(request.session.get(''))
+        return request.session.get('user_id') is not None
+
+    # def has_object_permission(self, request, view, obj):
+    #     if request.session.get('type', 1) == 3:
+    #         return True
+    #     user_id = request.session.get('user_id', default=None)
+    #     print(user_id)
+    #     if user_id == request.data['username']:
+    #         return True
+    #     else:
+    #         return False
 
 
 class AuthPUTOnly(permissions.BasePermission):

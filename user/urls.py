@@ -9,6 +9,7 @@ routers.register('user', views.UserView)
 routers.register('change_profile', views.UserChangeView)
 routers.register('change_all', views.UserChangeAllView)
 routers.register('userlogindata', views.UserLoginDataView)
+# routers.register('change_pwd', views.UserChangePwdAPIView)
 
 urlpatterns = [
     url('', include(routers.urls)),
@@ -16,5 +17,6 @@ urlpatterns = [
     url(r'^login', views.UserLoginAPIView.as_view()),
     url(r'^logout', views.UserLogoutAPIView.as_view()),
     url(r'^updaterating', views.UserUpdateRatingAPIView.as_view()),
-    url(r'^setlogindata', views.UserLoginDataAPIView.as_view())
+    url(r'^setlogindata', views.UserLoginDataAPIView.as_view()),
+    url(r'^change_pwd', views.UserChangePwdAPIView.as_view()),
 ]

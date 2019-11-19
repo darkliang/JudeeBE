@@ -1,60 +1,77 @@
-# -*- coding: utf-8 -*-
-
 from django.db import models
 
-
-class Problem(models.Model):
-    problem = models.CharField(max_length=50, primary_key=True)
-    author = models.CharField(max_length=50, default="admin")
-    addtime = models.DateTimeField(auto_now=True)
-    oj = models.CharField(max_length=50, default="LPOJ")
-    title = models.CharField(max_length=500)
-    des = models.TextField()
-    input = models.TextField()
-    output = models.TextField()
-    sinput = models.TextField()
-    soutput = models.TextField()
-    source = models.TextField() # 也可以用来存该OJ的Pro ID
-    time = models.IntegerField()
-    memory = models.IntegerField()
-    hint = models.TextField(null=True)
-    auth = models.IntegerField(default=1)  # 1公开 2私密 3 比赛中的题
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.title
+from contest.models import Contest
+from utils.model_field import RichTextField
+from django.contrib.postgres.fields import JSONField
+from user.models import User
 
 
-class ProblemData(models.Model):
-    problem = models.CharField(max_length=50, primary_key=True)
-    title = models.CharField(max_length=500)
-    level = models.IntegerField(default=5)
-    submission = models.IntegerField(default=0)
-    ac = models.IntegerField(default=0)
-    mle = models.IntegerField(default=0)
-    tle = models.IntegerField(default=0)
-    rte = models.IntegerField(default=0)
-    pe = models.IntegerField(default=0)
-    ce = models.IntegerField(default=0)
-    wa = models.IntegerField(default=0)
-    se = models.IntegerField(default=0)
-    tag = models.TextField(null=True)
-    score = models.IntegerField(default=1000)
-    auth = models.IntegerField(default=1)  # 1公开 2私密 3 比赛中的题
-    oj = models.CharField(max_length=50, default="LPOJ")
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.title
+# Create your models here.
 
 
 class ProblemTag(models.Model):
-    tagname = models.CharField(max_length=50, unique=True)
-    count = models.IntegerField()
+    name = models.TextField()
 
-    objects = models.Manager()
+    class Meta:
+        db_table = "problem_tag"
 
-    def __str__(self):
-        return self.tagname
+
+class Problem(models.Model):
+    # display ID
+    _id = models.TextField(db_index=True)
+    contest = models.ForeignKey(Contest, null=True, on_delete=models.SET_NULL)
+    # for contest problem
+    is_public = models.BooleanField(default=False)
+    title = models.TextField()
+    # HTML
+    description = RichTextField()
+    input_description = RichTextField()
+    output_description = RichTextField()
+    # [{input: "test", output: "123"}, {input: "test123", output: "456"}]
+    samples = JSONField()
+    test_case_id = models.TextField()
+    # [{"input_name": "1.in", "output_name": "1.out", "score": 0}]
+    test_case_score = JSONField()
+    hint = RichTextField(null=True)
+    languages = JSONField()
+    template = JSONField()
+    create_time = models.DateTimeField(auto_now_add=True)
+    # we can not use auto_now here
+    last_update_time = models.DateTimeField(null=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    # ms
+    time_limit = models.IntegerField()
+    # MB
+    memory_limit = models.IntegerField()
+    # special judge related
+    # spj = models.BooleanField(default=False)
+    # spj_language = models.TextField(null=True)
+    # spj_code = models.TextField(null=True)
+    # spj_version = models.TextField(null=True)
+    # spj_compile_ok = models.BooleanField(default=False)
+    rule_type = models.CharField(max_length=10)
+    visible = models.BooleanField(default=True)
+    difficulty = models.CharField(max_length=15)
+    tags = models.ManyToManyField(ProblemTag)
+    source = models.TextField(null=True)
+    # for OI mode
+    total_score = models.IntegerField(default=0)
+    submission_number = models.BigIntegerField(default=0)
+    accepted_number = models.BigIntegerField(default=0)
+    # {JudgeStatus.ACCEPTED: 3, JudgeStaus.WRONG_ANSWER: 11}, the number means count
+    statistic_info = JSONField(default=dict)
+
+    # share_submission = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "problem"
+        # unique_together = (("_id", "contest"),)
+        ordering = ("create_time",)
+
+    def add_submission_number(self):
+        self.submission_number = models.F("submission_number") + 1
+        self.save(update_fields=["submission_number"])
+
+    def add_ac_number(self):
+        self.accepted_number = models.F("accepted_number") + 1
+        self.save(update_fields=["accepted_number"])

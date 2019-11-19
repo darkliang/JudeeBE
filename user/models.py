@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(models.Model):
@@ -10,7 +9,7 @@ class User(models.Model):
     nickname = models.CharField(max_length=50, null=False)  # 名称
     register_time = models.DateTimeField(auto_now=True)
     email = models.EmailField(max_length=50, null=False, default="")
-    phone_number = PhoneNumberField(max_length=14, null=True)
+    phone_number = models.CharField('Phone number', max_length=15, null=True)
     qq_number = models.CharField('QQ number', max_length=13, null=True)
     github_username = models.CharField(max_length=50, null=True)
     desc = models.CharField(max_length=50, null=True)

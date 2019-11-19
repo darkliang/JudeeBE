@@ -21,10 +21,21 @@ class UserNoPassSerializer(serializers.ModelSerializer):
         exclude = ['password']
 
 
-class UserNoTypeSerializer(serializers.ModelSerializer):
+class UserPwdSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
+
+    old_password = serializers.CharField()
+    new_password = serializers.CharField(min_length=6)
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ['type']
+        exclude = ['type', 'password', 'email']
 
 
 class UserDataSerializer(serializers.ModelSerializer):

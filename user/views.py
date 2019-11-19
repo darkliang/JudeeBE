@@ -8,9 +8,9 @@ from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
 from .models import User, UserData, UserLoginData
-from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserNoTypeSerializer, \
-    UserLoginDataSerializer
-from .permission import UserSafePostOnly, UserPUTOnly, AuthPUTOnly, ManagerOnly
+from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
+    UserLoginDataSerializer, UserPwdSerializer
+from .permission import UserSafePostOnly, UserPUTOnly, AuthPUTOnly, ManagerOnly, UserAuthPUTOnly
 from django.db.models import Q
 
 
@@ -40,7 +40,7 @@ class UserView(viewsets.ModelViewSet):
 
 class UserChangeView(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserNoTypeSerializer
+    serializer_class = UserProfileSerializer
     permission_classes = (UserPUTOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
@@ -52,6 +52,33 @@ class UserChangeAllView(viewsets.ModelViewSet):
     permission_classes = (AuthPUTOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
+
+
+class UserChangePwdAPIView(APIView):
+    queryset = User.objects.all()
+    # serializer_class = UserPwdSerializer
+    # permission_classes = (UserAuthPUTOnly,)
+    throttle_scope = "post"
+    throttle_classes = [ScopedRateThrottle, ]
+
+    # FIXME anyone can change the password
+    def put(self, request, format=None):
+        data = request.data
+        username = data.get('username', None)
+        password = data.get('password', None)
+        new_password = data.get('new_password', None)
+        # if username != self.request.session.get('user_id', None):
+        #     return Response('userError', HTTP_200_OK)
+        try:
+            user = User.objects.get(username__exact=username)
+        except User.DoesNotExist:
+            return Response('userError', HTTP_200_OK)
+
+        if user.password == password:
+            user.password = new_password
+            user.save()
+            return Response('OK', status=HTTP_200_OK)
+        return Response('pwdError', HTTP_200_OK)
 
 
 class UserLoginDataView(viewsets.ModelViewSet):
@@ -104,9 +131,9 @@ class UserLoginAPIView(APIView):
         if user.password == password:
             serializer = UserSerializer(user)
             new_data = serializer.data
-            request.session['user_id'] = user.username
-            request.session['type'] = user.type
-            request.session['rating'] = user_data.rating
+            self.request.session['user_id'] = user.username
+            self.request.session['type'] = user.type
+            self.request.session['rating'] = user_data.rating
             return Response(new_data, status=HTTP_200_OK)
         return Response('pwdError', HTTP_200_OK)
 

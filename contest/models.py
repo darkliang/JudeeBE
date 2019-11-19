@@ -1,132 +1,100 @@
-# -*- coding: utf-8 -*-
+# from utils.constants import ContestRuleType  # noqa
 from django.db import models
+from django.utils.timezone import now
+from django.contrib.postgres.fields import JSONField
+from user.models import User
+from utils.model_field import RichTextField
+from utils.constants import ContestStatus, ContestType, RuleType
 
 
-class ContestInfo(models.Model):
+class Contest(models.Model):
+    title = models.TextField()
+    description = RichTextField()
+    # show real time rank or cached rank
+    real_time_rank = models.BooleanField()
+    password = models.TextField(null=True)
+    # enum of ContestRuleType
+    rule_type = models.TextField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
+    last_update_time = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    # 是否可见 false的话相当于删除
+    visible = models.BooleanField(default=True)
+    allowed_ip_ranges = JSONField(default=list)
 
-    creator = models.CharField(max_length=50, default="admin")
-    oj = models.CharField(max_length=50, default="LPOJ")
-    title = models.CharField(max_length=50, default="contest")
-    level = models.IntegerField(default=1)
-    des = models.CharField(max_length=500, default="contest des")
-    note = models.CharField(max_length=500, default="contest note")
-    begintime = models.DateTimeField()
-    lasttime = models.IntegerField(default=18000)
-    type = models.CharField(max_length=50, default="ACM")
-    auth = models.IntegerField(default=2)  # 1 public 2 private 0 protect(需注册)
-    clonefrom = models.IntegerField(default=-1)
+    @property
+    def status(self):
+        if self.start_time > now():
+            # 没有开始 返回1
+            return ContestStatus.CONTEST_NOT_START
+        elif self.end_time < now():
+            # 已经结束 返回-1
+            return ContestStatus.CONTEST_ENDED
+        else:
+            # 正在进行 返回0
+            return ContestStatus.CONTEST_UNDERWAY
 
-    objects = models.Manager()
+    @property
+    def contest_type(self):
+        if self.password:
+            return ContestType.PASSWORD_PROTECTED_CONTEST
+        return ContestType.PUBLIC_CONTEST
 
-    def __str__(self):
-        return self.creator
+    # 是否有权查看problem 的一些统计信息 诸如submission_number, accepted_number 等
+    def problem_details_permission(self, user):
+        return self.rule_type == RuleType.ACM or \
+               self.status == ContestStatus.CONTEST_ENDED or \
+               user.is_authenticated and user.is_contest_admin(self) or \
+               self.real_time_rank
+
+    class Meta:
+        db_table = "contest"
+        ordering = ("-start_time",)
+
+
+class AbstractContestRank(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+    submission_number = models.IntegerField(default=0)
+
+    class Meta:
+        abstract = True
+
+
+class ACMContestRank(AbstractContestRank):
+    accepted_number = models.IntegerField(default=0)
+    # total_time is only for ACM contest, total_time =  ac time + none-ac times * 20 * 60
+    total_time = models.IntegerField(default=0)
+    # {"23": {"is_ac": True, "ac_time": 8999, "error_number": 2, "is_first_ac": True}}
+    # key is problem id
+    submission_info = JSONField(default=dict)
+
+    class Meta:
+        db_table = "acm_contest_rank"
+        unique_together = (("user", "contest"),)
+
+
+class OIContestRank(AbstractContestRank):
+    total_score = models.IntegerField(default=0)
+    # {"23": 333}
+    # key is problem id, value is current score
+    submission_info = JSONField(default=dict)
+
+    class Meta:
+        db_table = "oi_contest_rank"
+        unique_together = (("user", "contest"),)
 
 
 class ContestAnnouncement(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+    title = models.TextField()
+    content = RichTextField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    visible = models.BooleanField(default=True)
+    create_time = models.DateTimeField(auto_now_add=True)
 
-    contestid = models.IntegerField()
-    announcement = models.CharField(max_length=500)
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestid
-
-
-class ContestProblem(models.Model):
-
-    contestid = models.IntegerField()
-    problemid = models.CharField(max_length=50)
-    problemtitle = models.CharField(max_length=500, default="uname")
-    rank = models.IntegerField()  # 顺序
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestid
-
-
-class ContestBoard(models.Model):
-
-    contestid = models.IntegerField()
-    username = models.CharField(max_length=50)
-    user = models.CharField(max_length=50)
-    problemrank = models.IntegerField()
-    type = models.IntegerField()  # 1 AC， 0没AC算罚时，-1没AC不算罚时
-    submittime = models.BigIntegerField()  # 豪秒为单位
-    submitid = models.IntegerField()  # 用于rejudge
-    rating = models.IntegerField(default=1500)
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestid
-
-
-class ContestComment(models.Model):
-
-    contestid = models.IntegerField()
-    user = models.CharField(max_length=50)
-    title = models.CharField(max_length=50, default="提问")
-    problem = models.CharField(default='ALL', max_length=500)  # 对哪个题目提问
-    message = models.CharField(max_length=500)
-    huifu = models.CharField(default="No respones", max_length=500)
-    time = models.DateTimeField(auto_now=True)
-    rating = models.IntegerField(default=1500)
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestid
-
-class ContestTutorial(models.Model):
-
-    contestid = models.IntegerField()
-    value = models.TextField(default="暂无数据！")
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestid
-
-
-class ContestRegister(models.Model):
-
-    contestid = models.IntegerField()
-    user = models.CharField(max_length=50)
-    rating = models.IntegerField(default=0)
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestid
-
-
-class ContestRatingChange(models.Model):
-
-    contestid = models.IntegerField()
-    contestname = models.CharField(max_length=100)
-    contesttime = models.CharField(max_length=100)
-    user = models.CharField(max_length=50)
-    lastrating = models.IntegerField(default=0)
-    ratingchange = models.IntegerField(default=0)
-    currentrating = models.IntegerField(default=0)
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestid
-
-
-class ContestComingInfo(models.Model):
-
-    ojName = models.CharField(max_length=100)
-    link = models.CharField(max_length=200)
-    startTime = models.BigIntegerField()
-    endTime = models.BigIntegerField()
-    contestName = models.CharField(max_length=100)
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.contestName
+    class Meta:
+        db_table = "contest_announcement"
+        ordering = ("-create_time",)
