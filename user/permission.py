@@ -1,14 +1,11 @@
 # coding=utf-8
 from rest_framework import permissions
+from utils.constants import AdminType
 
 
 class ManagerOnly(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS or request.method == "POST":
-            return True
-
-        user_type = request.session.get('type', 1)
-        if user_type == 2 or user_type == 3:
+        if request.user.type == AdminType.ADMIN or AdminType.SUPER_ADMIN:
             return True
         else:
             return False
@@ -19,70 +16,53 @@ class UserSafePostOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if request.session.get('type', 1) == 3:
+        if request.session.get('type', AdminType.USER) == AdminType.SUPER_ADMIN:
             return True
 
         if request.method == "POST":
-            rating = request.data.get('rating', -1)
-            acc = request.data.get('ac', -1)
-            sub = request.data.get('submit', -1)
-            sco = request.data.get('score', -1)
-            type = request.data.get('type', -1)
-            if type != -1:
+            try:
+                username = request.data.get("username")
+                return True if username == request.session.get("user_id", None) else False
+            except KeyError:
                 return False
-            if rating != "" or acc != "" or sub != "" or sco != "":
-                if rating == -1:
-                    return True
-                return False
-            else:
-                return True
 
-        data = request.data
-        username = data.get('username')
-        rating = data.get('rating', -1)
-        score = data.get('score', -1)
-        ac = data.get('ac', -1)
-        submit = data.get('submit', -1)
-
-        if rating != -1 or score != -1 or ac != -1 or submit != -1:
-            return False
-
-        userid = request.session.get('user_id', None)
-        if userid == username or request.session.get('type', 1) == 3:
-            return True
-        else:
-            return False
+        return False
 
 
-class UserAuthPUTOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
+class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
     def has_permission(self, request, view):
-        if request.method != "PUT":
+        user = request.user
+        if not user:
             return False
-        return self.request.session.get('user_id') is not None
+
+            # 登录的用户必须是自定义管理员分组成员
+        return True
 
     def has_object_permission(self, request, view, obj):
-        if obj.password == request.data.get('password'):
+        user = request.user
+        if user.type == AdminType.ADMIN or AdminType.SUPER_ADMIN:
             return True
-        else:
-            return False
+        if user.username == obj.username:
+            return True
+        return False
 
 
 class UserPUTOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
     def has_permission(self, request, view):
         if request.method != "PUT":
             return False
-        print(request.session.get(''))
+        # print(request.session.get(''))
         return request.session.get('user_id') is not None
 
-    # def has_object_permission(self, request, view, obj):
-    #     if request.session.get('type', 1) == 3:
-    #         return True
-    #     user_id = request.session.get('user_id', default=None)
-    #     print(user_id)
-    #     if user_id == request.data['username']:
-    #         return True
-    #     else:
-    #         return False
+    def has_object_permission(self, request, view, obj):
+        if request.session.get('type', 1) == 3:
+            return True
+        user_id = request.session.get('user_id', default=None)
+        print(user_id)
+        if user_id == obj.username:
+            return True
+        else:
+            return False
 
 
 class AuthPUTOnly(permissions.BasePermission):

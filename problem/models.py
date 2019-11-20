@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 from contest.models import Contest
@@ -18,8 +20,9 @@ class ProblemTag(models.Model):
 
 class Problem(models.Model):
     # display ID
-    _id = models.TextField(db_index=True)
-    contest = models.ForeignKey(Contest, null=True, on_delete=models.SET_NULL)
+    # problem_id = models.TextField(db_index=True,primary_key=True)
+    ID = models.AutoField(primary_key=True)
+    contest = models.ManyToManyField(Contest, blank=True)
     # for contest problem
     is_public = models.BooleanField(default=False)
     title = models.TextField()
@@ -29,15 +32,17 @@ class Problem(models.Model):
     output_description = RichTextField()
     # [{input: "test", output: "123"}, {input: "test123", output: "456"}]
     samples = JSONField()
-    test_case_id = models.TextField()
+    # test_case_id = models.TextField()
     # [{"input_name": "1.in", "output_name": "1.out", "score": 0}]
     test_case_score = JSONField()
     hint = RichTextField(null=True)
+    # ["java", "cpp"]
     languages = JSONField()
-    template = JSONField()
+    # {"language": "java","template": null}, {"language": "cpp","template": null}
+    template = JSONField(null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     # we can not use auto_now here
-    last_update_time = models.DateTimeField(null=True)
+    last_update_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     # ms
     time_limit = models.IntegerField()
@@ -49,10 +54,10 @@ class Problem(models.Model):
     # spj_code = models.TextField(null=True)
     # spj_version = models.TextField(null=True)
     # spj_compile_ok = models.BooleanField(default=False)
-    rule_type = models.CharField(max_length=10)
-    visible = models.BooleanField(default=True)
+    # rule_type = models.CharField(max_length=10)
+    # visible = models.BooleanField(default=True)
     difficulty = models.CharField(max_length=15)
-    tags = models.ManyToManyField(ProblemTag)
+    tags = models.ManyToManyField(ProblemTag, blank=True)
     source = models.TextField(null=True)
     # for OI mode
     total_score = models.IntegerField(default=0)
@@ -75,3 +80,8 @@ class Problem(models.Model):
     def add_ac_number(self):
         self.accepted_number = models.F("accepted_number") + 1
         self.save(update_fields=["accepted_number"])
+
+    def save_model(self, request, problem, form, change):
+        problem.pub_date = datetime.now()
+        problem.save()
+

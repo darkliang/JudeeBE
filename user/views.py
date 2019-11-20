@@ -1,21 +1,24 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.hashers import make_password
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, mixins
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
+from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
+
+from utils.constants import AdminType
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
     UserLoginDataSerializer, UserPwdSerializer
-from .permission import UserSafePostOnly, UserPUTOnly, AuthPUTOnly, ManagerOnly, UserAuthPUTOnly
+from .permission import UserSafePostOnly, ManagerOnly, UserAuthOnly
 from django.db.models import Q
 
 
 class UserDataView(viewsets.ModelViewSet):
-    # queryset = UserData.objects.extra(select={'_has': 'if(rating=1500,0,rating)'}).order_by('-_has')
     queryset = UserData.objects.all()
     serializer_class = UserDataSerializer
     filter_backends = (DjangoFilterBackend,)
@@ -38,18 +41,19 @@ class UserView(viewsets.ModelViewSet):
     throttle_classes = [ScopedRateThrottle, ]
 
 
-class UserChangeView(viewsets.ModelViewSet):
+class UserChangeView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = (UserPUTOnly,)
+    permission_classes = (UserAuthOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
 
+# 管理员的功能
 class UserChangeAllView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AuthPUTOnly,)
+    permission_classes = (ManagerOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -57,7 +61,7 @@ class UserChangeAllView(viewsets.ModelViewSet):
 class UserChangePwdAPIView(APIView):
     queryset = User.objects.all()
     # serializer_class = UserPwdSerializer
-    # permission_classes = (UserAuthPUTOnly,)
+    permission_classes = (UserAuthOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -67,14 +71,12 @@ class UserChangePwdAPIView(APIView):
         username = data.get('username', None)
         password = data.get('password', None)
         new_password = data.get('new_password', None)
-        # if username != self.request.session.get('user_id', None):
-        #     return Response('userError', HTTP_200_OK)
         try:
             user = User.objects.get(username__exact=username)
         except User.DoesNotExist:
             return Response('userError', HTTP_200_OK)
 
-        if user.password == password:
+        if user.check_password(password):
             user.password = new_password
             user.save()
             return Response('OK', status=HTTP_200_OK)
@@ -100,7 +102,6 @@ class UserLoginDataAPIView(APIView):
     throttle_classes = [ScopedRateThrottle, ]
 
     def post(self, request, format=None):
-
         data = request.data.copy()
 
         data["ip"] = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
@@ -127,18 +128,18 @@ class UserLoginAPIView(APIView):
         except User.DoesNotExist:
             return Response('userError', HTTP_200_OK)
 
-        user_data = UserData.objects.get(username__exact=user.username)
-        if user.password == password:
+        # user_data = UserData.objects.get(username__exact=user.username)
+        if user.check_password(password):
             serializer = UserSerializer(user)
             new_data = serializer.data
-            self.request.session['user_id'] = user.username
-            self.request.session['type'] = user.type
-            self.request.session['rating'] = user_data.rating
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            new_data['token'] = token
             return Response(new_data, status=HTTP_200_OK)
         return Response('pwdError', HTTP_200_OK)
 
 
-class UserUpdateRatingAPIView(APIView):
+class UserUpdateRankingAPIView(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
@@ -149,7 +150,7 @@ class UserUpdateRatingAPIView(APIView):
         if request.session.get('user_id', None) is not None:
             username = request.session.get('user_id', None)
             userdata = UserData.objects.get(username__exact=username)
-            request.session['rating'] = userdata.rating
+            request.session['ranking'] = userdata.ranking
             return Response('updated', HTTP_200_OK)
         else:
             return Response('ok', HTTP_200_OK)
@@ -160,12 +161,12 @@ class UserLogoutAPIView(APIView):
     throttle_classes = [ScopedRateThrottle, ]
 
     def get(self, request):
-        if request.session.get('user_id', None) is not None:
+        if request.session.get('user_id', None):
             del request.session['user_id']
-        if request.session.get('type', None) is not None:
+        if request.session.get('type', None):
             del request.session['type']
-        if request.session.get('rating', None) is not None:
-            del request.session['rating']
+        if request.session.get('ranking', None):
+            del request.session['ranking']
         return Response('ok', HTTP_200_OK)
 
 
@@ -178,21 +179,25 @@ class UserRegisterAPIView(APIView):
 
     def post(self, request):
         data = request.data.copy()
-        data['type'] = 1
+        data['type'] = AdminType.USER
         username = data.get('username')
         email = data.get('email')
         if User.objects.filter(username__exact=username):
             return Response("userError", HTTP_200_OK)
         if User.objects.filter(email__exact=email):
             return Response("emailError", HTTP_200_OK)
-
+        data['password'] = make_password(data['password'])
         user_serializer = UserSerializer(data=data)
-        user_data_serializer = UserDataSerializer(data=data)
-        # user_data_serializer.save()
-        if user_serializer.is_valid(raise_exception=True) and user_data_serializer.is_valid():
-            user_serializer.save()
+        # print(user_serializer.data)
+
+        if user_serializer.is_valid(raise_exception=True):
+            user = user_serializer.save()
+            payload = jwt_payload_handler(user)
+            res_dict = user_serializer.data
+            res_dict["token"] = jwt_encode_handler(
+                payload)  # jwt_encode_handler(payload) 生成 token；并赋值给 res_dict["token"]
+            user_data_serializer = UserDataSerializer(data=data)
+            user_data_serializer.is_valid()
             user_data_serializer.save()
-            return Response(user_serializer.data, status=HTTP_200_OK)
+            return Response(res_dict, status=HTTP_200_OK)
         return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-

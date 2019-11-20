@@ -18,3 +18,9 @@ class Difficulty:
     LOW = "Low"
     MID = "Mid"
     HIGH = "High"
+
+
+class AdminType:
+    USER = 1
+    ADMIN = 2
+    SUPER_ADMIN = 3

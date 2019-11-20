@@ -35,7 +35,7 @@ class UserPwdSerializer(serializers.Serializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ['type', 'password', 'email']
+        exclude = ['type', 'password', 'email', 'username']
 
 
 class UserDataSerializer(serializers.ModelSerializer):

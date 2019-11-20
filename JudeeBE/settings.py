@@ -35,13 +35,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'rest_framework',
     'django_filters',
     'user',
     'problem',
     'contest'
 ]
-
+AUTH_USER_MODEL = 'user.User'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
@@ -57,8 +58,9 @@ REST_FRAMEWORK = {
         'post': '180000/m',
     },
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.BasicAuthentication'
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
 }
 
@@ -100,7 +102,7 @@ WSGI_APPLICATION = 'JudeeBE.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Judee',
+        'NAME': 'Judee_dev',
         'USER': 'postgres',
         'PASSWORD': 'ljh123456',
         'HOST': 'cs308.leeeung.com',

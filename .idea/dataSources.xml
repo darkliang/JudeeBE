@@ -9,5 +9,13 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://cs308.leeeung.com:54321/Judee</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Django default2" uuid="a297861a-fc38-4407-800f-a4b4614311fd">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/JudeeBE/settings.py</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://cs308.leeeung.com:54321/Judee_dev</jdbc-url>
+    </data-source>
   </component>
 </project>
