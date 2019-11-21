@@ -2,7 +2,7 @@
 from django.contrib.auth.hashers import make_password
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
@@ -44,7 +44,7 @@ class UserView(viewsets.ModelViewSet):
 class UserChangeView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = (UserAuthOnly,)
+    # permission_classes = (UserAuthOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -68,16 +68,12 @@ class UserChangePwdAPIView(APIView):
     # FIXME anyone can change the password
     def put(self, request, format=None):
         data = request.data
-        username = data.get('username', None)
         password = data.get('password', None)
         new_password = data.get('new_password', None)
-        try:
-            user = User.objects.get(username__exact=username)
-        except User.DoesNotExist:
-            return Response('userError', HTTP_200_OK)
+        user = request.user
 
         if user.check_password(password):
-            user.password = new_password
+            user.password = make_password(new_password)
             user.save()
             return Response('OK', status=HTTP_200_OK)
         return Response('pwdError', HTTP_200_OK)
@@ -150,24 +146,24 @@ class UserUpdateRankingAPIView(APIView):
         if request.session.get('user_id', None) is not None:
             username = request.session.get('user_id', None)
             userdata = UserData.objects.get(username__exact=username)
-            request.session['ranking'] = userdata.ranking
+            # request.session['ranking'] = userdata.ranking
             return Response('updated', HTTP_200_OK)
         else:
             return Response('ok', HTTP_200_OK)
 
 
-class UserLogoutAPIView(APIView):
-    throttle_scope = "post"
-    throttle_classes = [ScopedRateThrottle, ]
-
-    def get(self, request):
-        if request.session.get('user_id', None):
-            del request.session['user_id']
-        if request.session.get('type', None):
-            del request.session['type']
-        if request.session.get('ranking', None):
-            del request.session['ranking']
-        return Response('ok', HTTP_200_OK)
+# class UserLogoutAPIView(APIView):
+#     throttle_scope = "post"
+#     throttle_classes = [ScopedRateThrottle, ]
+#
+#     def get(self, request):
+#         if request.session.get('user_id', None):
+#             del request.session['user_id']
+#         if request.session.get('type', None):
+#             del request.session['type']
+#         if request.session.get('ranking', None):
+#             del request.session['ranking']
+#         return Response('ok', HTTP_200_OK)
 
 
 class UserRegisterAPIView(APIView):

@@ -15,18 +15,17 @@ class UserSafePostOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
+        try:
+            return request.user.type == AdminType.SUPER_ADMIN
+        except AttributeError:
+            return False
 
-        if request.session.get('type', AdminType.USER) == AdminType.SUPER_ADMIN:
-            return True
-
-        if request.method == "POST":
-            try:
-                username = request.data.get("username")
-                return True if username == request.session.get("user_id", None) else False
-            except KeyError:
-                return False
-
-        return False
+        # if request.method == "POST":
+        #     try:
+        #         username = request.data.get("username")
+        #         return True if username == request.session.get("user_id", None) else False
+        #     except KeyError:
+        #         return False
 
 
 class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的session

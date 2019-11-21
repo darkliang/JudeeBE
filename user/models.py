@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManager
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -25,17 +25,14 @@ class User(AbstractBaseUser):
     def is_contest_admin(self, contest):
         return contest.created_by == self or self.type == AdminType.SUPER_ADMIN
 
+    objects = UserManager()
+
     def __str__(self):
         return self.username
 
 
-# class Token(models.Model):
-#     user = models.OneToOneField(to='User', on_delete=models.CASCADE)
-#     token_code = models.CharField(max_length=128)
-
-
 class UserData(models.Model):
-    username = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     ac = models.IntegerField(null=False, default=0)
     submit = models.IntegerField(null=False, default=0)
     score = models.IntegerField(default=0)

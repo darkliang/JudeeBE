@@ -2,58 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/problem/migrations/0002_auto_20191120_2319.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/problem/migrations/0003_auto_20191120_2326.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/problem/migrations/0004_auto_20191120_2330.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/problem/migrations/0005_auto_20191120_2359.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0002_auto_20191120_2359.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0003_auto_20191121_0107.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0004_remove_user_register_time.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0005_auto_20191121_0120.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0006_auto_20191121_0121.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0007_auto_20191121_0205.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0008_user_register_time.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/migrations/0009_auto_20191121_1110.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/migrations/0010_auto_20191121_1140.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JudeeBE/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JudeeBE/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/permission.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/permission.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/permission.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/judgestatus/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/judgestatus/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/judgestatus/permission.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/judgestatus/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/judgestatus/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/judgestatus/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/.models.py.swp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/permission.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wiki/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wiki/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wiki/permission.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wiki/serializers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wiki/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wiki/views.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -365,7 +322,8 @@
       <workItem from="1574130582778" duration="25516000" />
       <workItem from="1574166270545" duration="1457000" />
       <workItem from="1574256902183" duration="1885000" />
-      <workItem from="1574258806439" duration="14689000" />
+      <workItem from="1574258806439" duration="14775000" />
+      <workItem from="1574300784506" duration="8546000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -423,7 +381,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574163447572</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fix 权限问题 &#10;数据库初成&#10;使用JWT做验证">
+      <created>1574273583916</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1574273583916</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -469,14 +434,15 @@
     <MESSAGE value="refactor 'BetterOJ' to 'JudeeBE'" />
     <MESSAGE value="修复refactor的遗留bug 以及把desc放入user表" />
     <MESSAGE value="add problem and contest" />
-    <option name="LAST_COMMIT_MESSAGE" value="add problem and contest" />
+    <MESSAGE value="fix 权限问题 &#10;数据库初成&#10;使用JWT做验证" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix 权限问题 &#10;数据库初成&#10;使用JWT做验证" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/user/views.py</url>
-          <line>131</line>
+          <line>127</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
