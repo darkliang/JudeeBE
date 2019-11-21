@@ -4,7 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
@@ -44,7 +44,7 @@ class UserView(viewsets.ModelViewSet):
 class UserChangeView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
-    # permission_classes = (UserAuthOnly,)
+    permission_classes = (UserAuthOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -65,18 +65,19 @@ class UserChangePwdAPIView(APIView):
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
-    # FIXME anyone can change the password
     def put(self, request, format=None):
         data = request.data
         password = data.get('password', None)
         new_password = data.get('new_password', None)
         user = request.user
-
-        if user.check_password(password):
-            user.password = make_password(new_password)
-            user.save()
-            return Response('OK', status=HTTP_200_OK)
-        return Response('pwdError', HTTP_200_OK)
+        if user.is_authenticated:
+            if user.check_password(password):
+                user.password = make_password(new_password)
+                user.save()
+                return Response('OK', status=HTTP_200_OK)
+            return Response('pwdError', HTTP_200_OK)
+        else:
+            return Response('not authenticated', HTTP_401_UNAUTHORIZED)
 
 
 class UserLoginDataView(viewsets.ModelViewSet):

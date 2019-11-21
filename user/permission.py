@@ -39,8 +39,11 @@ class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的se
 
     def has_object_permission(self, request, view, obj):
         user = request.user
-        if user.type == AdminType.ADMIN or AdminType.SUPER_ADMIN:
-            return True
+        try:
+            if user.type == AdminType.ADMIN or AdminType.SUPER_ADMIN:
+                return True
+        except AttributeError:
+            return False
         if user.username == obj.username:
             return True
         return False
@@ -50,7 +53,6 @@ class UserPUTOnly(permissions.BasePermission):  # FIXME 无法获取正确的ses
     def has_permission(self, request, view):
         if request.method != "PUT":
             return False
-        # print(request.session.get(''))
         return request.session.get('user_id') is not None
 
     def has_object_permission(self, request, view, obj):
