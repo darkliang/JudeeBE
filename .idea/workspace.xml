@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JudeeBE/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/permission.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -323,7 +321,7 @@
       <workItem from="1574166270545" duration="1457000" />
       <workItem from="1574256902183" duration="1885000" />
       <workItem from="1574258806439" duration="14775000" />
-      <workItem from="1574300784506" duration="13578000" />
+      <workItem from="1574300784506" duration="14340000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -395,7 +393,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574311484680</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="...">
+      <created>1574319070565</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1574319070565</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,7 +448,8 @@
     <MESSAGE value="add problem and contest" />
     <MESSAGE value="fix 权限问题 &#10;数据库初成&#10;使用JWT做验证" />
     <MESSAGE value="完全解决权限问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="完全解决权限问题" />
+    <MESSAGE value="..." />
+    <option name="LAST_COMMIT_MESSAGE" value="..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
