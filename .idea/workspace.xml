@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/permission.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,6 +86,16 @@
         <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
         <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="problem: table" type="69fad909:PgImplModel$LocalTable" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default2" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="Judee_dev: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="problem_tag: table" type="69fad909:PgImplModel$LocalTable" />
       </path>
     </expand>
     <select />
@@ -321,7 +335,7 @@
       <workItem from="1574166270545" duration="1457000" />
       <workItem from="1574256902183" duration="1885000" />
       <workItem from="1574258806439" duration="14775000" />
-      <workItem from="1574300784506" duration="14340000" />
+      <workItem from="1574300784506" duration="34525000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -456,7 +470,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/user/views.py</url>
-          <line>128</line>
+          <line>127</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

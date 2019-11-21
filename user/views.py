@@ -125,13 +125,12 @@ class UserLoginAPIView(APIView):
         except User.DoesNotExist:
             return Response('userError', HTTP_200_OK)
 
-        # user_data = UserData.objects.get(username__exact=user.username)
         if user.check_password(password):
-            serializer = UserSerializer(user)
-            new_data = serializer.data
+            user_data = UserData.objects.get(username__exact=user.username)
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
-            new_data['token'] = token
+            new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
+                        'nickname': user.nickname}
             return Response(new_data, status=HTTP_200_OK)
         return Response('pwdError', HTTP_200_OK)
 

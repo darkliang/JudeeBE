@@ -8,7 +8,7 @@ class ManagerPostOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if request.session.get('type', AdminType.USER) == AdminType.SUPER_ADMIN:
-            return True
-
-        return False
+        try:
+            return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
+        except AttributeError:
+            return False

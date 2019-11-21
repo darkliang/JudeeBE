@@ -30,7 +30,7 @@ class Problem(models.Model):
     description = RichTextField()
     input_description = RichTextField()
     output_description = RichTextField()
-    # [{input: "test", output: "123"}, {input: "test123", output: "456"}]
+    # [{"input": "test", "output": "123"}, {"input": "test123", "output": "456"}]
     samples = JSONField()
     # test_case_id = models.TextField()
     # [{"input_name": "1.in", "output_name": "1.out", "score": 0}]
@@ -42,7 +42,7 @@ class Problem(models.Model):
     template = JSONField(null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     # we can not use auto_now here
-    last_update_time = models.DateTimeField(auto_now_add=True)
+    last_update_time = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     # ms
     time_limit = models.IntegerField()
