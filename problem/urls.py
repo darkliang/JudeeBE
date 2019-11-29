@@ -8,5 +8,5 @@ routers.register('problem', views.ProblemView)
 routers.register('problem_tag', views.ProblemTagView)
 urlpatterns = [
     url('', include(routers.urls)),
-    # url(r'^upload_file', views.UploadFileAPIView.as_view()),
+    url(r'^upload_file', views.TestCaseAPI.as_view()),
 ]

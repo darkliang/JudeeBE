@@ -126,11 +126,15 @@ class UserLoginAPIView(APIView):
             return Response('userError', HTTP_200_OK)
 
         if user.check_password(password):
-            user_data = UserData.objects.get(username__exact=user.username)
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
-            new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
-                        'nickname': user.nickname}
+            if user.type == AdminType.USER:
+                user_data = UserData.objects.get(username__exact=user.username)
+                new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
+                            'nickname': user.nickname, 'type': user.type}
+            else:
+                new_data = {'token': token, 'username': user.username, 'type': user.type,
+                            'nickname': user.nickname}
             return Response(new_data, status=HTTP_200_OK)
         return Response('pwdError', HTTP_200_OK)
 

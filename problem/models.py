@@ -16,6 +16,7 @@ class ProblemTag(models.Model):
 
     class Meta:
         db_table = "problem_tag"
+        ordering = ("id",)
 
 
 class Problem(models.Model):
@@ -80,8 +81,4 @@ class Problem(models.Model):
     def add_ac_number(self):
         self.accepted_number = models.F("accepted_number") + 1
         self.save(update_fields=["accepted_number"])
-
-    def save_model(self, request, problem, form, change):
-        problem.pub_date = datetime.now()
-        problem.save()
 
