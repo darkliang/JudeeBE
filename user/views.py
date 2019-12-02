@@ -15,7 +15,7 @@ from utils.constants import AdminType
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
     UserLoginDataSerializer
-from .permission import UserSafePostOnly, ManagerOnly, UserAuthOnly
+from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly
 from django.db.models import Q
 
 

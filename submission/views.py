@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
 from rest_framework.views import APIView
 
 from submission.models import Submission
+from utils.permissions import ManagerOnly
 
 
 class SubmissionRejudgeAPI(APIView):
+    permission_classes = (ManagerOnly,)
 
     def get(self, request):
         id = request.GET.get("id")
@@ -19,5 +21,5 @@ class SubmissionRejudgeAPI(APIView):
         submission.statistic_info = {}
         submission.save()
 
-        judge_task.send(submission.id, submission.problem.id)
-        return self.success()
+        # judge_task.send(submission.id, submission.problem.id)
+        return Response("OK", status=HTTP_200_OK)

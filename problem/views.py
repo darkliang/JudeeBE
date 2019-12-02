@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 
 from JudeeBE.settings import TEST_CASE_DIR
 from problem.models import Problem, ProblemTag
-from problem.permission import ManagerPostOnly
+from utils.permissions import ManagerPostOnly
 from problem.serializers import ProblemSerializer, ProblemTagSerializer
 
 
@@ -111,13 +111,11 @@ class TestCaseAPI(APIView):
             return Response("No such problem", status=HTTP_404_NOT_FOUND)
 
         is_passed, info = check_name_list(file.namelist(), len(problem.test_case_score))
-        for fileM in file.namelist():
-            file.extract(fileM, os.path.join(TEST_CASE_DIR, str(problem.ID)))
-        file.close()
         if not is_passed:
             return Response(info, status=HTTP_400_BAD_REQUEST)
         else:
+            for fileM in file.namelist():
+                file.extract(fileM, os.path.join(TEST_CASE_DIR, str(problem.ID)))
+            file.close()
             return Response(info, status=HTTP_200_OK)
 
-# class UploadFile(APIView):
-#     def post(self, request, format=None):

@@ -2,8 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/submission/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/migrations/0011_auto_20191202_1702.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JudeeBE/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/permission.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/permission.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -323,7 +332,7 @@
       <workItem from="1575122962521" duration="3230000" />
       <workItem from="1575186986964" duration="8182000" />
       <workItem from="1575274183485" duration="11000" />
-      <workItem from="1575275742341" duration="1185000" />
+      <workItem from="1575275742341" duration="4852000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -423,7 +432,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575276030445</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="update: 改存储Zip为存储解压好的目录">
+      <created>1575277007867</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1575277007867</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +491,8 @@
     <MESSAGE value="支持各种题目检索方式" />
     <MESSAGE value="add: upload test case api" />
     <MESSAGE value="add: submission" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: submission" />
+    <MESSAGE value="update: 改存储Zip为存储解压好的目录" />
+    <option name="LAST_COMMIT_MESSAGE" value="update: 改存储Zip为存储解压好的目录" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

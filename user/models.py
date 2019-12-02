@@ -27,6 +27,9 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
+    class Meta:
+        ordering = ("-type",)
+
     def __str__(self):
         return self.username
 

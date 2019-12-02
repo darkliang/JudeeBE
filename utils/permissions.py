@@ -1,13 +1,12 @@
-# coding=utf-8
 from rest_framework import permissions
 from utils.constants import AdminType
 
 
 class ManagerOnly(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.user.type == AdminType.ADMIN or AdminType.SUPER_ADMIN:
-            return True
-        else:
+        try:
+            return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
+        except AttributeError:
             return False
 
 
@@ -81,4 +80,14 @@ class AuthPUTOnly(permissions.BasePermission):
         if request.session.get('type', 1) == 3:
             return True
         else:
+            return False
+
+
+class ManagerPostOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        try:
+            return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
+        except AttributeError:
             return False
