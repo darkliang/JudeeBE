@@ -88,7 +88,7 @@ def check_name_list(name_list, case_num):
             continue
         else:
             if len(name_list) == (prefix - 1) * 2:
-                return (True, "Upload success") if case_num == prefix-1 else (False, "Wrong case number")
+                return (True, "Upload success") if case_num == prefix - 1 else (False, "Wrong case number")
             else:
                 return False, "Wrong filename format"
 
@@ -99,25 +99,22 @@ class TestCaseAPI(APIView):
     def post(self, request):
         data = request.data
         raw_file = request.FILES.get("file", None)
-        # print(data)
-        # print(raw_file)
+
+        try:
+            file = zipfile.ZipFile(raw_file, "r")
+        except zipfile.BadZipFile:
+            return Response("Bad zip file", status=HTTP_400_BAD_REQUEST)
+
         try:
             problem = Problem.objects.get(ID=data.get("problem_ID"))
         except (Problem.DoesNotExist, ValueError):
             return Response("No such problem", status=HTTP_404_NOT_FOUND)
-        file_path = os.path.join(TEST_CASE_DIR, "{}.zip".format(problem.ID))
-        with open(file_path, "wb+") as f:
-            for chunk in raw_file:
-                f.write(chunk)
-        try:
-            file = zipfile.ZipFile(file_path, "r")
-        except zipfile.BadZipFile:
-            os.remove(file_path)
-            return Response("Bad zip file", status=HTTP_400_BAD_REQUEST)
+
         is_passed, info = check_name_list(file.namelist(), len(problem.test_case_score))
+        for fileM in file.namelist():
+            file.extract(fileM, os.path.join(TEST_CASE_DIR, str(problem.ID)))
         file.close()
         if not is_passed:
-            os.remove(file_path)
             return Response(info, status=HTTP_400_BAD_REQUEST)
         else:
             return Response(info, status=HTTP_200_OK)
