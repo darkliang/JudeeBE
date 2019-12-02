@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django_filters',
     'user',
     'problem',
-    'contest'
+    'contest',
+    'submission'
 ]
 AUTH_USER_MODEL = 'user.User'
 REST_FRAMEWORK = {

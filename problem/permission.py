@@ -7,7 +7,6 @@ class ManagerPostOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-
         try:
             return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
         except AttributeError:

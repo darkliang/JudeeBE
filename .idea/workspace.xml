@@ -2,12 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/problem/migrations/0007_auto_20191129_1945.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/problem/migrations/0008_auto_20191129_2234.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/JudeeBE/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/problem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/permission.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/permission.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/constants.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -77,36 +88,6 @@
         <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
         <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Django default2" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="Judee_dev: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="problem: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Django default2" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="Judee_dev: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="problem_tag: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Django default2" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="Judee_dev: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="problem_tags: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
     </expand>
     <select />
   </component>
@@ -146,10 +127,10 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/.idea/workspace.xml&#10;C:/Users/97659/PycharmProjects/JudeeBE/.idea/JudeeBE.iml&#10;C:/Users/97659/PycharmProjects/JudeeBE/problem/views.py&#10;C:/Users/97659/PycharmProjects/JudeeBE/JudeeBE/settings.py" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../reid-strong-baseline" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../crawler" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="kite.configurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -352,7 +333,12 @@
       <workItem from="1574677038221" duration="4880000" />
       <workItem from="1574758321955" duration="120000" />
       <workItem from="1574940968069" duration="10618000" />
-      <workItem from="1574989778015" duration="6152000" />
+      <workItem from="1574989778015" duration="25110000" />
+      <workItem from="1575122817025" duration="109000" />
+      <workItem from="1575122962521" duration="3230000" />
+      <workItem from="1575186986964" duration="8182000" />
+      <workItem from="1575274183485" duration="11000" />
+      <workItem from="1575275742341" duration="272000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -438,7 +424,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574350910690</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add: upload test case api">
+      <created>1574998909703</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1574998909703</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,14 +481,15 @@
     <MESSAGE value="完全解决权限问题" />
     <MESSAGE value="..." />
     <MESSAGE value="支持各种题目检索方式" />
-    <option name="LAST_COMMIT_MESSAGE" value="支持各种题目检索方式" />
+    <MESSAGE value="add: upload test case api" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: upload test case api" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/user/views.py</url>
-          <line>127</line>
+          <line>128</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

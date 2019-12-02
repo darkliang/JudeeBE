@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from contest.models import Contest
@@ -12,7 +13,7 @@ from user.models import User
 
 
 class ProblemTag(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=50,unique=True)
 
     class Meta:
         db_table = "problem_tag"
@@ -57,7 +58,7 @@ class Problem(models.Model):
     # spj_compile_ok = models.BooleanField(default=False)
     # rule_type = models.CharField(max_length=10)
     # visible = models.BooleanField(default=True)
-    difficulty = models.CharField(max_length=15)
+    difficulty = models.IntegerField(null=False, default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
     tags = models.ManyToManyField(ProblemTag, blank=True)
     source = models.TextField(null=True)
     # for OI mode

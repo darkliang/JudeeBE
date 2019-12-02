@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.hashers import make_password
+from django.utils.datetime_safe import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
@@ -13,7 +14,7 @@ from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handl
 from utils.constants import AdminType
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
-    UserLoginDataSerializer, UserPwdSerializer
+    UserLoginDataSerializer
 from .permission import UserSafePostOnly, ManagerOnly, UserAuthOnly
 from django.db.models import Q
 
@@ -128,6 +129,8 @@ class UserLoginAPIView(APIView):
         if user.check_password(password):
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
+            user.last_login = str(datetime.today())
+            user.save()
             if user.type == AdminType.USER:
                 user_data = UserData.objects.get(username__exact=user.username)
                 new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
