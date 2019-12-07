@@ -1,0 +1,9 @@
+{
+    "cpu_time" : 12,
+    "real_time" : 13,
+    "memory" : 10,
+    "signal" : 13,
+    "exit_code" : 10,
+    "error" : 0,
+    "result" : 0
+}
