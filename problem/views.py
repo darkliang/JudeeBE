@@ -23,8 +23,7 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     filter_backends = (DjangoFilterBackend,)
     pagination_class = LimitOffsetPagination
     filter_fields = ('is_public',)
-    # search_fields = ('title', 'description')
-    # permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 

@@ -159,4 +159,4 @@ SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 TEST_CASE_DIR = '\\\\HOMEDISK\\homes\\h2s\\test_cases\\'
 
-queue = RedisQueue("SubmissionQueue", '10.20.1.155')
+SUBMISSION_QUEUE = RedisQueue("SubmissionQueue", '10.20.1.155')

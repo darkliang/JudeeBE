@@ -5,6 +5,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
+from JudeeBE.settings import SUBMISSION_QUEUE
 from problem.models import Problem
 from submission.models import Submission
 from submission.serializers import SubmissionSerializer
@@ -32,14 +33,13 @@ class SubmissionRejudgeAPI(APIView):
 class SubmissionCreateView(viewsets.GenericViewSet, mixins.CreateModelMixin):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
-    permission_classes = (UserLoginOnly,)
+    # permission_classes = (UserLoginOnly,)
     throttle_scope = "judge"
     throttle_classes = [ScopedRateThrottle, ]
 
     def create(self, request, *args, **kwargs):
         data = dict(request.data)
         data["username"] = request.user
-
         try:
             data["problem"] = Problem.objects.get(ID=data.get("problem"))
         except (ValueError, Problem.DoesNotExist):
@@ -47,4 +47,6 @@ class SubmissionCreateView(viewsets.GenericViewSet, mixins.CreateModelMixin):
         data["ip"] = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
 
         submission = Submission.objects.create(**data)
+        SUBMISSION_QUEUE.add(submission)
+
         return Response(submission.ID, status=HTTP_200_OK)

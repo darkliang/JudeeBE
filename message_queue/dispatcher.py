@@ -2,9 +2,9 @@ from redis import StrictRedis
 
 
 class RedisQueue(object):
-    def __init__(self, name, host='localhost'):
+    def __init__(self, name, host='localhost', port=6379):
         # redis的默认参数为：host='localhost', port=6379, db=0， 其中db为定义redis database的数量
-        self.db = StrictRedis(host=host, port=6379, db=0, password=123456)
+        self.db = StrictRedis(host=host, port=port, db=0, password=123456)
         self.key = name
 
     def size(self):
