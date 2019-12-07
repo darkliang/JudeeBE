@@ -13,7 +13,7 @@ from user.models import User
 
 
 class ProblemTag(models.Model):
-    name = models.CharField(max_length=50,unique=True)
+    name = models.CharField(max_length=50, unique=True)
 
     class Meta:
         db_table = "problem_tag"
@@ -82,4 +82,3 @@ class Problem(models.Model):
     def add_ac_number(self):
         self.accepted_number = models.F("accepted_number") + 1
         self.save(update_fields=["accepted_number"])
-

@@ -2,17 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/submission/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0011_auto_20191202_1702.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/migrations/0002_auto_20191204_1200.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/submission/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JudeeBE/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/permission.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JudeeBE/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/submission/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/permission.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -121,7 +121,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/.idea/workspace.xml&#10;C:/Users/97659/PycharmProjects/JudeeBE/.idea/JudeeBE.iml&#10;C:/Users/97659/PycharmProjects/JudeeBE/problem/views.py&#10;C:/Users/97659/PycharmProjects/JudeeBE/JudeeBE/settings.py" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../crawler" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="kite.configurable" />
@@ -201,6 +201,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test_remote" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="JudeeBE" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test_cases" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_cases/test_remote.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="xss_filter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="JudeeBE" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -253,10 +275,12 @@
       <item itemvalue="Python.runserver" />
       <item itemvalue="Python.xss_filter" />
       <item itemvalue="Python.models" />
+      <item itemvalue="Python.test_remote" />
       <item itemvalue="Python Remote Debug.Unnamed" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test_remote" />
         <item itemvalue="Python.models" />
         <item itemvalue="Python.xss_filter" />
         <item itemvalue="Python.runserver" />
@@ -332,7 +356,13 @@
       <workItem from="1575122962521" duration="3230000" />
       <workItem from="1575186986964" duration="8182000" />
       <workItem from="1575274183485" duration="11000" />
-      <workItem from="1575275742341" duration="4852000" />
+      <workItem from="1575275742341" duration="7334000" />
+      <workItem from="1575381259239" duration="1834000" />
+      <workItem from="1575423198855" duration="7883000" />
+      <workItem from="1575535598751" duration="1891000" />
+      <workItem from="1575602464454" duration="11829000" />
+      <workItem from="1575684472634" duration="591000" />
+      <workItem from="1575710761300" duration="1944000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -439,7 +469,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575277007867</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="refactor permission">
+      <created>1575287113358</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1575287113358</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -492,7 +529,8 @@
     <MESSAGE value="add: upload test case api" />
     <MESSAGE value="add: submission" />
     <MESSAGE value="update: 改存储Zip为存储解压好的目录" />
-    <option name="LAST_COMMIT_MESSAGE" value="update: 改存储Zip为存储解压好的目录" />
+    <MESSAGE value="refactor permission" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor permission" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -513,6 +551,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/JudeeBE$runserver.coverage" NAME="runserver Coverage Results" MODIFIED="1573483084899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/JudeeBE$models.coverage" NAME="models Coverage Results" MODIFIED="1574160987827" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/problem" />
+    <SUITE FILE_PATH="coverage/JudeeBE$test_remote.coverage" NAME="test_remote Coverage Results" MODIFIED="1575620095058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_cases" />
     <SUITE FILE_PATH="coverage/JudeeBE$xss_filter.coverage" NAME="xss_filter Coverage Results" MODIFIED="1574091299354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
     <SUITE FILE_PATH="coverage/JudeeBE$makemigrations.coverage" NAME="migrate Coverage Results" MODIFIED="1573483835028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

@@ -29,12 +29,7 @@ class UserSafePostOnly(permissions.BasePermission):
 
 class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
     def has_permission(self, request, view):
-        user = request.user
-        if not user:
-            return False
-
-            # 登录的用户必须是自定义管理员分组成员
-        return True
+        return request.user is not None
 
     def has_object_permission(self, request, view, obj):
         user = request.user
@@ -48,21 +43,11 @@ class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的se
         return False
 
 
-class UserPUTOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
+class UserLoginOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
     def has_permission(self, request, view):
-        if request.method != "PUT":
+        if request.method != "PUT" and request.method != "POST":
             return False
-        return request.session.get('user_id') is not None
-
-    def has_object_permission(self, request, view, obj):
-        if request.session.get('type', 1) == 3:
-            return True
-        user_id = request.session.get('user_id', default=None)
-        print(user_id)
-        if user_id == obj.username:
-            return True
-        else:
-            return False
+        return request.user is not None
 
 
 class AuthPUTOnly(permissions.BasePermission):

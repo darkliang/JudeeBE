@@ -38,7 +38,10 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
         if tag_ids:
             for tag_id in tag_ids.split(','):
                 if tag_id:
-                    queryset = queryset.filter(tags=int(tag_id))
+                    try:
+                        queryset = queryset.filter(tags=int(tag_id))
+                    except ValueError:
+                        pass
 
         keyword = self.request.query_params.get("keyword", "").strip('/')
         if keyword:

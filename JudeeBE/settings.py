@@ -56,7 +56,7 @@ REST_FRAMEWORK = {
         'login': '100/day',
         'register': '10/day',
         'anon': '180000/m',
-        'judge': '180000/m',
+        'judge': '80000/m',
         'post': '180000/m',
     },
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -156,4 +156,4 @@ CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_AGE = 60 * 60 * 24
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-TEST_CASE_DIR = 'C:/Users/97659/PycharmProjects/JudeeBE/test_cases/'
+TEST_CASE_DIR = '\\\\HOMEDISK\\homes\\h2s\\test_cases\\'
