@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'', include('problem.urls')),
     url(r'', include('submission.urls')),
     url(r'', include('user.urls')),
+    url(r'', include('contest.urls')),
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
     # url(r'', include('board.urls')),

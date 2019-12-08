@@ -22,7 +22,7 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     serializer_class = ProblemSerializer
     filter_backends = (DjangoFilterBackend,)
     pagination_class = LimitOffsetPagination
-    filter_fields = ('is_public',)
+    filter_fields = ('is_public', 'created_by')
     permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]

@@ -11,7 +11,6 @@ class Contest(models.Model):
     title = models.TextField()
     description = RichTextField()
     # show real time rank or cached rank
-    real_time_rank = models.BooleanField()
     password = models.TextField(null=True)
     # enum of ContestRuleType
     rule_type = models.TextField()
@@ -46,8 +45,7 @@ class Contest(models.Model):
     def problem_details_permission(self, user):
         return self.rule_type == RuleType.ACM or \
                self.status == ContestStatus.CONTEST_ENDED or \
-               user.is_authenticated and user.is_contest_admin(self) or \
-               self.real_time_rank
+               user.is_authenticated and user.is_contest_admin(self)
 
     class Meta:
         db_table = "contest"

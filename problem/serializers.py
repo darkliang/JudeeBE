@@ -13,4 +13,4 @@ class ProblemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Problem
-        fields = '__all__'
+        exclude = ['contest']

@@ -10,6 +10,19 @@ class ManagerOnly(permissions.BasePermission):
             return False
 
 
+class ManagerPostOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        try:
+            return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
+        except AttributeError:
+            return False
+
+    def has_object_permission(self, request, view, obj):
+        return obj.created_by == request.user
+
+
 class UserSafePostOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
