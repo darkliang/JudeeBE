@@ -1,7 +1,10 @@
 import os
+import tempfile
 import zipfile
-
+from wsgiref.util import FileWrapper
+from io import BytesIO
 from django.db.models.query_utils import Q
+from django.http import StreamingHttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
 from rest_framework.pagination import LimitOffsetPagination
@@ -12,7 +15,7 @@ from rest_framework.views import APIView
 
 from JudeeBE.settings import TEST_CASE_DIR
 from problem.models import Problem, ProblemTag
-from utils.permissions import ManagerPostOnly
+from utils.permissions import ManagerPostOnly, ManagerOnly
 from problem.serializers import ProblemSerializer, ProblemTagSerializer
 
 
@@ -117,7 +120,7 @@ def check_name_list(name_list, case_num):
 
 
 class TestCaseUploadAPI(APIView):
-    permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerOnly,)
 
     def post(self, request):
         data = request.data
@@ -141,3 +144,28 @@ class TestCaseUploadAPI(APIView):
                 file.extract(fileM, os.path.join(TEST_CASE_DIR, str(problem.ID)))
             file.close()
             return Response(info, status=HTTP_200_OK)
+
+
+class TestCaseDownloadAPI(APIView):
+    # permission_classes = (ManagerOnly,)
+
+    def get(self, request, problem_id):
+        print(problem_id)
+        start_dir = (os.path.join(TEST_CASE_DIR, str(problem_id)))
+        if not os.path.isfile(os.path.join(start_dir, '1.in')):
+            return Response("No test cases", status=HTTP_404_NOT_FOUND)
+        temp = tempfile.TemporaryFile()
+
+        with zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED) as zf:
+            for dir_path, dir_names, filenames in os.walk(start_dir):
+                f_path = dir_path.replace(start_dir, '')  # 这一句很重要，不replace的话，就从根目录开始复制
+                f_path = f_path and f_path + os.sep or ''  # 这句话理解我也点郁闷，实现当前文件夹以及包含的所有文件的压缩
+                for filename in filenames:
+                    zf.write(os.path.join(dir_path, filename), f_path + filename)
+
+        response = StreamingHttpResponse(FileWrapper(temp),
+                                         content_type="application/zip")
+        response["Content-Length"] = temp.tell()
+        response["Content-Disposition"] = "attachment; filename=problem_{}_test_cases.zip".format(problem_id)
+        temp.seek(0)
+        return response
