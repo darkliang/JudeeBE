@@ -71,6 +71,27 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
         # 返回题目ID
         return Response(problem.ID, status=HTTP_200_OK)
 
+    def update(self, request, *args, **kwargs):
+        data = dict(request.data)
+        problem = self.get_object()
+        total_score = 0
+        for score in data["test_case_score"]:
+            total_score += score
+        data["total_score"] = total_score
+        problem.tags.clear()
+        tags = data.pop("tags")
+        data.pop("created_by")
+        for item in tags:
+            try:
+                tag = ProblemTag.objects.get(name=item)
+            except ProblemTag.DoesNotExist:
+                tag = ProblemTag.objects.create(name=item)
+            problem.tags.add(tag)
+        for k, v in data.items():
+            setattr(problem, k, v)
+        problem.save()
+        return Response(problem.ID, status=HTTP_200_OK)
+
 
 class ProblemTagView(viewsets.ModelViewSet):
     queryset = ProblemTag.objects.all()
@@ -95,7 +116,7 @@ def check_name_list(name_list, case_num):
                 return False, "Wrong filename format"
 
 
-class TestCaseAPI(APIView):
+class TestCaseUploadAPI(APIView):
     permission_classes = (ManagerPostOnly,)
 
     def post(self, request):
@@ -120,4 +141,3 @@ class TestCaseAPI(APIView):
                 file.extract(fileM, os.path.join(TEST_CASE_DIR, str(problem.ID)))
             file.close()
             return Response(info, status=HTTP_200_OK)
-

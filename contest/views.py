@@ -12,8 +12,9 @@ from rest_framework.views import APIView
 
 from contest.models import Contest
 from contest.serializers import ContestSerializer, ContestAdminSerializer
+from problem.models import Problem
 from utils.constants import ContestStatus
-from utils.permissions import ManagerPostOnly
+from utils.permissions import ManagerPostOnly, UserLoginOnly
 
 
 class ContestView(viewsets.ModelViewSet):
@@ -110,3 +111,18 @@ class ContestAddProblemAPIView(APIView):
             return Response("Problem {} does not exist".format(problem_not_exist), status=HTTP_200_OK)
         else:
             return Response("OK", status=HTTP_200_OK)
+
+
+class ContestListProblemAPIView(APIView):
+    # permission_classes = (UserLoginOnly,)
+
+    def get(self, request, contest_id):
+        print(contest_id)
+        try:
+            # contest = Contest.objects.get(contest_id)
+            print(Contest.objects.get(contest_id))
+        except Contest.DoesNotExist:
+            return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
+        queryset = Problem.objects.filter(contest__contains=contest)
+        return Response(queryset, status=HTTP_200_OK)
+
