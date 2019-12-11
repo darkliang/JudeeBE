@@ -124,7 +124,7 @@ class ContestDeleteProblemAPIView(APIView):
             contest = Contest.objects.get(id=contest_id)
         except Contest.DoesNotExist:
             return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
-        problem_not_exist = []
+        # problem_not_exist = []
         contest.problem_set.remove(*data.pop("problems"))
 
         return Response(status=HTTP_200_OK)

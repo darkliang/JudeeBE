@@ -1,20 +1,21 @@
 import os
+import shutil
 import tempfile
 import zipfile
 from wsgiref.util import FileWrapper
-from io import BytesIO
 from django.db.models.query_utils import Q
 from django.http import StreamingHttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from JudeeBE.settings import TEST_CASE_DIR
 from problem.models import Problem, ProblemTag
+from utils.constants import AdminType
 from utils.permissions import ManagerPostOnly, ManagerOnly
 from problem.serializers import ProblemSerializer, ProblemTagSerializer
 
@@ -132,16 +133,21 @@ class TestCaseUploadAPI(APIView):
             return Response("Bad zip file", status=HTTP_400_BAD_REQUEST)
 
         try:
+            print(data.get("problem_ID"))
             problem = Problem.objects.get(ID=data.get("problem_ID"))
         except (Problem.DoesNotExist, ValueError):
             return Response("No such problem", status=HTTP_404_NOT_FOUND)
+        if request.user != problem.created_by and request.user.type != AdminType.SUPER_ADMIN:
+            return Response("You have no permission to this problem", status=HTTP_403_FORBIDDEN)
 
         is_passed, info = check_name_list(file.namelist(), len(problem.test_case_score))
         if not is_passed:
             return Response(info, status=HTTP_400_BAD_REQUEST)
         else:
+            test_case_dir = os.path.join(TEST_CASE_DIR, str(problem.ID))
+            shutil.rmtree(test_case_dir)
             for fileM in file.namelist():
-                file.extract(fileM, os.path.join(TEST_CASE_DIR, str(problem.ID)))
+                file.extract(fileM, test_case_dir)
             file.close()
             return Response(info, status=HTTP_200_OK)
 
