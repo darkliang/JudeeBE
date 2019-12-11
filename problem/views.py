@@ -148,9 +148,10 @@ class TestCaseUploadAPI(APIView):
 
 class TestCaseDownloadAPI(APIView):
     # permission_classes = (ManagerOnly,)
+    throttle_scope = "download"
+    throttle_classes = [ScopedRateThrottle, ]
 
     def get(self, request, problem_id):
-        print(problem_id)
         start_dir = (os.path.join(TEST_CASE_DIR, str(problem_id)))
         if not os.path.isfile(os.path.join(start_dir, '1.in')):
             return Response("No test cases", status=HTTP_404_NOT_FOUND)
@@ -164,7 +165,7 @@ class TestCaseDownloadAPI(APIView):
                     zf.write(os.path.join(dir_path, filename), f_path + filename)
 
         response = StreamingHttpResponse(FileWrapper(temp),
-                                         content_type="application/zip")
+                                         content_type="application/octet-stream")
         response["Content-Length"] = temp.tell()
         response["Content-Disposition"] = "attachment; filename=problem_{}_test_cases.zip".format(problem_id)
         temp.seek(0)

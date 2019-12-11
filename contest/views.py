@@ -96,7 +96,7 @@ class ContestAddProblemAPIView(APIView):
     def post(self, request, contest_id):
         data = request.data.copy()
         try:
-            contest = Contest.objects.get(contest_id)
+            contest = Contest.objects.get(id=contest_id)
         except Contest.DoesNotExist:
             return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
         problem_not_exist = []
@@ -113,6 +113,23 @@ class ContestAddProblemAPIView(APIView):
             return Response("OK", status=HTTP_200_OK)
 
 
+class ContestDeleteProblemAPIView(APIView):
+    permission_classes = (ManagerPostOnly,)
+    throttle_scope = "post"
+    throttle_classes = [ScopedRateThrottle, ]
+
+    def post(self, request, contest_id):
+        data = request.data.copy()
+        try:
+            contest = Contest.objects.get(id=contest_id)
+        except Contest.DoesNotExist:
+            return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
+        problem_not_exist = []
+        contest.problem_set.remove(*data.pop("problems"))
+
+        return Response(status=HTTP_200_OK)
+
+
 class ContestListProblemAPIView(APIView):
     # permission_classes = (UserLoginOnly,)
 
@@ -125,4 +142,3 @@ class ContestListProblemAPIView(APIView):
             return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
         queryset = Problem.objects.filter(contest__contains=contest)
         return Response(queryset, status=HTTP_200_OK)
-

@@ -59,6 +59,7 @@ REST_FRAMEWORK = {
         'anon': '180000/m',
         'judge': '80000/m',
         'post': '180000/m',
+        'download': '100/day'
     },
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',

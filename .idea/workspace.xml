@@ -3,10 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JudeeBE/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -121,6 +122,11 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="postgresql" />
@@ -136,25 +142,13 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/message_queue" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\pythonCode\JudeeBE\message_queue" />
       <recent name="C:\Users\97659\PycharmProjects\JudeeBE" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Django server.run">
     <configuration name="Unnamed" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug" nameIsGenerated="true">
@@ -307,12 +301,12 @@
     <list>
       <item itemvalue="Django server.run" />
       <item itemvalue="Python.migrate" />
+      <item itemvalue="Python.InMemoryZip" />
       <item itemvalue="Python.models" />
       <item itemvalue="Python.runserver" />
       <item itemvalue="Python.test_remote" />
       <item itemvalue="Python.xss_filter" />
       <item itemvalue="Python Remote Debug.Unnamed" />
-      <item itemvalue="Python.InMemoryZip" />
     </list>
     <recent_temporary>
       <list>
@@ -325,13 +319,15 @@
     </recent_temporary>
   </component>
   <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <treeState>
-          <expand />
-          <select />
-        </treeState>
-      </serviceView>
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
     </option>
   </component>
   <component name="SshConsoleOptionsProvider">
@@ -402,7 +398,10 @@
       <workItem from="1575892442953" duration="5120000" />
       <workItem from="1575965860035" duration="1247000" />
       <workItem from="1575976527272" duration="696000" />
-      <workItem from="1575981357059" duration="7628000" />
+      <workItem from="1575981357059" duration="10418000" />
+      <workItem from="1576032829547" duration="157000" />
+      <workItem from="1576033087716" duration="22000" />
+      <workItem from="1576033125099" duration="1035000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -530,7 +529,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575983947761</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="add: 下载题目测试样例的api">
+      <created>1575989014727</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1575989014727</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -585,7 +591,18 @@
     <MESSAGE value="update: 改存储Zip为存储解压好的目录" />
     <MESSAGE value="refactor permission" />
     <MESSAGE value="add: 修改题目信息的api" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: 修改题目信息的api" />
+    <MESSAGE value="add: 下载题目测试样例的api" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: 下载题目测试样例的api" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="142" y="0" key="SettingsEditor" timestamp="1576033109428">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
+    <state x="324" y="164" key="com.intellij.ide.util.TipDialog" timestamp="1576033130611">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="324" y="164" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1576033130611" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -605,10 +622,10 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/JudeeBE$runserver.coverage" NAME="runserver Coverage Results" MODIFIED="1573483084899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/JudeeBE$InMemoryZip.coverage" NAME="InMemoryZip Coverage Results" MODIFIED="1575986215088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
     <SUITE FILE_PATH="coverage/JudeeBE$models.coverage" NAME="models Coverage Results" MODIFIED="1574160987827" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/problem" />
-    <SUITE FILE_PATH="coverage/JudeeBE$test_remote.coverage" NAME="test_remote Coverage Results" MODIFIED="1575620095058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_cases" />
-    <SUITE FILE_PATH="coverage/JudeeBE$xss_filter.coverage" NAME="xss_filter Coverage Results" MODIFIED="1574091299354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
     <SUITE FILE_PATH="coverage/JudeeBE$makemigrations.coverage" NAME="migrate Coverage Results" MODIFIED="1573483835028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/JudeeBE$xss_filter.coverage" NAME="xss_filter Coverage Results" MODIFIED="1574091299354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
+    <SUITE FILE_PATH="coverage/JudeeBE$InMemoryZip.coverage" NAME="InMemoryZip Coverage Results" MODIFIED="1575986215088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
+    <SUITE FILE_PATH="coverage/JudeeBE$test_remote.coverage" NAME="test_remote Coverage Results" MODIFIED="1575620095058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_cases" />
   </component>
 </project>
