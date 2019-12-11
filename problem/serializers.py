@@ -14,3 +14,12 @@ class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
         exclude = ['contest']
+
+
+class ProblemListSerializer(serializers.ModelSerializer):
+    tags = ProblemTagSerializer(many=True)
+
+    class Meta:
+        model = Problem
+        exclude = ['contest', 'description', 'input_description', 'output_description', 'samples', 'test_case_score',
+                   'hint', 'languages', 'template', 'time_limit', 'memory_limit', 'source', 'statistic_info']

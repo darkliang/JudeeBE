@@ -17,7 +17,7 @@ from JudeeBE.settings import TEST_CASE_DIR
 from problem.models import Problem, ProblemTag
 from utils.constants import AdminType
 from utils.permissions import ManagerPostOnly, ManagerOnly
-from problem.serializers import ProblemSerializer, ProblemTagSerializer
+from problem.serializers import ProblemSerializer, ProblemTagSerializer, ProblemListSerializer
 
 
 class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
@@ -31,6 +31,13 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ProblemListSerializer
+        if self.action == 'retrieve':
+            return ProblemSerializer
+        return ProblemSerializer  # I dont' know what you want for create/destroy/update.
 
     def get_queryset(self):
         """
