@@ -3,10 +3,10 @@ import dateutil.parser
 from django.db.models.query_utils import Q
 from django.utils.timezone import now
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
@@ -24,7 +24,7 @@ class ContestView(viewsets.ModelViewSet):
     permission_classes = (ManagerPostOnly,)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     filter_fields = ("rule_type", "created_by")
-    search_fields = ('title',)
+    search_fields = ('title', 'id')
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -89,7 +89,7 @@ class ContestView(viewsets.ModelViewSet):
 
 
 class ContestAddProblemAPIView(APIView):
-    permission_classes = (ManagerPostOnly,)
+    # permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -102,19 +102,21 @@ class ContestAddProblemAPIView(APIView):
         problem_not_exist = []
         for problem_id in data.pop("problems"):
             try:
-                problem = Contest.objects.get(problem_id)
-                problem.contest.add(contest)
-            except Contest.DoesNotExist:
+                problem = Problem.objects.get(ID=problem_id)
+
+                contest.problem_set.add(problem)
+                # problem.contest.add(contest)
+            except Problem.DoesNotExist:
                 problem_not_exist.append(problem_id)
                 # return Response("Problem does not exist", status=HTTP_404_NOT_FOUND)
         if len(problem_not_exist) > 0:
             return Response("Problem {} does not exist".format(problem_not_exist), status=HTTP_200_OK)
         else:
-            return Response("OK", status=HTTP_200_OK)
+            return Response(status=HTTP_204_NO_CONTENT)
 
 
 class ContestDeleteProblemAPIView(APIView):
-    permission_classes = (ManagerPostOnly,)
+    # permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -134,11 +136,11 @@ class ContestListProblemAPIView(APIView):
     # permission_classes = (UserLoginOnly,)
 
     def get(self, request, contest_id):
-        print(contest_id)
         try:
-            # contest = Contest.objects.get(contest_id)
-            print(Contest.objects.get(contest_id))
+            contest = Contest.objects.get(id=contest_id)
         except Contest.DoesNotExist:
             return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
-        queryset = Problem.objects.filter(contest__contains=contest)
-        return Response(queryset, status=HTTP_200_OK)
+        queryset = contest.problem_set.all()
+        return Response(
+            queryset.values('ID', 'title', 'total_score', 'submission_number', 'accepted_number', 'created_by'),
+            status=HTTP_200_OK)

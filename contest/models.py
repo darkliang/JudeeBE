@@ -8,7 +8,7 @@ from utils.constants import ContestStatus, ContestType, RuleType
 
 
 class Contest(models.Model):
-    title = models.TextField()
+    title = models.CharField(max_length=128, unique=True, null=False)
     description = RichTextField()
     # show real time rank or cached rank
     password = models.TextField(null=True)

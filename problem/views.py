@@ -6,7 +6,7 @@ from wsgiref.util import FileWrapper
 from django.db.models.query_utils import Q
 from django.http import StreamingHttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, filters
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN
@@ -24,9 +24,10 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
                   mixins.UpdateModelMixin, mixins.ListModelMixin):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     pagination_class = LimitOffsetPagination
     filter_fields = ('is_public', 'created_by')
+    search_fields = ('title', 'ID')
     permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
@@ -46,9 +47,9 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
                     except ValueError:
                         pass
 
-        keyword = self.request.query_params.get("keyword", "").strip('/')
-        if keyword:
-            queryset = queryset.filter(Q(title__icontains=keyword) | Q(ID__icontains=keyword))
+        # keyword = self.request.query_params.get("keyword", "").strip('/')
+        # if keyword:
+        #     queryset = queryset.filter(Q(title__icontains=keyword) | Q(ID__icontains=keyword))
         diffs = self.request.query_params.get("diff", "").strip('/')
         if diffs:
             queryset = queryset.filter(difficulty__in=diffs.split(','))
