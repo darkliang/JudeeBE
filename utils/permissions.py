@@ -34,13 +34,6 @@ class UserSafePostOnly(permissions.BasePermission):
         except AttributeError:
             return False
 
-        # if request.method == "POST":
-        #     try:
-        #         username = request.data.get("username")
-        #         return True if username == request.session.get("user_id", None) else False
-        #     except KeyError:
-        #         return False
-
 
 class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
     def has_permission(self, request, view):

@@ -1,4 +1,6 @@
 import ipaddress
+import os
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
 from rest_framework.pagination import LimitOffsetPagination
@@ -8,10 +10,11 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
-from JudeeBE.settings import SUBMISSION_QUEUE
+from JudeeBE.settings import SUBMISSION_QUEUE, TEST_CASE_DIR
+from contest.models import Contest
 from problem.models import Problem
 from submission.models import Submission
-from submission.serializers import SubmissionCreateSerializer, SubmissionListSerializer
+from submission.serializers import SubmissionSerializer, SubmissionListSerializer
 from utils.constants import ContestStatus
 from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
 
@@ -49,23 +52,27 @@ def check_contest_permission(submission_data):
 
 class SubmissionCreateView(viewsets.GenericViewSet, mixins.CreateModelMixin):
     queryset = Submission.objects.all()
-    serializer_class = SubmissionCreateSerializer
+    serializer_class = SubmissionSerializer
     permission_classes = (UserLoginOnly,)
     throttle_scope = "judge"
     throttle_classes = [ScopedRateThrottle, ]
 
     def create(self, request, *args, **kwargs):
         data = dict(request.data)
+        test_case_dir = os.path.join(TEST_CASE_DIR, str(data["problem"]))
+        if not os.path.isfile(os.path.join(test_case_dir, '1.in')):
+            return Response("No test cases", status=HTTP_400_BAD_REQUEST)
         data["username"] = request.user
         data["ip"] = request.META.get('HTTP_X_FORWARDED_FOR') or request.META.get('REMOTE_ADDR')
         try:
             data["problem"] = Problem.objects.get(ID=data.get("problem"))
         except (ValueError, Problem.DoesNotExist):
             return Response("Wrong problem ID", status=HTTP_400_BAD_REQUEST)
-        contest_id = data.pop('contest')
+
+        contest_id = data.get('contest', None)
         if contest_id:
             try:
-                data["contest"] = Problem.objects.get(ID=data.get("problem"))
+                data["contest"] = Contest.objects.get(id=contest_id)
             except (ValueError, Problem.DoesNotExist):
                 return Response("Wrong contest ID", status=HTTP_400_BAD_REQUEST)
             error = check_contest_permission(data)
@@ -88,6 +95,4 @@ class SubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.R
         if hasattr(self, 'action') and self.action == 'list':
             return SubmissionListSerializer
         if hasattr(self, 'action') and self.action == 'retrieve':
-            return SubmissionCreateSerializer
-
-
+            return SubmissionSerializer
