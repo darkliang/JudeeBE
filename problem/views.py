@@ -33,9 +33,9 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     throttle_classes = [ScopedRateThrottle, ]
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if hasattr(self, 'action') and self.action == 'list':
             return ProblemListSerializer
-        if self.action == 'retrieve':
+        if hasattr(self, 'action') and self.action == 'retrieve':
             return ProblemSerializer
         return ProblemSerializer  # I dont' know what you want for create/destroy/update.
 

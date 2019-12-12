@@ -78,9 +78,6 @@ class ContestView(viewsets.ModelViewSet):
                 ip_network(ip_range, strict=False)
             except ValueError:
                 return Response("{} is not a valid cidr network".format(ip_range), status=HTTP_400_BAD_REQUEST)
-        # if not contest.real_time_rank and data.get("real_time_rank"):
-        #     cache_key = f"{CacheKey.contest_rank_cache}:{contest.id}"
-        #     cache.delete(cache_key)
 
         for k, v in data.items():
             setattr(contest, k, v)
@@ -105,10 +102,8 @@ class ContestAddProblemAPIView(APIView):
                 problem = Problem.objects.get(ID=problem_id)
 
                 contest.problem_set.add(problem)
-                # problem.contest.add(contest)
             except Problem.DoesNotExist:
                 problem_not_exist.append(problem_id)
-                # return Response("Problem does not exist", status=HTTP_404_NOT_FOUND)
         if len(problem_not_exist) > 0:
             return Response("Problem {} does not exist".format(problem_not_exist), status=HTTP_200_OK)
         else:
