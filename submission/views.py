@@ -1,6 +1,7 @@
 import ipaddress
-
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK, HTTP_204_NO_CONTENT, \
     HTTP_403_FORBIDDEN
@@ -10,9 +11,9 @@ from rest_framework.views import APIView
 from JudeeBE.settings import SUBMISSION_QUEUE
 from problem.models import Problem
 from submission.models import Submission
-from submission.serializers import SubmissionSerializer
+from submission.serializers import SubmissionCreateSerializer, SubmissionListSerializer
 from utils.constants import ContestStatus
-from utils.permissions import ManagerOnly, UserLoginOnly
+from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
 
 
 class SubmissionRejudgeAPI(APIView):
@@ -48,7 +49,7 @@ def check_contest_permission(submission_data):
 
 class SubmissionCreateView(viewsets.GenericViewSet, mixins.CreateModelMixin):
     queryset = Submission.objects.all()
-    serializer_class = SubmissionSerializer
+    serializer_class = SubmissionCreateSerializer
     permission_classes = (UserLoginOnly,)
     throttle_scope = "judge"
     throttle_classes = [ScopedRateThrottle, ]
@@ -75,5 +76,18 @@ class SubmissionCreateView(viewsets.GenericViewSet, mixins.CreateModelMixin):
 
         return Response(submission.ID, status=HTTP_200_OK)
 
-class SubmissionListView(viewsets.GenericViewSet, mixins.ListModelMixin):
-    pass
+
+class SubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
+    queryset = Submission.objects.filter(contest_id__isnull=True).select_related("problem__created_by")
+    permission_classes = (SubmissionCheck,)
+    pagination_class = LimitOffsetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('username', 'result', 'language', 'problem')
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action') and self.action == 'list':
+            return SubmissionListSerializer
+        if hasattr(self, 'action') and self.action == 'retrieve':
+            return SubmissionCreateSerializer
+
+

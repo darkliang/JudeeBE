@@ -5,7 +5,7 @@ from utils.constants import AdminType
 class ManagerOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         try:
-            return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
+            return request.user.type == (AdminType.SUPER_ADMIN or AdminType.ADMIN)
         except AttributeError:
             return False
 
@@ -15,7 +15,7 @@ class ManagerPostOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         try:
-            return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
+            return request.user.type == (AdminType.SUPER_ADMIN or AdminType.ADMIN)
         except AttributeError:
             return False
 
@@ -49,7 +49,7 @@ class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的se
     def has_object_permission(self, request, view, obj):
         user = request.user
         try:
-            if user.type == AdminType.ADMIN or AdminType.SUPER_ADMIN:
+            if user.type == (AdminType.ADMIN or AdminType.SUPER_ADMIN):
                 return True
         except AttributeError:
             return False
@@ -83,11 +83,26 @@ class AuthPUTOnly(permissions.BasePermission):
             return False
 
 
-# class ManagerPostOnly(permissions.BasePermission):
-#     def has_permission(self, request, view):
-#         if request.method in permissions.SAFE_METHODS:
-#             return True
-#         try:
-#             return request.user.type == AdminType.SUPER_ADMIN or AdminType.ADMIN
-#         except AttributeError:
-#             return False
+'''
+所有身份都有list权限，只有当前递交的创建者和管理员有retrieve权限
+'''
+
+
+class SubmissionCheck(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, submission):
+        if hasattr(view, 'action') and view.action == 'retrieve':
+
+            try:
+                if request.user.type == (AdminType.ADMIN or AdminType.SUPER_ADMIN):
+                    return True
+            except AttributeError:
+                return False
+
+            if request.user == submission.username:
+                return True
+            else:
+                return False
+        elif hasattr(view, 'action') and view.action == 'list':
+            return True
+        return False
