@@ -91,6 +91,13 @@ class SubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.R
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('username', 'result', 'language', 'problem')
 
+    def get_queryset(self):
+        queryset = Submission.objects.filter(contest_id__isnull=True).select_related("problem__created_by")
+        myself = self.request.query_params.get("myself", "").strip('/')
+        if myself == "true":
+            queryset = queryset.filter(username=self.request.user)
+        return queryset
+
     def get_serializer_class(self):
         if hasattr(self, 'action') and self.action == 'list':
             return SubmissionListSerializer

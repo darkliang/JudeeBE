@@ -1,5 +1,7 @@
 from rest_framework import permissions
-from utils.constants import AdminType
+
+from contest.models import ACMContestRank, OIContestRank
+from utils.constants import AdminType, RuleType
 
 
 class ManagerOnly(permissions.BasePermission):
@@ -23,6 +25,23 @@ class ManagerPostOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.created_by == request.user or request.user.type == AdminType.SUPER_ADMIN
+
+
+'''
+只有加入过竞赛的成员才能retrieve有密码的竞赛
+'''
+
+
+class ContestPwdRequired(permissions.BasePermission):
+    def has_object_permission(self, request, view, contest):
+        if hasattr(view, 'action') and view.action == 'retrieve':
+            if not contest.password:
+                return True
+            if contest.rule_type == RuleType.ACM:
+                return ACMContestRank.objects.filter(user=request.user, contest=contest).exists()
+            elif contest.rule_type == RuleType.OI:
+                return OIContestRank.objects.filter(user=request.user, contest=contest).exists()
+        return True
 
 
 class UserSafePostOnly(permissions.BasePermission):

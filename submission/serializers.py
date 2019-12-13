@@ -14,4 +14,4 @@ class SubmissionListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Submission
-        exclude = ("info", "contest", "code", "ip")
+        exclude = ("info", "contest", "code", "ip",)

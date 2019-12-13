@@ -54,9 +54,6 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
                     except ValueError:
                         pass
 
-        # keyword = self.request.query_params.get("keyword", "").strip('/')
-        # if keyword:
-        #     queryset = queryset.filter(Q(title__icontains=keyword) | Q(ID__icontains=keyword))
         diffs = self.request.query_params.get("diff", "").strip('/')
         if diffs:
             queryset = queryset.filter(difficulty__in=diffs.split(','))
@@ -141,7 +138,6 @@ class TestCaseUploadAPI(APIView):
             return Response("Bad zip file", status=HTTP_400_BAD_REQUEST)
 
         try:
-            print(data.get("problem_ID"))
             problem = Problem.objects.get(ID=data.get("problem_ID"))
         except (Problem.DoesNotExist, ValueError):
             return Response("No such problem", status=HTTP_404_NOT_FOUND)

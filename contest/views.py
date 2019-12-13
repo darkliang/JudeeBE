@@ -1,6 +1,7 @@
 from ipaddress import ip_network
 import dateutil.parser
 from django.db.models.query_utils import Q
+from django.db.utils import IntegrityError
 from django.utils.timezone import now
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
@@ -9,19 +10,18 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
-
-from contest.models import Contest
+from contest.models import Contest, ACMContestRank, OIContestRank
 from contest.serializers import ContestSerializer, ContestAdminSerializer
 from problem.models import Problem
-from utils.constants import ContestStatus
-from utils.permissions import ManagerPostOnly, UserLoginOnly
+from utils.constants import ContestStatus, RuleType
+from utils.permissions import ManagerPostOnly, UserLoginOnly, ContestPwdRequired
 
 
 class ContestView(viewsets.ModelViewSet):
     queryset = Contest.objects.all()
     serializer_class = ContestSerializer
     pagination_class = LimitOffsetPagination
-    permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerPostOnly, ContestPwdRequired)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     filter_fields = ("rule_type", "created_by")
     search_fields = ('title', 'id')
@@ -139,3 +139,35 @@ class ContestListProblemAPIView(APIView):
         return Response(
             queryset.values('ID', 'title', 'total_score', 'submission_number', 'accepted_number', 'created_by'),
             status=HTTP_200_OK)
+
+
+'''
+加入有密码的竞赛
+'''
+
+
+class JoinContestWithPwd(APIView):
+    permission_classes = (UserLoginOnly,)
+
+    def post(self, request, contest_id):
+        data = request.data.copy()
+        try:
+            contest = Contest.objects.get(id=contest_id)
+        except Contest.DoesNotExist:
+            return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
+        password = data.get('password', "")
+        if password == contest.password:
+            if contest.rule_type == RuleType.ACM:
+                try:
+                    ACMContestRank.objects.create(user=request.user, contest=contest)
+                    return Response(ContestSerializer(contest).data, status=HTTP_200_OK)
+                except IntegrityError:
+                    return Response(status=HTTP_204_NO_CONTENT)
+            elif contest.rule_type == RuleType.OI:
+                try:
+                    OIContestRank.objects.create(user=request.user, contest=contest)
+                    return Response(ContestSerializer(contest).data, status=HTTP_200_OK)
+                except IntegrityError:
+                    return Response(status=HTTP_204_NO_CONTENT)
+        else:
+            return Response("Wrong password", status=HTTP_200_OK)
