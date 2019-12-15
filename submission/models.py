@@ -28,6 +28,7 @@ class Submission(models.Model):
     time_cost = models.IntegerField(null=True)
     memory_cost = models.IntegerField(null=True)
     score = models.IntegerField(null=True)
+    compile_error_info = models.TextField(null=True)
     # statistic_info = JSONField(default=default_statistic_info)
     ip = models.GenericIPAddressField(unpack_ipv4=False, null=True)
 

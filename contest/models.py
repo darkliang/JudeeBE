@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.postgres.fields import JSONField
+from rest_framework import mixins
+
 from user.models import User
 from utils.model_field import RichTextField
 from utils.constants import ContestStatus, ContestType, RuleType
@@ -46,6 +48,10 @@ class Contest(models.Model):
                self.status == ContestStatus.CONTEST_ENDED or \
                user.is_authenticated and user.is_contest_admin(self)
 
+    @property
+    def is_pwd(self):
+        return self.password
+
     class Meta:
         db_table = "contest"
         ordering = ("-start_time",)
@@ -71,6 +77,7 @@ class ACMContestRank(AbstractContestRank):
     class Meta:
         db_table = "acm_contest_rank"
         unique_together = (("user", "contest"),)
+        ordering = ("-accepted_number",)
 
 
 class OIContestRank(AbstractContestRank):
@@ -82,6 +89,7 @@ class OIContestRank(AbstractContestRank):
     class Meta:
         db_table = "oi_contest_rank"
         unique_together = (("user", "contest"),)
+        ordering = ("-total_score",)
 
 
 class ContestAnnouncement(models.Model):

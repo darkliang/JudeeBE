@@ -11,7 +11,8 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NO
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 from contest.models import Contest, ACMContestRank, OIContestRank
-from contest.serializers import ContestSerializer, ContestAdminSerializer
+from contest.serializers import ContestSerializer, ContestAdminSerializer, ContestListSerializer, \
+    OIContestRankSerializer, ACMContestRankSerializer
 from problem.models import Problem
 from utils.constants import ContestStatus, RuleType
 from utils.permissions import ManagerPostOnly, UserLoginOnly, ContestPwdRequired
@@ -28,8 +29,16 @@ class ContestView(viewsets.ModelViewSet):
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
+    def get_serializer_class(self):
+        if hasattr(self, 'action') and self.action == 'list':
+            return ContestListSerializer
+        if hasattr(self, 'action') and self.action == 'retrieve':
+            return ContestSerializer
+        return ContestListSerializer  # I dont' know what you want for create/destroy/update.
+
     def get_queryset(self):
-        queryset = Contest.objects.all()
+        queryset = Contest.objects.all() if self.request.auth and self.request.user.is_admin() else Contest.objects.filter(
+            visible=True)
         status = self.request.query_params.get("status", "").strip('/')
         if status:
             cur = now()
@@ -170,4 +179,22 @@ class JoinContestWithPwd(APIView):
                 except IntegrityError:
                     return Response(status=HTTP_204_NO_CONTENT)
         else:
-            return Response("Wrong password", status=HTTP_200_OK)
+            return Response("Wrong password", status=HTTP_400_BAD_REQUEST)
+
+
+class OIContestRankView(viewsets.GenericViewSet, mixins.ListModelMixin):
+    queryset = OIContestRank.objects.all()
+    serializer_class = OIContestRankSerializer
+    pagination_class = LimitOffsetPagination
+    throttle_classes = [ScopedRateThrottle, ]
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('user', 'contest')
+
+
+class ACMContestRankView(viewsets.ModelViewSet, mixins.ListModelMixin):
+    queryset = OIContestRank.objects.all()
+    serializer_class = ACMContestRankSerializer
+    pagination_class = LimitOffsetPagination
+    throttle_classes = [ScopedRateThrottle, ]
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('user', 'contest')

@@ -54,7 +54,7 @@ class UserSafePostOnly(permissions.BasePermission):
             return False
 
 
-class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
+class UserAuthOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user is not None
 
@@ -70,11 +70,9 @@ class UserAuthOnly(permissions.BasePermission):  # FIXME 无法获取正确的se
         return False
 
 
-class UserLoginOnly(permissions.BasePermission):  # FIXME 无法获取正确的session
+class UserLoginOnly(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.method != "PUT" and request.method != "POST":
-            return False
-        return request.user is not None
+        return request.auth
 
 
 class AuthPUTOnly(permissions.BasePermission):

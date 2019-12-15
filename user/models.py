@@ -25,6 +25,8 @@ class User(AbstractBaseUser):
     def is_contest_admin(self, contest):
         return contest.created_by == self or self.type == AdminType.SUPER_ADMIN
 
+    def is_admin(self):
+        return self.type == (AdminType.SUPER_ADMIN or AdminType.ADMIN)
     objects = UserManager()
 
     class Meta:

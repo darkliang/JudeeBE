@@ -1,6 +1,5 @@
 import ipaddress
 import os
-
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
 from rest_framework.pagination import LimitOffsetPagination
@@ -30,7 +29,11 @@ class SubmissionRejudgeAPI(APIView):
             submission = Submission.objects.select_related("problem").get(id=id, contest_id__isnull=True)
         except Submission.DoesNotExist:
             return Response("Submission does not exists", status=HTTP_404_NOT_FOUND)
-        submission.statistic_info = {}
+        submission.info = []
+        submission.compile_error_info = None
+        submission.time_cost = None
+        submission.memory_cost = None
+        submission.score = None
         submission.save()
 
         SUBMISSION_QUEUE.produce(submission.ID)

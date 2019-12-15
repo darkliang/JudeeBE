@@ -5,6 +5,9 @@ from contest import views
 
 routers = routers.DefaultRouter()
 routers.register('contest', views.ContestView)
+routers.register('oi-rank', views.OIContestRankView)
+routers.register('acm-rank', views.ACMContestRankView)
+
 urlpatterns = [
     url('', include(routers.urls)),
     url(r'^contest/([0-9]+)/add-problem/$', views.ContestAddProblemAPIView.as_view()),
