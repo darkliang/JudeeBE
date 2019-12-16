@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.postgres.fields import JSONField
-from rest_framework import mixins
-
 from user.models import User
 from utils.model_field import RichTextField
 from utils.constants import ContestStatus, ContestType, RuleType

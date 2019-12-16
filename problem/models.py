@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
 from contest.models import Contest
 from utils.model_field import RichTextField
 from django.contrib.postgres.fields import JSONField
@@ -24,7 +21,8 @@ class Problem(models.Model):
     # display ID
     # problem_id = models.TextField(db_index=True,primary_key=True)
     ID = models.AutoField(primary_key=True)
-    contest = models.ManyToManyField(Contest, blank=True)
+    contest = models.ManyToManyField(Contest, blank=True, through='ContestProblem',
+                                     through_fields=('problem', 'contest'), )
     # for contest problem
     is_public = models.BooleanField(default=False)
     title = models.TextField()
@@ -82,3 +80,14 @@ class Problem(models.Model):
     def add_ac_number(self):
         self.accepted_number = models.F("accepted_number") + 1
         self.save(update_fields=["accepted_number"])
+
+
+class ContestProblem(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    name = models.CharField(max_length=5, null=False)
+    first_ac = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        db_table = "contest_problem"
+        unique_together = (("problem", "contest"),)

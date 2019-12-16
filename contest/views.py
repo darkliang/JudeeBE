@@ -1,5 +1,6 @@
 from ipaddress import ip_network
 import dateutil.parser
+from django.db import transaction
 from django.db.models.query_utils import Q
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
@@ -7,13 +8,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
+    HTTP_500_INTERNAL_SERVER_ERROR
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 from contest.models import Contest, ACMContestRank, OIContestRank
 from contest.serializers import ContestSerializer, ContestAdminSerializer, ContestListSerializer, \
     OIContestRankSerializer, ACMContestRankSerializer
-from problem.models import Problem
+from problem.models import Problem, ContestProblem
 from utils.constants import ContestStatus, RuleType
 from utils.permissions import ManagerPostOnly, UserLoginOnly, ContestPwdRequired
 
@@ -95,7 +97,7 @@ class ContestView(viewsets.ModelViewSet):
 
 
 class ContestAddProblemAPIView(APIView):
-    # permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -108,11 +110,15 @@ class ContestAddProblemAPIView(APIView):
         problem_not_exist = []
         for problem_id in data.pop("problems"):
             try:
-                problem = Problem.objects.get(ID=problem_id)
-
-                contest.problem_set.add(problem)
+                problem = Problem.objects.get(ID=problem_id['problem'])
+                contest_problem = ContestProblem(problem=problem, contest=contest, name=problem_id['name'])
+                contest_problem.save()
+                # contest.problem_set.add(problem)
             except Problem.DoesNotExist:
                 problem_not_exist.append(problem_id)
+            except IntegrityError:
+                continue
+
         if len(problem_not_exist) > 0:
             return Response("Problem {} does not exist".format(problem_not_exist), status=HTTP_200_OK)
         else:
@@ -120,7 +126,7 @@ class ContestAddProblemAPIView(APIView):
 
 
 class ContestDeleteProblemAPIView(APIView):
-    # permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -137,7 +143,7 @@ class ContestDeleteProblemAPIView(APIView):
 
 
 class ContestListProblemAPIView(APIView):
-    # permission_classes = (UserLoginOnly,)
+    permission_classes = (UserLoginOnly,)
 
     def get(self, request, contest_id):
         try:
@@ -146,7 +152,8 @@ class ContestListProblemAPIView(APIView):
             return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
         queryset = contest.problem_set.all()
         return Response(
-            queryset.values('ID', 'title', 'total_score', 'submission_number', 'accepted_number', 'created_by'),
+            queryset.values('ID', 'title', 'total_score', 'submission_number', 'accepted_number', 'created_by',
+                            'contestproblem__name'),
             status=HTTP_200_OK)
 
 
