@@ -4,6 +4,14 @@ from contest.models import ACMContestRank, OIContestRank
 from utils.constants import AdminType, RuleType
 
 
+class SuperAdminRequired(permissions.BasePermission):
+    def has_permission(self, request, view):
+        try:
+            return request.user.type == AdminType.SUPER_ADMIN
+        except AttributeError:
+            return False
+
+
 class ManagerOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         try:

@@ -94,6 +94,8 @@ class SubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.R
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('username', 'result', 'language', 'problem')
 
+    # search_fields = ('username',)
+
     def get_queryset(self):
         queryset = Submission.objects.filter(contest_id__isnull=True).select_related("problem__created_by")
         myself = self.request.query_params.get("myself", "").strip('/')

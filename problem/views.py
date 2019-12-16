@@ -3,7 +3,6 @@ import shutil
 import tempfile
 import zipfile
 from wsgiref.util import FileWrapper
-from django.db.models.query_utils import Q
 from django.http import StreamingHttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, filters
@@ -175,7 +174,7 @@ class TestCaseDownloadAPI(APIView):
                     zf.write(os.path.join(dir_path, filename), f_path + filename)
 
         response = StreamingHttpResponse(FileWrapper(temp),
-                                         content_type="application/octet-stream")
+                                         content_type="application/zip")
         response["Content-Length"] = temp.tell()
         response["Content-Disposition"] = "attachment; filename=problem_{}_test_cases.zip".format(problem_id)
         temp.seek(0)

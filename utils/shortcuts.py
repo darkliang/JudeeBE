@@ -1,5 +1,5 @@
 import re
-from random import random
+import random
 
 from django.utils.crypto import get_random_string
 

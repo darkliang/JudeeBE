@@ -3,6 +3,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, UserManager
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from rest_framework.views import APIView
 
 from utils.constants import AdminType
 
@@ -11,9 +12,9 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=50, null=False, primary_key=True)
     USERNAME_FIELD = 'username'
     password = models.CharField(max_length=100, null=False)
-    nickname = models.CharField(max_length=50, null=False)  # 名称
+    nickname = models.CharField(max_length=50, null=True)  # 名称
     register_time = models.DateTimeField(auto_now_add=True)
-    email = models.EmailField(max_length=50, null=False, default="")
+    email = models.EmailField(max_length=50, null=True, default="")
     phone_number = models.CharField('Phone number', max_length=15, null=True)
     qq_number = models.CharField('QQ number', max_length=13, null=True)
     github_username = models.CharField(max_length=50, null=True)
@@ -27,6 +28,7 @@ class User(AbstractBaseUser):
 
     def is_admin(self):
         return self.type == (AdminType.SUPER_ADMIN or AdminType.ADMIN)
+
     objects = UserManager()
 
     class Meta:

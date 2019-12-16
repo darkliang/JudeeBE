@@ -1,21 +1,32 @@
 # -*- coding: utf-8 -*-
+import os
+import re
+from wsgiref.util import FileWrapper
+
+import xlsxwriter
 from django.contrib.auth.hashers import make_password
+from django.db import transaction
+from django.db.utils import IntegrityError
+from django.http import StreamingHttpResponse, HttpResponse
 from django.utils.datetime_safe import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, \
+    HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 
+from JudeeBE.settings import GENERATED_USER_DIR
 from utils.constants import AdminType
+from utils.shortcuts import rand_str
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
-    UserLoginDataSerializer
-from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly
+    UserLoginDataSerializer, GenerateUserSerializer
+from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired
 from django.db.models import Q
 
 
@@ -159,20 +170,6 @@ class UserUpdateRankingAPIView(APIView):
             return Response('ok', HTTP_200_OK)
 
 
-# class UserLogoutAPIView(APIView):
-#     throttle_scope = "post"
-#     throttle_classes = [ScopedRateThrottle, ]
-#
-#     def get(self, request):
-#         if request.session.get('user_id', None):
-#             del request.session['user_id']
-#         if request.session.get('type', None):
-#             del request.session['type']
-#         if request.session.get('ranking', None):
-#             del request.session['ranking']
-#         return Response('ok', HTTP_200_OK)
-
-
 class UserRegisterAPIView(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -204,3 +201,73 @@ class UserRegisterAPIView(APIView):
             user_data_serializer.save()
             return Response(res_dict, status=HTTP_200_OK)
         return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class UserBulkRegistration(APIView):
+    permission_classes = SuperAdminRequired
+
+    # serializer_classes = GenerateUserSerializer
+    def get(self, request):
+        """
+        download users excel
+        """
+        file_id = request.GET.get("file_id")
+        if not file_id:
+            return Response("Invalid Parameter, file_id is required", HTTP_400_BAD_REQUEST)
+        if not re.match(r"^[a-zA-Z0-9]+$", file_id):
+            return Response("Illegal file_id", HTTP_400_BAD_REQUEST)
+
+        file_path = os.path.join(GENERATED_USER_DIR, "{}.xlsx".format(file_id))
+
+        if not os.path.isfile(file_path):
+            return Response("File does not exist", HTTP_404_NOT_FOUND)
+        with open(file_path, "rb") as f:
+            raw_data = f.read()
+        os.remove(file_path)
+        response = HttpResponse(raw_data)
+        response["Content-Disposition"] = "attachment; filename=users.xlsx"
+        response["Content-Type"] = "application/xlsx"
+        return response
+
+    def post(self, request):
+        """
+                Generate User
+                """
+        data = request.data
+        number_max_length = max(len(str(data["num_from"])), len(str(data["num_to"])))
+        if number_max_length + len(data["prefix"]) + len(data["suffix"]) > 32:
+            return Response("Username should not more than 32 characters", HTTP_400_BAD_REQUEST)
+        if data["num_from"] > data["num_to"]:
+            return Response("Start number must be lower than end number", HTTP_400_BAD_REQUEST)
+
+        file_id = rand_str(8)
+        filename = os.path.join(GENERATED_USER_DIR, "{}.xlsx".format(file_id))
+        workbook = xlsxwriter.Workbook(filename)
+        worksheet = workbook.add_worksheet()
+        worksheet.set_column("A:B", 20)
+        worksheet.write("A1", "Username")
+        worksheet.write("B1", "Password")
+
+        user_list = []
+        password_list = []
+        for number in range(data["num_from"], data["num_from"] + 1):
+            raw_password = rand_str(data.get("password_length", 8))
+            user = User(username=f"{data.get('prefix', '')}{number}{data.get('suffix', '')}",
+                        password=make_password(raw_password))
+            user_list.append(user)
+            password_list.append(raw_password)
+
+        try:
+            with transaction.atomic():
+                ret = User.objects.bulk_create(user_list)
+                UserData.objects.bulk_create([UserData(username=user) for user in ret])
+                for idx, item in enumerate(user_list):
+                    worksheet.write_string(idx + 1, 0, item.username)
+                    worksheet.write_string(idx + 1, 1, password_list[idx])
+                workbook.close()
+            return Response({"file_id": file_id}, HTTP_200_OK)
+        except IntegrityError as e:
+            # Extract detail from exception message
+            #    duplicate key value violates unique constraint "user_username_key"
+            #    DETAIL:  Key (username)=(root11) already exists.
+            return Response({"file_id": file_id}, HTTP_500_INTERNAL_SERVER_ERROR)
