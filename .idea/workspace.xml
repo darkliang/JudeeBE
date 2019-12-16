@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="add: Contest Rank API">
-      <change afterPath="$PROJECT_DIR$/contest/migrations/0004_auto_20191215_2000.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0012_auto_20191215_2000.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/migrations/0013_auto_20191215_2018.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/97659.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/97659.xml" afterDir="false" />
+    <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JudeeBE/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/JudeeBE/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/submission/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/shortcuts.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/shortcuts.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -422,7 +410,7 @@
       <workItem from="1576411998402" duration="3652000" />
       <workItem from="1576416504267" duration="9309000" />
       <workItem from="1576471689942" duration="1998000" />
-      <workItem from="1576479668889" duration="1452000" />
+      <workItem from="1576479668889" duration="1946000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -620,7 +608,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576384303943</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="add:  批量创建用户的api">
+      <created>1576482392166</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1576482392166</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -658,7 +653,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="ac_probs改名为ac_prob&#10;（用户ac的所有题目）" />
     <MESSAGE value="重新整理了开发配置步骤" />
     <MESSAGE value="小改数据库" />
     <MESSAGE value="refactor 'BetterOJ' to 'JudeeBE'" />
@@ -683,14 +677,15 @@
     <MESSAGE value="delete: judge server" />
     <MESSAGE value="add: 竞赛密码保护&#10;update: 重构submission表" />
     <MESSAGE value="add: Contest Rank API" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: Contest Rank API" />
+    <MESSAGE value="add:  批量创建用户的api" />
+    <option name="LAST_COMMIT_MESSAGE" value="add:  批量创建用户的api" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="358" y="0" key="CommitChangelistDialog2" timestamp="1576482312710">
+    <state x="358" y="0" key="CommitChangelistDialog2" timestamp="1576482391490">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1576152731223" />
-    <state x="358" y="0" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576482312710" />
+    <state x="358" y="0" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576482391490" />
     <state x="0" y="33" key="DiffContextDialog" timestamp="1576482307988">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -724,11 +719,11 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1576482263606" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576384305674">
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576482395837">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1576152733928" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576384305674" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576482395837" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

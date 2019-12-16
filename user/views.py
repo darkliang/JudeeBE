@@ -25,7 +25,7 @@ from utils.constants import AdminType
 from utils.shortcuts import rand_str
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
-    UserLoginDataSerializer, GenerateUserSerializer
+    UserLoginDataSerializer
 from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired
 from django.db.models import Q
 
