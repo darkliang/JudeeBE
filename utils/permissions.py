@@ -38,6 +38,8 @@ class ManagerPostOnly(permissions.BasePermission):
 
 class ContestPwdRequired(permissions.BasePermission):
     def has_object_permission(self, request, view, contest):
+        if request.auth and (request.user.type == AdminType.SUPER_ADMIN or request.user == contest.created_by):
+            return True
         if hasattr(view, 'action') and view.action == 'retrieve':
             if not contest.password:
                 return True

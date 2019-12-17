@@ -6,6 +6,8 @@ from submission import views
 routers = routers.DefaultRouter()
 routers.register("submit", views.SubmissionCreateView)
 routers.register("submission", views.SubmissionGetView)
+routers.register("contest-submission", views.ContestSubmissionGetView)
+
 urlpatterns = [
     url('', include(routers.urls)),
     url(r'^rejudge', views.SubmissionRejudgeAPI.as_view()),

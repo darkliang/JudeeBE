@@ -43,7 +43,6 @@ class UserData(models.Model):
     ac = models.IntegerField(null=False, default=0)
     submit = models.IntegerField(null=False, default=0)
     score = models.IntegerField(default=0)
-    ranking = models.IntegerField(default=1500)
     ac_prob = models.TextField(null=True, default="")  # 竖线分割
 
     # objects = models.Manager()

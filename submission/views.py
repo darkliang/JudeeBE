@@ -13,7 +13,8 @@ from JudeeBE.settings import TEST_CASE_DIR
 from contest.models import Contest
 from problem.models import Problem
 from submission.models import Submission
-from submission.serializers import SubmissionSerializer, SubmissionListSerializer
+from submission.serializers import SubmissionSerializer, SubmissionListSerializer, ContestSubmissionListSerializer, \
+    ContestSubmissionSerializer
 from utils.constants import ContestStatus
 from utils.redis_util import RedisQueue
 from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
@@ -90,16 +91,15 @@ class SubmissionCreateView(viewsets.GenericViewSet, mixins.CreateModelMixin):
 
 
 class SubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
-    queryset = Submission.objects.filter(contest_id__isnull=True).select_related("problem__created_by")
+    queryset = Submission.objects.filter(contest_id__isnull=True)
     permission_classes = (SubmissionCheck,)
     pagination_class = LimitOffsetPagination
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('username', 'result', 'language', 'problem')
-
-    # search_fields = ('username',)
+    filter_fields = ('username', 'result', 'language', 'problem', 'contest')
 
     def get_queryset(self):
-        queryset = Submission.objects.filter(contest_id__isnull=True).select_related("problem__created_by")
+        queryset = Submission.objects.filter(contest_id__isnull=True)
+
         myself = self.request.query_params.get("myself", "").strip('/')
         if myself == "true":
             queryset = queryset.filter(username=self.request.user)
@@ -110,3 +110,25 @@ class SubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.R
             return SubmissionListSerializer
         if hasattr(self, 'action') and self.action == 'retrieve':
             return SubmissionSerializer
+
+
+class ContestSubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
+    queryset = Submission.objects.filter(contest_id__isnull=False)
+    permission_classes = (SubmissionCheck,)
+    pagination_class = LimitOffsetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('username', 'result', 'language', 'problem', 'contest')
+
+    def get_queryset(self):
+        queryset = Submission.objects.filter(contest_id__isnull=False)
+
+        myself = self.request.query_params.get("myself", "").strip('/')
+        if myself == "true":
+            queryset = queryset.filter(username=self.request.user)
+        return queryset
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action') and self.action == 'list':
+            return ContestSubmissionListSerializer
+        if hasattr(self, 'action') and self.action == 'retrieve':
+            return ContestSubmissionSerializer

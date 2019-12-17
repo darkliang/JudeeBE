@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^login', views.UserLoginAPIView.as_view()),
     # url(r'^logout', views.UserLogoutAPIView.as_view()),
     url(r'^update_ranking', views.UserUpdateRankingAPIView.as_view()),
+    url(r'^get_ranking', views.UserRankingAPIView.as_view()),
     url(r'^setlogindata', views.UserLoginDataAPIView.as_view()),
     url(r'^change_pwd', views.UserChangePwdAPIView.as_view()),
     url(r'^bulk-registration', views.UserBulkRegistration.as_view())

@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from wsgiref.util import FileWrapper
-
 import xlsxwriter
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from django.db.utils import IntegrityError
-from django.http import StreamingHttpResponse, HttpResponse
+from django.http import HttpResponse
 from django.utils.datetime_safe import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
@@ -19,14 +17,14 @@ from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
-
 from JudeeBE.settings import GENERATED_USER_DIR
 from utils.constants import AdminType
+from utils.redis_util import RedisRank
 from utils.shortcuts import rand_str
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
     UserLoginDataSerializer
-from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired
+from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired, UserLoginOnly
 from django.db.models import Q
 
 
@@ -153,23 +151,6 @@ class UserLoginAPIView(APIView):
         return Response('pwdError', HTTP_200_OK)
 
 
-class UserUpdateRankingAPIView(APIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (AllowAny,)
-    throttle_scope = "post"
-    throttle_classes = [ScopedRateThrottle, ]
-
-    def get(self, request, format=None):
-        if request.session.get('user_id', None) is not None:
-            username = request.session.get('user_id', None)
-            userdata = UserData.objects.get(username__exact=username)
-            # request.session['ranking'] = userdata.ranking
-            return Response('updated', HTTP_200_OK)
-        else:
-            return Response('ok', HTTP_200_OK)
-
-
 class UserRegisterAPIView(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -271,3 +252,31 @@ class UserBulkRegistration(APIView):
             #    duplicate key value violates unique constraint "user_username_key"
             #    DETAIL:  Key (username)=(root11) already exists.
             return Response({"file_id": file_id}, HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserRankingAPIView(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        try:
+            num = int(request.GET.get('num', 0))
+        except ValueError:
+            return Response("Argument error", HTTP_400_BAD_REQUEST)
+        get_res = RedisRank.get_top_n_users(num)
+        res = []
+        for username, score in get_res:
+            userdata = UserDataSerializer(username=username)
+            res.append(userdata.data)
+        return Response(res, HTTP_200_OK)
+
+
+class UserUpdateRankingAPIView(APIView):
+    permission_classes = (UserLoginOnly,)
+    throttle_scope = "post"
+    throttle_classes = [ScopedRateThrottle, ]
+
+    def get(self, request, format=None):
+        RedisRank.record_score(request.user.username)
+        user_data = UserData.objects.get(username=request.user.username)
+        RedisRank.record_score(user_data.username, user_data.score)
+        return Response('updated', HTTP_200_OK)

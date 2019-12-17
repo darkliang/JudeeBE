@@ -55,7 +55,7 @@ class ContestView(viewsets.ModelViewSet):
             queryset = queryset.filter(condition)
         return queryset
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         data = request.data
         data["created_by"] = request.user
         data["start_time"] = dateutil.parser.parse(data["start_time"])
@@ -72,12 +72,17 @@ class ContestView(viewsets.ModelViewSet):
         contest = Contest.objects.create(**data)
         return Response(ContestAdminSerializer(contest).data, status=HTTP_200_OK)
 
-    def update(self, request):
+    def update(self, request, *args, **kwargs):
         data = request.data
+        contest = self.get_object()
         try:
-            contest = Contest.objects.get(id=data.pop("id"))
-        except Contest.DoesNotExist:
-            return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
+            data.pop('created_by')
+        except KeyError:
+            pass
+        # try:
+        #     contest = Contest.objects.get(id=data.pop("id"))
+        # except Contest.DoesNotExist:
+        #     return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
         data["start_time"] = dateutil.parser.parse(data["start_time"])
         data["end_time"] = dateutil.parser.parse(data["end_time"])
         if data["end_time"] <= data["start_time"]:
@@ -221,3 +226,26 @@ class ContestAnnouncementView(viewsets.ModelViewSet):
         queryset = ContestAnnouncement.objects.all() if (self.request.auth and self.request.user.is_admin()) else \
             ContestAnnouncement.objects.filter(visible=True)
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        data = dict(request.data)
+        data["created_by"] = request.user
+        try:
+            data["contest"] = Contest.objects.get(id=data["contest"])
+        except (Contest.DoesNotExist, KeyError):
+            return Response("Wrong contest ID", HTTP_400_BAD_REQUEST)
+        contest_announcement = ContestAnnouncement.objects.create(**data)
+        return Response(contest_announcement.id, status=HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        contest_announcement = self.get_object()
+        data = dict(request.data)
+        data["created_by"] = request.user
+        try:
+            data["contest"] = Contest.objects.get(id=data["contest"])
+        except (Contest.DoesNotExist, KeyError):
+            return Response("Wrong contest ID", HTTP_400_BAD_REQUEST)
+        for k, v in data.items():
+            setattr(contest_announcement, k, v)
+        contest_announcement.save()
+        return Response(status=HTTP_204_NO_CONTENT)

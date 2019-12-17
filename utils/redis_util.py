@@ -1,5 +1,7 @@
 from django_redis import get_redis_connection
 
+from user.models import UserData
+
 
 class RedisQueue:
 
@@ -32,43 +34,22 @@ class RedisQueue:
         # 返回队列的第一个元素，如果队列为空返回None
         return get_redis_connection('default').lindex(key, 0)
 
-# def get_queue_from_single_pool(name, namespace='queue'):
-#     return RedisQueue(name, namespace=namespace, connection_pool=redis_connection_pool)
-#
-#
-# class Producer:
-#     def __init__(self, queue=None, namespace='queue', name='', **redis_sr_kwargs):
-#         if type(queue) == RedisQueue:
-#             self.__queue = queue
-#         else:
-#             self.__queue = RedisQueue(name, namespace, **redis_sr_kwargs)
-#
-#     def produce(self, product):
-#         return self.__queue.put(product)
-#
-#     def get_size(self):
-#         return self.__queue.qsize()
+
+class RedisRank:
+    @staticmethod
+    def record_score(username, score=0):
+        get_redis_connection('default').zincrby('user:score', amount=username, value=score)
+
+    # 获取排行前num位的数据
+    @staticmethod
+    def get_top_n_users(num):
+        # zrevrange key start stop [WITHSCORES(是否返回数组的形式(article_id, count))]
+        # 返回有序集 key 中，指定区间内的成员
+        rds = get_redis_connection('default')
+        user_score = rds.zrevrange('user:score', 0, num, withscores=True)
+        # 返回前num项数据，每一包含（'User-clicks',user_id,count）
+        # 取出id和count
+        # users_data = UserData.objects.in_bulk([int(item[0]) for item in user_score])
 
 
-# def get_producer_from_single_pool(name, namespace='queue'):
-#     return Producer(queue=get_queue_from_single_pool(name, namespace=namespace))
-#
-#
-# class Consumer:
-#     def __init__(self, queue=None, namespace='queue', name='', **redis_sr_kwargs):
-#         if type(queue) == RedisQueue:
-#             self.__queue = queue
-#         else:
-#             self.__queue = RedisQueue(name, namespace, **redis_sr_kwargs)
-#
-#     def consume(self, block=True):
-#         if block:
-#             return self.__queue.pop_block().decode()
-#         return self.__queue.pop().decode()
-#
-#     def get_size(self):
-#         return self.__queue.qsize()
-#
-#
-# def get_consumer_from_single_pool(name, namespace='queue'):
-#     return Consumer(queue=get_queue_from_single_pool(name, namespace=namespace))
+        return user_score
