@@ -37,19 +37,28 @@ class RedisQueue:
 
 class RedisRank:
     @staticmethod
-    def record_score(username, score=0):
-        get_redis_connection('default').zincrby('user:score', amount=username, value=score)
+    def record_score(mapping):
+        rds = get_redis_connection('default')
+        rds.zadd('user:score', mapping)
+        if len(mapping) == 1:
+            return rds.zrank('user:score', list(mapping)[0])
 
-    # 获取排行前num位的数据
+        # 获取排行前num位的数据
+
     @staticmethod
-    def get_top_n_users(num):
+    def get_ranking(username):
+        return get_redis_connection('default').zrank('user:score', username)
+
+    @staticmethod
+    def get_top_n_users(limit, offset=0):
         # zrevrange key start stop [WITHSCORES(是否返回数组的形式(article_id, count))]
         # 返回有序集 key 中，指定区间内的成员
         rds = get_redis_connection('default')
-        user_score = rds.zrevrange('user:score', 0, num, withscores=True)
+        if limit == -1:
+            users = rds.zrevrange('user:score', 0, limit)
+        else:
+            users = rds.zrevrange('user:score', offset, offset + limit)
         # 返回前num项数据，每一包含（'User-clicks',user_id,count）
         # 取出id和count
-        # users_data = UserData.objects.in_bulk([int(item[0]) for item in user_score])
-
-
-        return user_score
+        users_data = UserData.objects.in_bulk([username.decode() for username in users])
+        return users_data

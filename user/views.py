@@ -12,7 +12,7 @@ from rest_framework import viewsets, filters, mixins
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, \
-    HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND
+    HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
@@ -259,24 +259,28 @@ class UserRankingAPIView(APIView):
 
     def get(self, request):
         try:
-            num = int(request.GET.get('num', 0))
+            limit = int(request.GET.get('limit', -1))
+            offset = int(request.GET.get('offset', 0))
         except ValueError:
             return Response("Argument error", HTTP_400_BAD_REQUEST)
-        get_res = RedisRank.get_top_n_users(num)
+        get_res = RedisRank.get_top_n_users(limit, offset)
         res = []
-        for username, score in get_res:
-            userdata = UserDataSerializer(username=username)
+        for user_data in get_res.values():
+            userdata = UserDataSerializer(user_data)
             res.append(userdata.data)
-        return Response(res, HTTP_200_OK)
+        return Response({'count': len(res), 'results': res}, HTTP_200_OK)
 
 
 class UserUpdateRankingAPIView(APIView):
-    permission_classes = (UserLoginOnly,)
-    throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
     def get(self, request, format=None):
-        RedisRank.record_score(request.user.username)
-        user_data = UserData.objects.get(username=request.user.username)
-        RedisRank.record_score(user_data.username, user_data.score)
-        return Response('updated', HTTP_200_OK)
+        username = request.GET.get('username', None)
+        if username:
+            res = RedisRank.get_ranking(username)
+
+        else:
+            user_data = UserData.objects.get(username=request.user.username)
+            res = RedisRank.record_score({user_data.username.username: user_data.score})
+        # RedisRank.record_score(request.user.username)
+        return Response(res, HTTP_200_OK)

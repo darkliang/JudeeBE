@@ -27,7 +27,7 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     pagination_class = LimitOffsetPagination
     filter_fields = ('is_public', 'created_by')
     search_fields = ('title', 'ID')
-    permission_classes = (ManagerPostOnly,)
+    # permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 

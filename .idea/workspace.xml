@@ -3,13 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/submission/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/submission/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/submission/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/redis_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/redis_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,16 +95,6 @@
         <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
         <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="contest_problem: table" type="69fad909:PgImplModel$LocalTable" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Django default2" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="Judee_dev: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="submission: table" type="69fad909:PgImplModel$LocalTable" />
       </path>
     </expand>
     <select />
@@ -352,6 +338,11 @@
                 <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
                 <item name="com.intellij.database.console.session.MessageBusSession@756d1fdd" type="9fbbdea:ServiceModel$ServiceNode" />
               </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@7f5ea1a1" type="9fbbdea:ServiceModel$ServiceNode" />
+              </path>
             </expand>
             <select />
           </treeState>
@@ -448,7 +439,7 @@
       <workItem from="1576562531500" duration="1383000" />
       <workItem from="1576563932310" duration="13613000" />
       <workItem from="1576578003518" duration="10975000" />
-      <workItem from="1576595884012" duration="1447000" />
+      <workItem from="1576595884012" duration="6877000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -667,7 +658,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576564323312</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="update: 添加contest submission api&#10;delete: 删除userdata的ranking，打算用redis存储ranking">
+      <created>1576597976012</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1576597976012</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -705,7 +703,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="refactor 'BetterOJ' to 'JudeeBE'" />
     <MESSAGE value="修复refactor的遗留bug 以及把desc放入user表" />
     <MESSAGE value="add problem and contest" />
     <MESSAGE value="fix 权限问题 &#10;数据库初成&#10;使用JWT做验证" />
@@ -730,18 +727,19 @@
     <MESSAGE value="add:  批量创建用户的api" />
     <MESSAGE value="feat:  竞赛题目添加本次竞赛的题目编号字段，添加第一个ac的用户字段" />
     <MESSAGE value="delete: judgeServer&#10;add: redis_util.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete: judgeServer&#10;add: redis_util.py" />
+    <MESSAGE value="update: 添加contest submission api&#10;delete: 删除userdata的ranking，打算用redis存储ranking" />
+    <option name="LAST_COMMIT_MESSAGE" value="update: 添加contest submission api&#10;delete: 删除userdata的ranking，打算用redis存储ranking" />
   </component>
   <component name="WindowStateProjectService">
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1576562509679">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1280.680@0.0.1280.680" timestamp="1576562509679" />
-    <state x="90" y="0" key="CommitChangelistDialog2" timestamp="1576564322549">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576597975383">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1576564322549" />
-    <state x="358" y="0" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576504112798" />
+    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576597975383" />
     <state x="0" y="33" key="DiffContextDialog" timestamp="1576482307988">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -784,11 +782,11 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1576552152242" />
-    <state x="233" y="69" key="Vcs.Push.Dialog.v2" timestamp="1576564326703">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576597982065">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1576564326703" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576504115771" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576597982065" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
