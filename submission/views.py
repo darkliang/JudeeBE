@@ -9,12 +9,13 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
-from JudeeBE.settings import SUBMISSION_QUEUE, TEST_CASE_DIR
+from JudeeBE.settings import TEST_CASE_DIR
 from contest.models import Contest
 from problem.models import Problem
 from submission.models import Submission
 from submission.serializers import SubmissionSerializer, SubmissionListSerializer
 from utils.constants import ContestStatus
+from utils.redis_util import RedisQueue
 from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
 
 
@@ -36,7 +37,8 @@ class SubmissionRejudgeAPI(APIView):
         submission.score = None
         submission.save()
 
-        SUBMISSION_QUEUE.produce(submission.ID)
+        # SUBMISSION_QUEUE.produce(submission.ID)
+        RedisQueue.put('queue:submission', submission.ID)
         return Response(status=HTTP_204_NO_CONTENT)
 
 
@@ -82,7 +84,7 @@ class SubmissionCreateView(viewsets.GenericViewSet, mixins.CreateModelMixin):
             if error:
                 return Response(error, status=HTTP_403_FORBIDDEN)
         submission = Submission.objects.create(**data)
-        SUBMISSION_QUEUE.produce(submission.ID)
+        RedisQueue.put('queue:submission', submission.ID)
 
         return Response(submission.ID, status=HTTP_200_OK)
 

@@ -20,14 +20,10 @@ class ManagerOnly(permissions.BasePermission):
             return False
 
 
+# 只有对象的创建者或者超管才有权限修改对象
 class ManagerPostOnly(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        try:
-            return request.user.type == (AdminType.SUPER_ADMIN or AdminType.ADMIN)
-        except AttributeError:
-            return False
+        return request.auth
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:

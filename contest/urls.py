@@ -7,6 +7,7 @@ routers = routers.DefaultRouter()
 routers.register('contest', views.ContestView)
 routers.register('oi-rank', views.OIContestRankView)
 routers.register('acm-rank', views.ACMContestRankView)
+routers.register('contest-announcement', views.ContestAnnouncementView)
 
 urlpatterns = [
     url('', include(routers.urls)),

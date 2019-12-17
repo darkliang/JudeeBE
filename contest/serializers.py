@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from contest.models import Contest, OIContestRank, ACMContestRank
+from contest.models import Contest, OIContestRank, ACMContestRank, ContestAnnouncement
 from user.serializers import UserProfileSerializer
 
 
@@ -38,4 +38,10 @@ class OIContestRankSerializer(serializers.ModelSerializer):
 class ACMContestRankSerializer(serializers.ModelSerializer):
     class Meta:
         model = ACMContestRank
+        fields = "__all__"
+
+
+class ContestAnnouncementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContestAnnouncement
         fields = "__all__"

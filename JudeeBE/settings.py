@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import datetime
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from utils.message_queue.dispatcher import get_producer_from_single_pool
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -70,6 +69,17 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=86400),
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://10.20.1.155:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": "123456"
+        }
+    }
 }
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -161,4 +171,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 TEST_CASE_DIR = '\\\\HOMEDISK\\homes\\h2s\\test_cases\\'
 GENERATED_USER_DIR = '\\\\HOMEDISK\\homes\\h2s\\user_list\\'
 
-SUBMISSION_QUEUE = get_producer_from_single_pool("submission")
+# SUBMISSION_QUEUE = get_producer_from_single_pool("submission")

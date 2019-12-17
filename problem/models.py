@@ -90,4 +90,4 @@ class ContestProblem(models.Model):
 
     class Meta:
         db_table = "contest_problem"
-        unique_together = (("problem", "contest"),)
+        unique_together = (("problem", "contest"), ("name", "contest"))
