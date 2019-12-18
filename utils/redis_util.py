@@ -1,5 +1,4 @@
 from django_redis import get_redis_connection
-
 from user.models import UserData
 
 
@@ -64,5 +63,9 @@ class RedisRank:
             users = rds.zrevrange(cls.name, offset, offset + limit)
         # 返回前num项数据，每一包含（'User-clicks',user_id,count）
         # 取出id和count
-        users_data = UserData.objects.in_bulk([username.decode() for username in users])
-        return cls.user_num,users_data
+        # print(users)
+        users_data = []
+        for username in users:
+            print(username)
+            users_data.append(UserData.objects.get(username=username.decode()))
+        return cls.user_num, users_data

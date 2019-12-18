@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-
 from utils.redis_util import RedisRank
 from .models import User, UserData, UserLoginData
 

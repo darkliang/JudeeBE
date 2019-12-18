@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import collections
 import os
 import re
 import xlsxwriter
@@ -221,6 +222,7 @@ class UserBulkRegistration(APIView):
                 Generate User
                 """
         data = request.data
+
         number_max_length = max(len(str(data["num_from"])), len(str(data["num_to"])))
         if number_max_length + len(data["prefix"]) + len(data["suffix"]) > 32:
             return Response("Username should not more than 32 characters", HTTP_400_BAD_REQUEST)
@@ -228,6 +230,7 @@ class UserBulkRegistration(APIView):
             return Response("Start number must be lower than end number", HTTP_400_BAD_REQUEST)
 
         file_id = rand_str(8)
+        return Response({'file_id': file_id}, HTTP_200_OK)
         filename = os.path.join(GENERATED_USER_DIR, "{}.xlsx".format(file_id))
         workbook = xlsxwriter.Workbook(filename)
         worksheet = workbook.add_worksheet()
@@ -271,9 +274,9 @@ class UserRankingAPIView(APIView):
             return Response("Argument error", HTTP_400_BAD_REQUEST)
         count, get_res = RedisRank.get_top_n_users(limit, offset)
         res = []
-        for user_data in get_res.values():
-            userdata = UserDataSerializer(user_data)
-            res.append(userdata.data)
+        for user_data in get_res:
+            # userdata =
+            res.append(UserDataSerializer(user_data).data)
         return Response({'count': count, 'results': res}, HTTP_200_OK)
 
 
@@ -303,19 +306,23 @@ class UserStatisticsAPIVIEW(APIView):
         # cache.delete(cache_key)
         qs = cache.get(cache_key)
         if not qs:
-            print('not cached')
             days = datetime.now() - timedelta(days=offset)
-            submissions = Submission.objects.filter(username=username, create_time__gte=days).annotate(
-                day=TruncDay("create_time")).values('day', 'result')
-            qs = {}
+            submissions = Submission.objects.filter(username=username, create_time__gte=days).values('create_time',
+                                                                                                     'result')
+            temp = {}
+
             for submission in submissions:
-                day = str(submission['day'])
-                count = qs.get(day, {'ac': 0, 'submit': 0})
+                day = str(submission['create_time'].date())
+                count = temp.get(day, {'ac': 0, 'submit': 0})
                 count['submit'] += 1
                 if submission['result'] == 0:
                     count['ac'] += 1
-                qs[day] = count
+                temp[day] = count
             # 默认缓存一天
+            qs = []
+            for tem in sorted(temp):
+                qs.append({'date': tem, 'ac': temp[tem]['ac'], 'submit': temp[tem]['submit'],
+                           'rate': temp[tem]['ac'] / temp[tem]['submit']})
             cache.set(cache_key, qs, 60 * 60 * 24)
 
         # print(res)
