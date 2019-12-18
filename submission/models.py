@@ -37,4 +37,4 @@ class Submission(models.Model):
         ordering = ("-create_time",)
 
     def __str__(self):
-        return self.ID
+        return str(self.ID)

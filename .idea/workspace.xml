@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/redis_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/redis_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -328,22 +331,7 @@
       <list>
         <serviceView>
           <treeState>
-            <expand>
-              <path>
-                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              </path>
-              <path>
-                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="com.intellij.database.console.session.MessageBusSession@756d1fdd" type="9fbbdea:ServiceModel$ServiceNode" />
-              </path>
-              <path>
-                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="com.intellij.database.console.session.MessageBusSession@7f5ea1a1" type="9fbbdea:ServiceModel$ServiceNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </treeState>
         </serviceView>
@@ -439,7 +427,9 @@
       <workItem from="1576562531500" duration="1383000" />
       <workItem from="1576563932310" duration="13613000" />
       <workItem from="1576578003518" duration="10975000" />
-      <workItem from="1576595884012" duration="6877000" />
+      <workItem from="1576595884012" duration="7313000" />
+      <workItem from="1576636903603" duration="6710000" />
+      <workItem from="1576668986946" duration="8015000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -665,7 +655,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576597976012</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="add: redis实现总排行">
+      <created>1576603221533</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1576603221533</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -703,7 +700,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="修复refactor的遗留bug 以及把desc放入user表" />
     <MESSAGE value="add problem and contest" />
     <MESSAGE value="fix 权限问题 &#10;数据库初成&#10;使用JWT做验证" />
     <MESSAGE value="完全解决权限问题" />
@@ -728,51 +724,52 @@
     <MESSAGE value="feat:  竞赛题目添加本次竞赛的题目编号字段，添加第一个ac的用户字段" />
     <MESSAGE value="delete: judgeServer&#10;add: redis_util.py" />
     <MESSAGE value="update: 添加contest submission api&#10;delete: 删除userdata的ranking，打算用redis存储ranking" />
-    <option name="LAST_COMMIT_MESSAGE" value="update: 添加contest submission api&#10;delete: 删除userdata的ranking，打算用redis存储ranking" />
+    <MESSAGE value="add: redis实现总排行" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: redis实现总排行" />
   </component>
   <component name="WindowStateProjectService">
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1576562509679">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1280.680@0.0.1280.680" timestamp="1576562509679" />
-    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576597975383">
+    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576603220971">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1576564322549" />
-    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576597975383" />
+    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576603220971" />
     <state x="0" y="33" key="DiffContextDialog" timestamp="1576482307988">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="0" y="33" key="DiffContextDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576482307988" />
-    <state x="503" y="190" key="FileChooserDialogImpl" timestamp="1576572790252">
+    <state x="503" y="190" key="FileChooserDialogImpl" timestamp="1576658577819">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="503" y="190" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1576572790252" />
+    <state x="503" y="190" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1576658577819" />
     <state x="805" y="311" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1576482171136" />
-    <state width="2004" height="224" key="GridCell.Tab.0.bottom" timestamp="1576597762230">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1876" height="138" key="GridCell.Tab.0.bottom" timestamp="1576669282084">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="844" height="141" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1576578929587" />
-    <state width="1877" height="27" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576222235646" />
-    <state width="2004" height="224" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1576597762230" />
-    <state width="2004" height="224" key="GridCell.Tab.0.center" timestamp="1576597762230">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1236" height="14" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1876" height="138" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
+    <state width="2004" height="224" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1576603632492" />
+    <state width="1876" height="138" key="GridCell.Tab.0.center" timestamp="1576669282084">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="844" height="141" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1576578929587" />
-    <state width="1877" height="27" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576222235646" />
-    <state width="2004" height="224" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1576597762230" />
-    <state width="2004" height="224" key="GridCell.Tab.0.left" timestamp="1576597762230">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1236" height="14" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1876" height="138" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
+    <state width="2004" height="224" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1576603632492" />
+    <state width="1876" height="138" key="GridCell.Tab.0.left" timestamp="1576669282084">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="844" height="141" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1576578929587" />
-    <state width="1877" height="27" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576222235646" />
-    <state width="2004" height="224" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1576597762230" />
-    <state width="2004" height="224" key="GridCell.Tab.0.right" timestamp="1576597762230">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1236" height="14" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1876" height="138" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
+    <state width="2004" height="224" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1576603632492" />
+    <state width="1876" height="138" key="GridCell.Tab.0.right" timestamp="1576669282084">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="844" height="141" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1576578929587" />
-    <state width="1877" height="27" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576222235646" />
-    <state width="2004" height="224" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1576597762230" />
+    <state width="1236" height="14" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1876" height="138" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
+    <state width="2004" height="224" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1576603632492" />
     <state width="218" height="539" key="HiddenNamespacesPopup" timestamp="1576500037523">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -782,19 +779,19 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1576552152242" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576597982065">
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576603223035">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1576564326703" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576597982065" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576603223035" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576071129591" />
-    <state x="518" y="268" key="com.intellij.ide.util.TipDialog" timestamp="1576595888975">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="324" y="164" key="com.intellij.ide.util.TipDialog" timestamp="1576636982847">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="324" y="164" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1576563933039" />
+    <state x="324" y="164" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1576636982847" />
     <state x="518" y="268" key="com.intellij.ide.util.TipDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576595888975" />
     <state x="436" y="252" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1576125341045">
       <screen x="0" y="0" width="1280" height="680" />
@@ -806,7 +803,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/user/views.py</url>
-          <line>137</line>
+          <line>143</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

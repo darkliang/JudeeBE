@@ -4,9 +4,12 @@ import re
 import xlsxwriter
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
+from django.db.models.aggregates import Count
+from django.db.models.functions import TruncMonth, TruncDay
 from django.db.utils import IntegrityError
 from django.http import HttpResponse
 from django.utils.datetime_safe import datetime
+from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.permissions import AllowAny
@@ -18,6 +21,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 from JudeeBE.settings import GENERATED_USER_DIR
+from submission.models import Submission
 from utils.constants import AdminType
 from utils.redis_util import RedisRank
 from utils.shortcuts import rand_str
@@ -26,6 +30,8 @@ from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerialize
     UserLoginDataSerializer
 from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired, UserLoginOnly
 from django.db.models import Q
+from datetime import timedelta
+from django.core.cache import cache
 
 
 class UserDataView(viewsets.ModelViewSet):
@@ -185,7 +191,7 @@ class UserRegisterAPIView(APIView):
 
 
 class UserBulkRegistration(APIView):
-    permission_classes = SuperAdminRequired
+    permission_classes = (SuperAdminRequired,)
 
     # serializer_classes = GenerateUserSerializer
     def get(self, request):
@@ -251,7 +257,7 @@ class UserBulkRegistration(APIView):
             # Extract detail from exception message
             #    duplicate key value violates unique constraint "user_username_key"
             #    DETAIL:  Key (username)=(root11) already exists.
-            return Response({"file_id": file_id}, HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(str(e).split("\n")[1], HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UserRankingAPIView(APIView):
@@ -263,24 +269,54 @@ class UserRankingAPIView(APIView):
             offset = int(request.GET.get('offset', 0))
         except ValueError:
             return Response("Argument error", HTTP_400_BAD_REQUEST)
-        get_res = RedisRank.get_top_n_users(limit, offset)
+        count, get_res = RedisRank.get_top_n_users(limit, offset)
         res = []
         for user_data in get_res.values():
             userdata = UserDataSerializer(user_data)
             res.append(userdata.data)
-        return Response({'count': len(res), 'results': res}, HTTP_200_OK)
+        return Response({'count': count, 'results': res}, HTTP_200_OK)
 
 
 class UserUpdateRankingAPIView(APIView):
     throttle_classes = [ScopedRateThrottle, ]
 
-    def get(self, request, format=None):
+    def get(self, request):
         username = request.GET.get('username', None)
         if username:
             res = RedisRank.get_ranking(username)
-
         else:
             user_data = UserData.objects.get(username=request.user.username)
             res = RedisRank.record_score({user_data.username.username: user_data.score})
-        # RedisRank.record_score(request.user.username)
         return Response(res, HTTP_200_OK)
+
+
+class UserStatisticsAPIVIEW(APIView):
+    throttle_classes = [ScopedRateThrottle, ]
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        username = request.GET.get('username', None)
+        if not username:
+            return Response(status=HTTP_204_NO_CONTENT)
+        offset = int(request.GET.get('offset', 7))
+        cache_key = 'statistic:{}:{}'.format(username, offset)
+        # cache.delete(cache_key)
+        qs = cache.get(cache_key)
+        if not qs:
+            print('not cached')
+            days = datetime.now() - timedelta(days=offset)
+            submissions = Submission.objects.filter(username=username, create_time__gte=days).annotate(
+                day=TruncDay("create_time")).values('day', 'result')
+            qs = {}
+            for submission in submissions:
+                day = str(submission['day'])
+                count = qs.get(day, {'ac': 0, 'submit': 0})
+                count['submit'] += 1
+                if submission['result'] == 0:
+                    count['ac'] += 1
+                qs[day] = count
+            # 默认缓存一天
+            cache.set(cache_key, qs, 60 * 60 * 24)
+
+        # print(res)
+        return Response(qs, status=HTTP_200_OK)

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
+
+from utils.redis_util import RedisRank
 from .models import User, UserData, UserLoginData
 
 
@@ -39,6 +41,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserDataSerializer(serializers.ModelSerializer):
+    ranking = serializers.SerializerMethodField()
+
+    def get_ranking(self, obj):
+        # print(obj.contest, obj.problem)
+        return RedisRank.get_ranking(obj.username.username)
+
     class Meta:
         model = UserData
         fields = '__all__'

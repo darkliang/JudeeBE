@@ -36,29 +36,33 @@ class RedisQueue:
 
 
 class RedisRank:
-    @staticmethod
-    def record_score(mapping):
+    user_num = 0
+    name = 'user:score'
+
+    @classmethod
+    def record_score(cls, mapping):
         rds = get_redis_connection('default')
-        rds.zadd('user:score', mapping)
+        rds.zadd(cls.name, mapping)
+        cls.user_num = rds.zcard('user:score')
         if len(mapping) == 1:
             return rds.zrank('user:score', list(mapping)[0])
 
         # 获取排行前num位的数据
 
-    @staticmethod
-    def get_ranking(username):
+    @classmethod
+    def get_ranking(cls, username):
         return get_redis_connection('default').zrank('user:score', username)
 
-    @staticmethod
-    def get_top_n_users(limit, offset=0):
+    @classmethod
+    def get_top_n_users(cls, limit, offset=0):
         # zrevrange key start stop [WITHSCORES(是否返回数组的形式(article_id, count))]
         # 返回有序集 key 中，指定区间内的成员
         rds = get_redis_connection('default')
         if limit == -1:
-            users = rds.zrevrange('user:score', 0, limit)
+            users = rds.zrevrange(cls.name, 0, limit)
         else:
-            users = rds.zrevrange('user:score', offset, offset + limit)
+            users = rds.zrevrange(cls.name, offset, offset + limit)
         # 返回前num项数据，每一包含（'User-clicks',user_id,count）
         # 取出id和count
         users_data = UserData.objects.in_bulk([username.decode() for username in users])
-        return users_data
+        return cls.user_num,users_data

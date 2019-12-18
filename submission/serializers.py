@@ -29,5 +29,5 @@ class ContestSubmissionListSerializer(SubmissionListSerializer):
     name = serializers.SerializerMethodField()
 
     def get_name(self, obj):
-        print(obj.contest, obj.problem)
+        # print(obj.contest, obj.problem)
         return ContestProblem.objects.get(contest=obj.contest, problem=obj.problem).name

@@ -20,15 +20,12 @@ class ManagerOnly(permissions.BasePermission):
             return False
 
 
-# 只有对象的创建者或者超管才有权限修改对象
+# 只有对象的创建者或者超管才有权限修改对象 未登录也可以查看
 class ManagerPostOnly(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return request.auth
-
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.created_by == request.user or request.user.type == AdminType.SUPER_ADMIN
+        return request.auth and (obj.created_by == request.user or request.user.type == AdminType.SUPER_ADMIN)
 
 
 '''
