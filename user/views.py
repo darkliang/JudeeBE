@@ -304,26 +304,28 @@ class UserStatisticsAPIVIEW(APIView):
         offset = int(request.GET.get('offset', 7))
         cache_key = 'statistic:{}:{}'.format(username, offset)
         # cache.delete(cache_key)
-        qs = cache.get(cache_key)
-        if not qs:
-            days = datetime.now() - timedelta(days=offset)
+        date_list = cache.get(cache_key)
+        if not date_list:
+            now = datetime.now()
+            days = now - timedelta(days=offset)
+
             submissions = Submission.objects.filter(username=username, create_time__gte=days).values('create_time',
                                                                                                      'result')
-            temp = {}
+            date_list = [{'date': str((now - timedelta(days=i)).date()), 'ac': 0, 'submit': 0, 'rate': 0.0} for i in
+                         range(offset, 0, -1)]
 
             for submission in submissions:
-                day = str(submission['create_time'].date())
-                count = temp.get(day, {'ac': 0, 'submit': 0})
-                count['submit'] += 1
-                if submission['result'] == 0:
-                    count['ac'] += 1
-                temp[day] = count
-            # 默认缓存一天
-            qs = []
-            for tem in sorted(temp):
-                qs.append({'date': tem, 'ac': temp[tem]['ac'], 'submit': temp[tem]['submit'],
-                           'rate': temp[tem]['ac'] / temp[tem]['submit']})
-            cache.set(cache_key, qs, 60 * 60 * 24)
+                off = (now - submission['create_time']).days
+                date_list[-(off + 1)]['submit'] += 1
 
-        # print(res)
-        return Response(qs, status=HTTP_200_OK)
+                if submission['result'] == 0:
+                    date_list[-(off + 1)]['ac'] += 1
+
+            for date in date_list:
+                if date['submit'] == 0:
+                    continue
+                date['rate'] = date['ac'] / date['submit']
+                # 默认缓存一天
+            cache.set(cache_key, date_list, 60 * 60 * 24)
+
+        return Response(date_list, status=HTTP_200_OK)
