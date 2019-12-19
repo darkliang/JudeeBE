@@ -25,7 +25,7 @@ from utils.redis_util import RedisRank
 from utils.shortcuts import rand_str
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
-    UserLoginDataSerializer
+    UserLoginDataSerializer, RankUserDataSerializer
 from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired, UserLoginOnly
 from django.db.models import Q
 from datetime import timedelta
@@ -147,9 +147,9 @@ class UserLoginAPIView(APIView):
             if user.type == AdminType.USER:
                 user_data = UserData.objects.get(username__exact=user.username)
                 new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
-                            'nickname': user.nickname, 'type': user.type}
+                            'nickname': user.nickname, 'email': user.email, 'type': user.type}
             else:
-                new_data = {'token': token, 'username': user.username, 'type': user.type,
+                new_data = {'token': token, 'username': user.username, 'type': user.type, 'email': user.email,
                             'nickname': user.nickname}
             return Response(new_data, status=HTTP_200_OK)
         return Response('pwdError', HTTP_200_OK)
@@ -227,7 +227,7 @@ class UserBulkRegistration(APIView):
             return Response("Start number must be lower than end number", HTTP_400_BAD_REQUEST)
 
         file_id = rand_str(8)
-        return Response({'file_id': file_id}, HTTP_200_OK)
+        # return Response({'file_id': file_id}, HTTP_200_OK)
         filename = os.path.join(GENERATED_USER_DIR, "{}.xlsx".format(file_id))
         workbook = xlsxwriter.Workbook(filename)
         worksheet = workbook.add_worksheet()
@@ -270,7 +270,7 @@ class UserRankingAPIView(APIView):
         except ValueError:
             return Response("Argument error", HTTP_400_BAD_REQUEST)
         count, get_res = RedisRank.get_top_n_users(limit, offset)
-        res = UserDataSerializer(get_res, many=True).data
+        res = RankUserDataSerializer(get_res, many=True).data
         # res = []
         # for user_data in get_res:
         #     # userdata =

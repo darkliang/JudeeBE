@@ -44,13 +44,13 @@ class RedisRank:
         rds.zadd(cls.name, mapping)
         cls.user_num = rds.zcard('user:score')
         if len(mapping) == 1:
-            return rds.zrank('user:score', list(mapping)[0])
+            return rds.zrevrank('user:score', list(mapping)[0])
 
         # 获取排行前num位的数据
 
     @classmethod
     def get_ranking(cls, username):
-        return get_redis_connection('default').zrank('user:score', username)
+        return get_redis_connection('default').zrevrank('user:score', username)
 
     @classmethod
     def get_top_n_users(cls, limit, offset=0):

@@ -3,6 +3,8 @@ import shutil
 import tempfile
 import zipfile
 from wsgiref.util import FileWrapper
+
+from django.db import transaction
 from django.http import StreamingHttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, filters
@@ -14,9 +16,10 @@ from rest_framework.views import APIView
 
 from JudeeBE.settings import TEST_CASE_DIR
 from problem.models import Problem, ProblemTag
-from utils.constants import AdminType
+from utils.constants import AdminType, SysOptions, Difficulty
+from utils.fps.parser import FPSHelper, FPSParser
 from utils.permissions import ManagerPostOnly, ManagerOnly
-from problem.serializers import ProblemSerializer, ProblemTagSerializer, ProblemListSerializer
+from problem.serializers import ProblemSerializer, ProblemTagSerializer, ProblemListSerializer, FPSProblemSerializer
 
 
 class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,
@@ -179,3 +182,60 @@ class TestCaseDownloadAPI(APIView):
         response["Content-Disposition"] = "attachment; filename=problem_{}_test_cases.zip".format(problem_id)
         temp.seek(0)
         return response
+
+
+class FPSProblemImport(APIView):
+    permission_classes = (ManagerOnly,)
+
+    # 创建problem 并返回ID
+    def _create_problem(self, problem_data, creator):
+        if problem_data["time_limit"]["unit"] == "ms":
+            time_limit = problem_data["time_limit"]["value"]
+        else:
+            time_limit = problem_data["time_limit"]["value"] * 1000
+
+        return Problem.objects.create(
+            title=problem_data["title"],
+            description=problem_data["description"],
+            input_description=problem_data["input"],
+            output_description=problem_data["output"],
+            hint=problem_data["hint"],
+            test_case_score=problem_data["test_case_score"],
+            time_limit=time_limit,
+            memory_limit=problem_data["memory_limit"]["value"],
+            samples=problem_data["samples"],
+            source=problem_data.get("source", None),
+            is_public=False,
+            languages=SysOptions.language_names,
+            created_by=creator,
+            difficulty=Difficulty.MEDIUM).ID
+
+    def post(self, request):
+        raw_file = request.FILES.get('file', None)
+        if not raw_file:
+            Response('Please upload the file', HTTP_400_BAD_REQUEST)
+        # HACK windows 不能二次打开文件
+        with tempfile.NamedTemporaryFile("wb", delete=False) as tf:
+            for chunk in raw_file.chunks(4096):
+                tf.file.write(chunk)
+        problems = FPSParser(tf.name).parse()
+        os.unlink(tf.name)
+
+        info = []
+        cnt = 0
+        with transaction.atomic():
+            for _problem in problems:
+                if _problem["spj"]:
+                    info.append("Special judge not supported yet")
+                    cnt += 1
+                    continue
+                score = [10 for _ in range(len(_problem["test_cases"]))]
+                s = FPSProblemSerializer(data=_problem)
+                if not s.is_valid():
+                    return Response("Parse FPS file error: {}".format(s.errors), HTTP_400_BAD_REQUEST)
+                problem_data = s.data
+                problem_data["test_case_score"] = score
+                test_case_dir = os.path.join(TEST_CASE_DIR, str(self._create_problem(problem_data, request.user)))
+                os.mkdir(test_case_dir)
+                info.append(FPSHelper.save_test_case(_problem['test_cases'], test_case_dir))
+        return Response({"import_count": len(problems) - cnt, "info": info}, status=HTTP_200_OK)

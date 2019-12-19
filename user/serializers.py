@@ -49,3 +49,20 @@ class UserDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
         fields = '__all__'
+
+
+class RankUserDataSerializer(serializers.ModelSerializer):
+    ac_prob_num = serializers.SerializerMethodField()
+    ranking = serializers.SerializerMethodField()
+
+    def get_ranking(self, obj):
+        # print(obj.contest, obj.problem)
+        return RedisRank.get_ranking(obj.username.username)
+
+    def get_ac_prob_num(self, obj):
+        # print(obj.contest, obj.problem)
+        return obj.ac_prob.count('|')
+
+    class Meta:
+        model = UserData
+        exclude = ['ac_prob']

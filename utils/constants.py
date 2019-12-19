@@ -41,3 +41,7 @@ class JudgeStatus:
     PENDING = 6
     JUDGING = 7
     PARTIALLY_ACCEPTED = 8
+
+
+class SysOptions:
+    language_names = ['Java', 'C++', 'C', 'Python3']

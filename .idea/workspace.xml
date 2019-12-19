@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/utils/fps/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/fps/parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/redis_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/redis_util.py" afterDir="false" />
@@ -89,6 +92,16 @@
         <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
         <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Django default2" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="Judee_dev: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="problem: table" type="69fad909:PgImplModel$LocalTable" />
+      </path>
     </expand>
     <select />
   </component>
@@ -134,21 +147,26 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/.idea/workspace.xml&#10;C:/Users/97659/PycharmProjects/JudeeBE/.idea/JudeeBE.iml&#10;C:/Users/97659/PycharmProjects/JudeeBE/problem/views.py&#10;C:/Users/97659/PycharmProjects/JudeeBE/JudeeBE/settings.py" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/utils/fps" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\97659\PycharmProjects\JudeeBE\utils\fps" />
+      <recent name="C:\Users\97659\PycharmProjects\JudeeBE\utils" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\97659\PycharmProjects\JudeeBE\utils\fps" />
       <recent name="D:\pythonCode\JudeeBE\message_queue" />
       <recent name="C:\Users\97659\PycharmProjects\JudeeBE" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\97659\PycharmProjects\JudeeBE\utils" />
-    </key>
   </component>
   <component name="RunManager" selected="Django server.run">
+    <configuration name="fps-www.educg.net-codeforce-1-2833.xml" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/JudeeBE/utils/fps/fps-www.educg.net-codeforce-1-2833.xml" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="Unnamed" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug" nameIsGenerated="true">
       <module name="JudeeBE" />
       <option name="PORT" value="0" />
@@ -206,7 +224,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="runserver" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="parser" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="JudeeBE" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -214,13 +232,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utils/fps" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
-      <option name="PARAMETERS" value="runserver 0:8300" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utils/fps/parser.py" />
+      <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -242,28 +260,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_cases/test_remote.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="xss_filter" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="JudeeBE" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utils" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utils/xss_filter.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -298,21 +294,21 @@
     </configuration>
     <list>
       <item itemvalue="Django server.run" />
+      <item itemvalue="JavaScript Debug.fps-www.educg.net-codeforce-1-2833.xml" />
       <item itemvalue="Python.migrate" />
       <item itemvalue="Python.InMemoryZip" />
       <item itemvalue="Python.models" />
-      <item itemvalue="Python.runserver" />
       <item itemvalue="Python.test_remote" />
-      <item itemvalue="Python.xss_filter" />
+      <item itemvalue="Python.parser" />
       <item itemvalue="Python Remote Debug.Unnamed" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.parser" />
+        <item itemvalue="JavaScript Debug.fps-www.educg.net-codeforce-1-2833.xml" />
         <item itemvalue="Python.InMemoryZip" />
         <item itemvalue="Python.test_remote" />
         <item itemvalue="Python.models" />
-        <item itemvalue="Python.xss_filter" />
-        <item itemvalue="Python.runserver" />
       </list>
     </recent_temporary>
   </component>
@@ -329,7 +325,7 @@
               <path>
                 <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
                 <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="com.intellij.database.console.session.MessageBusSession@2ace175a" type="9fbbdea:ServiceModel$ServiceNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@72613b8d" type="9fbbdea:ServiceModel$ServiceNode" />
               </path>
             </expand>
             <select />
@@ -430,7 +426,8 @@
       <workItem from="1576595884012" duration="7313000" />
       <workItem from="1576636903603" duration="6710000" />
       <workItem from="1576668986946" duration="14244000" />
-      <workItem from="1576718703865" duration="6472000" />
+      <workItem from="1576718703865" duration="18839000" />
+      <workItem from="1576768046334" duration="2244000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -684,7 +681,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576720146402</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="feat: redis实现竞赛排行榜，同时实现ACM封榜（未测试）">
+      <created>1576725458787</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1576725458787</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -722,7 +726,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="..." />
     <MESSAGE value="支持各种题目检索方式" />
     <MESSAGE value="add: upload test case api" />
     <MESSAGE value="add: submission" />
@@ -747,51 +750,56 @@
     <MESSAGE value="feat: redis缓存实现统计数据" />
     <MESSAGE value="fix: redis缓存实现统计数据小bug&#10;fix: redis排行榜顺序不对bug" />
     <MESSAGE value="fix: redis缓存实现统计数据增加没有数据的日期" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: redis缓存实现统计数据增加没有数据的日期" />
+    <MESSAGE value="feat: redis实现竞赛排行榜，同时实现ACM封榜（未测试）" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: redis实现竞赛排行榜，同时实现ACM封榜（未测试）" />
   </component>
   <component name="WindowStateProjectService">
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1576562509679">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1280.680@0.0.1280.680" timestamp="1576562509679" />
-    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576720145773">
+    <state x="755" y="302" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1576770384334">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1576564322549" />
+    <state x="755" y="302" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384334" />
+    <state x="90" y="0" key="CommitChangelistDialog2" timestamp="1576725458222">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1576725458222" />
     <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576720145773" />
     <state x="0" y="33" key="DiffContextDialog" timestamp="1576482307988">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="0" y="33" key="DiffContextDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576482307988" />
-    <state x="503" y="190" key="FileChooserDialogImpl" timestamp="1576658577819">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="805" y="311" key="FileChooserDialogImpl" timestamp="1576742498703">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="503" y="190" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1576658577819" />
-    <state x="805" y="311" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1576482171136" />
-    <state width="1236" height="238" key="GridCell.Tab.0.bottom" timestamp="1576722737905">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="805" y="311" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1576742498703" />
+    <state width="2004" height="226" key="GridCell.Tab.0.bottom" timestamp="1576770384439">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
-    <state width="2004" height="258" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
-    <state width="1236" height="238" key="GridCell.Tab.0.center" timestamp="1576722737905">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state width="2004" height="226" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384439" />
+    <state width="2004" height="226" key="GridCell.Tab.0.center" timestamp="1576770384439">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
-    <state width="2004" height="258" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
-    <state width="1236" height="238" key="GridCell.Tab.0.left" timestamp="1576722737905">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state width="2004" height="226" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384439" />
+    <state width="2004" height="226" key="GridCell.Tab.0.left" timestamp="1576770384439">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
-    <state width="2004" height="258" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
-    <state width="1236" height="238" key="GridCell.Tab.0.right" timestamp="1576722737905">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state width="2004" height="226" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384439" />
+    <state width="2004" height="226" key="GridCell.Tab.0.right" timestamp="1576770384439">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
-    <state width="2004" height="258" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
+    <state width="2004" height="226" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384439" />
     <state width="218" height="539" key="HiddenNamespacesPopup" timestamp="1576500037523">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -801,24 +809,29 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1576552152242" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576720279710">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="233" y="69" key="Vcs.Push.Dialog.v2" timestamp="1576725461759">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1576564326703" />
+    <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1576725461759" />
     <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576720279710" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576071129591" />
-    <state x="518" y="268" key="com.intellij.ide.util.TipDialog" timestamp="1576718717128">
+    <state x="518" y="268" key="com.intellij.ide.util.TipDialog" timestamp="1576768047635">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="324" y="164" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1576636982847" />
-    <state x="518" y="268" key="com.intellij.ide.util.TipDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576718717128" />
-    <state x="436" y="252" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1576125341045">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="518" y="268" key="com.intellij.ide.util.TipDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576768047635" />
+    <state x="698" y="412" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1576742480309">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="436" y="252" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1576125341045" />
+    <state x="698" y="412" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576742480309" />
+    <state x="693" y="278" width="662" height="556" key="find.popup" timestamp="1576768493267">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="693" y="278" width="662" height="556" key="find.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1576768493267" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -833,6 +846,11 @@
           <line>2</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/problem/serializers.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -843,5 +861,6 @@
     <SUITE FILE_PATH="coverage/JudeeBE$xss_filter.coverage" NAME="xss_filter Coverage Results" MODIFIED="1574091299354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
     <SUITE FILE_PATH="coverage/JudeeBE$InMemoryZip.coverage" NAME="InMemoryZip Coverage Results" MODIFIED="1575986215088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
     <SUITE FILE_PATH="coverage/JudeeBE$test_remote.coverage" NAME="test_remote Coverage Results" MODIFIED="1575620095058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test_cases" />
+    <SUITE FILE_PATH="coverage/JudeeBE$parser.coverage" NAME="parser Coverage Results" MODIFIED="1576767030785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils/fps" />
   </component>
 </project>
