@@ -3,7 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contest/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contest/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contest/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/redis_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/redis_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +127,7 @@
     <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TODO_SCOPE" value="All Places" />
-    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
@@ -315,7 +321,17 @@
       <list>
         <serviceView>
           <treeState>
-            <expand />
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@2ace175a" type="9fbbdea:ServiceModel$ServiceNode" />
+              </path>
+            </expand>
             <select />
           </treeState>
         </serviceView>
@@ -414,7 +430,7 @@
       <workItem from="1576595884012" duration="7313000" />
       <workItem from="1576636903603" duration="6710000" />
       <workItem from="1576668986946" duration="14244000" />
-      <workItem from="1576718703865" duration="1332000" />
+      <workItem from="1576718703865" duration="6472000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -661,7 +677,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576688387884</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="fix: redis缓存实现统计数据增加没有数据的日期">
+      <created>1576720146402</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1576720146402</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -699,7 +722,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="完全解决权限问题" />
     <MESSAGE value="..." />
     <MESSAGE value="支持各种题目检索方式" />
     <MESSAGE value="add: upload test case api" />
@@ -724,18 +746,19 @@
     <MESSAGE value="add: redis实现总排行" />
     <MESSAGE value="feat: redis缓存实现统计数据" />
     <MESSAGE value="fix: redis缓存实现统计数据小bug&#10;fix: redis排行榜顺序不对bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: redis缓存实现统计数据小bug&#10;fix: redis排行榜顺序不对bug" />
+    <MESSAGE value="fix: redis缓存实现统计数据增加没有数据的日期" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: redis缓存实现统计数据增加没有数据的日期" />
   </component>
   <component name="WindowStateProjectService">
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1576562509679">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1280.680@0.0.1280.680" timestamp="1576562509679" />
-    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576688387271">
+    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576720145773">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1576564322549" />
-    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576688387271" />
+    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576720145773" />
     <state x="0" y="33" key="DiffContextDialog" timestamp="1576482307988">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -745,28 +768,28 @@
     </state>
     <state x="503" y="190" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1576658577819" />
     <state x="805" y="311" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1576482171136" />
-    <state width="2004" height="258" key="GridCell.Tab.0.bottom" timestamp="1576688464947">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1236" height="238" key="GridCell.Tab.0.bottom" timestamp="1576722737905">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="14" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1236" height="238" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
     <state width="2004" height="258" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
-    <state width="2004" height="258" key="GridCell.Tab.0.center" timestamp="1576688464947">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1236" height="238" key="GridCell.Tab.0.center" timestamp="1576722737905">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="14" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1236" height="238" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
     <state width="2004" height="258" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
-    <state width="2004" height="258" key="GridCell.Tab.0.left" timestamp="1576688464947">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1236" height="238" key="GridCell.Tab.0.left" timestamp="1576722737905">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="14" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1236" height="238" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
     <state width="2004" height="258" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
-    <state width="2004" height="258" key="GridCell.Tab.0.right" timestamp="1576688464947">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1236" height="238" key="GridCell.Tab.0.right" timestamp="1576722737905">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1236" height="14" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1576658582847" />
+    <state width="1236" height="238" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="138" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576669282084" />
     <state width="2004" height="258" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1576688464947" />
     <state width="218" height="539" key="HiddenNamespacesPopup" timestamp="1576500037523">
@@ -778,11 +801,11 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1576552152242" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576688391139">
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576720279710">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1576564326703" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576688391139" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576720279710" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -802,7 +825,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/user/views.py</url>
-          <line>144</line>
+          <line>141</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

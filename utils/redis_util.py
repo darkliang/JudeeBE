@@ -66,6 +66,6 @@ class RedisRank:
         # print(users)
         users_data = []
         for username in users:
-            print(username)
+            # print(username)
             users_data.append(UserData.objects.get(username=username.decode()))
         return cls.user_num, users_data

@@ -5,12 +5,9 @@ import re
 import xlsxwriter
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
-from django.db.models.aggregates import Count
-from django.db.models.functions import TruncMonth, TruncDay
 from django.db.utils import IntegrityError
 from django.http import HttpResponse
 from django.utils.datetime_safe import datetime
-from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.permissions import AllowAny
@@ -273,10 +270,11 @@ class UserRankingAPIView(APIView):
         except ValueError:
             return Response("Argument error", HTTP_400_BAD_REQUEST)
         count, get_res = RedisRank.get_top_n_users(limit, offset)
-        res = []
-        for user_data in get_res:
-            # userdata =
-            res.append(UserDataSerializer(user_data).data)
+        res = UserDataSerializer(get_res, many=True).data
+        # res = []
+        # for user_data in get_res:
+        #     # userdata =
+        #     res.append(UserDataSerializer(user_data).data)
         return Response({'count': count, 'results': res}, HTTP_200_OK)
 
 

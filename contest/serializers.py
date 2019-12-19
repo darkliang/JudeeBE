@@ -32,13 +32,13 @@ class ContestAdminSerializer(serializers.ModelSerializer):
 class OIContestRankSerializer(serializers.ModelSerializer):
     class Meta:
         model = OIContestRank
-        fields = "__all__"
+        exclude = ['contest', ]
 
 
 class ACMContestRankSerializer(serializers.ModelSerializer):
     class Meta:
         model = ACMContestRank
-        fields = "__all__"
+        exclude = ['contest', ]
 
 
 class ContestAnnouncementSerializer(serializers.ModelSerializer):

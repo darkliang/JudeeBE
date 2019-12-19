@@ -1,5 +1,6 @@
 from ipaddress import ip_network
 import dateutil.parser
+from django.core.cache import cache
 from django.db import transaction
 from django.db.models.query_utils import Q
 from django.db.utils import IntegrityError
@@ -194,24 +195,48 @@ class JoinContestWithPwd(APIView):
             return Response("Wrong password", status=HTTP_400_BAD_REQUEST)
 
 
-class OIContestRankView(viewsets.GenericViewSet, mixins.ListModelMixin):
-    permission_classes = (UserLoginOnly,)
-    queryset = OIContestRank.objects.all()
-    serializer_class = OIContestRankSerializer
-    pagination_class = LimitOffsetPagination
-    throttle_classes = [ScopedRateThrottle, ]
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('user', 'contest')
+class ContestRankView(APIView):
+    # permission_classes = (UserLoginOnly,)
 
+    def get(self, request):
+        contest = request.GET.get('contest', None)
+        try:
+            contest = Contest.objects.get(id=contest)
+        except Contest.DoesNotExist:
+            return Response(status=HTTP_204_NO_CONTENT)
+        # OI赛制 只有比赛中的查询才会查数据库 不然直接获取缓存
+        if contest.rule_type == RuleType.OI:
+            if contest.status == ContestStatus.CONTEST_UNDERWAY:
+                return Response(self.get_rank_list(contest), status=HTTP_200_OK)
+            cache_key = 'oi-rank:{}'.format(contest.id)
+            rank_list = cache.get(cache_key)
+            if not rank_list:
+                rank_list = self.get_rank_list(contest)
+                # 设置缓存7天过期
+                cache.set(cache_key, rank_list, 60 * 60 * 24 * 7)
+            return Response(rank_list, status=HTTP_200_OK)
+        elif contest.rule_type == RuleType.ACM:
+            if contest.status == ContestStatus.CONTEST_UNDERWAY:
+                return Response(self.get_rank_list(contest), status=HTTP_200_OK)
+            else:
+                cache_key = 'oi-rank:{}'.format(contest.id)
+                rank_list = cache.get(cache_key)
+                if not rank_list:
+                    rank_list = self.get_rank_list(contest)
+                    # 封榜状态 1小时后cache过期,否则7天过期
+                    if contest.status == ContestStatus.CONTEST_LOCK_RANK:
+                        cache.set(cache_key, rank_list, 60 * 60)
+                    else:
+                        cache.set(cache_key, rank_list, 60 * 60 * 24 * 7)
+                return Response(rank_list, status=HTTP_200_OK)
 
-class ACMContestRankView(viewsets.GenericViewSet, mixins.ListModelMixin):
-    permission_classes = (UserLoginOnly,)
-    queryset = OIContestRank.objects.all()
-    serializer_class = ACMContestRankSerializer
-    pagination_class = LimitOffsetPagination
-    throttle_classes = [ScopedRateThrottle, ]
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('user', 'contest')
+    def get_rank_list(self, contest):
+        if contest.rule_type == RuleType.OI:
+            queryset = OIContestRank.objects.filter(contest=contest).order_by('-total_score')
+            return OIContestRankSerializer(queryset, many=True).data
+        elif contest.rule_type == RuleType.ACM:
+            queryset = ACMContestRank.objects.filter(contest=contest).order_by('-accepted_number', 'total_time')
+            return ACMContestRankSerializer(queryset, many=True).data
 
 
 class ContestAnnouncementView(viewsets.ModelViewSet):

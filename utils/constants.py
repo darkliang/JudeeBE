@@ -2,6 +2,7 @@ class ContestStatus:
     CONTEST_NOT_START = "1"
     CONTEST_ENDED = "-1"
     CONTEST_UNDERWAY = "0"
+    CONTEST_LOCK_RANK = "2"
 
 
 class ContestType:

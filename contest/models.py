@@ -30,6 +30,9 @@ class Contest(models.Model):
         elif self.end_time < now():
             # 已经结束 返回-1
             return ContestStatus.CONTEST_ENDED
+        elif self.rule_type == RuleType.ACM and (self.end_time - now()).total_seconds() < 60 * 60:
+            # 比赛结束前1小时，封榜
+            return ContestStatus.CONTEST_LOCK_RANK
         else:
             # 正在进行 返回0
             return ContestStatus.CONTEST_UNDERWAY
@@ -75,7 +78,7 @@ class ACMContestRank(AbstractContestRank):
     class Meta:
         db_table = "acm_contest_rank"
         unique_together = (("user", "contest"),)
-        ordering = ("-accepted_number",)
+        # ordering = ("-accepted_number",)
 
 
 class OIContestRank(AbstractContestRank):
@@ -87,7 +90,7 @@ class OIContestRank(AbstractContestRank):
     class Meta:
         db_table = "oi_contest_rank"
         unique_together = (("user", "contest"),)
-        ordering = ("-total_score",)
+        # ordering = ("-total_score",)
 
 
 class ContestAnnouncement(models.Model):
