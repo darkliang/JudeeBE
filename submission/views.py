@@ -13,8 +13,7 @@ from JudeeBE.settings import TEST_CASE_DIR
 from contest.models import Contest
 from problem.models import Problem
 from submission.models import Submission
-from submission.serializers import SubmissionSerializer, SubmissionListSerializer, ContestSubmissionListSerializer, \
-    ContestSubmissionSerializer
+from submission.serializers import SubmissionSerializer, SubmissionListSerializer
 from utils.constants import ContestStatus
 from utils.redis_util import RedisQueue
 from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
@@ -129,6 +128,6 @@ class ContestSubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, m
 
     def get_serializer_class(self):
         if hasattr(self, 'action') and self.action == 'list':
-            return ContestSubmissionListSerializer
+            return SubmissionListSerializer
         if hasattr(self, 'action') and self.action == 'retrieve':
-            return ContestSubmissionSerializer
+            return SubmissionSerializer

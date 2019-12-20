@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/contest/migrations/0005_auto_20191220_2229.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/problem/migrations/0012_auto_20191220_2229.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contest/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/submission/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/submission/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/submission/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/fps/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/fps/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/redis_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/redis_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -419,7 +411,7 @@
       <workItem from="1576668986946" duration="14244000" />
       <workItem from="1576718703865" duration="18839000" />
       <workItem from="1576768046334" duration="5569000" />
-      <workItem from="1576808714470" duration="17608000" />
+      <workItem from="1576808714470" duration="19430000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -687,7 +679,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576770431310</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="fix: 未判断路径是否存在就使用rmtree()报错&#10;delete: contest problem的name&#10;update: fps导题可以导入无输入输出描述的题">
+      <created>1576857028004</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1576857028004</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -725,7 +724,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="add: upload test case api" />
     <MESSAGE value="add: submission" />
     <MESSAGE value="update: 改存储Zip为存储解压好的目录" />
     <MESSAGE value="refactor permission" />
@@ -750,7 +748,8 @@
     <MESSAGE value="fix: redis缓存实现统计数据增加没有数据的日期" />
     <MESSAGE value="feat: redis实现竞赛排行榜，同时实现ACM封榜（未测试）" />
     <MESSAGE value="feat: 支持fps/xml格式导题" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 支持fps/xml格式导题" />
+    <MESSAGE value="fix: 未判断路径是否存在就使用rmtree()报错&#10;delete: contest problem的name&#10;update: fps导题可以导入无输入输出描述的题" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: 未判断路径是否存在就使用rmtree()报错&#10;delete: contest problem的name&#10;update: fps导题可以导入无输入输出描述的题" />
   </component>
   <component name="WindowStateProjectService">
     <state x="321" y="67" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1576562509679">
@@ -761,11 +760,11 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="302" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384334" />
-    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576856899554">
+    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1576857027363">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1576725458222" />
-    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576856899554" />
+    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1576857027363" />
     <state x="0" y="33" key="DiffContextDialog" timestamp="1576482307988">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -776,30 +775,30 @@
     <state x="503" y="190" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1576658577819" />
     <state x="755" y="291" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1576824769447" />
     <state x="805" y="311" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1576742498703" />
-    <state width="2004" height="88" key="GridCell.Tab.0.bottom" timestamp="1576856561013">
+    <state width="2004" height="179" key="GridCell.Tab.0.bottom" timestamp="1576859178860">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="173" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886242" />
-    <state width="2004" height="88" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1576856561013" />
-    <state width="2004" height="88" key="GridCell.Tab.0.center" timestamp="1576856561012">
+    <state width="2004" height="179" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1576859178860" />
+    <state width="2004" height="179" key="GridCell.Tab.0.center" timestamp="1576859178859">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="173" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886242" />
-    <state width="2004" height="88" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1576856561012" />
-    <state width="2004" height="88" key="GridCell.Tab.0.left" timestamp="1576856561012">
+    <state width="2004" height="179" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1576859178859" />
+    <state width="2004" height="179" key="GridCell.Tab.0.left" timestamp="1576859178859">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="173" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886241" />
-    <state width="2004" height="88" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1576856561012" />
-    <state width="2004" height="88" key="GridCell.Tab.0.right" timestamp="1576856561013">
+    <state width="2004" height="179" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1576859178859" />
+    <state width="2004" height="179" key="GridCell.Tab.0.right" timestamp="1576859178859">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
     <state width="1876" height="173" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886242" />
-    <state width="2004" height="88" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1576856561013" />
+    <state width="2004" height="179" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1576859178859" />
     <state width="218" height="539" key="HiddenNamespacesPopup" timestamp="1576500037523">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -809,11 +808,11 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1576552152242" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576770433033">
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1576857029345">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1576725461759" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576770433033" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576857029345" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -829,10 +828,14 @@
     </state>
     <state x="436" y="252" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1576125341045" />
     <state x="698" y="412" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576742480309" />
-    <state x="693" y="278" width="662" height="556" key="find.popup" timestamp="1576768493267">
+    <state x="693" y="278" width="662" height="556" key="find.popup" timestamp="1576858533441">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="693" y="278" width="662" height="556" key="find.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1576768493267" />
+    <state x="693" y="278" width="662" height="556" key="find.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1576858533441" />
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup" timestamp="1576858778286">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1576858778286" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
