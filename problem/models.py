@@ -85,9 +85,9 @@ class Problem(models.Model):
 class ContestProblem(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
-    name = models.CharField(max_length=5, null=False)
+    # name = models.CharField(max_length=5, null=False)
     first_ac = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table = "contest_problem"
-        unique_together = (("problem", "contest"), ("name", "contest"))
+        unique_together = (("problem", "contest"), )

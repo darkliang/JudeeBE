@@ -35,7 +35,7 @@ class RedisQueue:
 
 
 class RedisRank:
-    user_num = 0
+    user_num = get_redis_connection('default').zcard('user:score')
     name = 'user:score'
 
     @classmethod

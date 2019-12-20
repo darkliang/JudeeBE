@@ -10,7 +10,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, filters
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN, \
+    HTTP_204_NO_CONTENT
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
@@ -29,7 +30,7 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     pagination_class = LimitOffsetPagination
     filter_fields = ('is_public', 'created_by')
-    search_fields = ('title', 'ID')
+    search_fields = ('title', 'ID', 'source')
     # permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
@@ -85,23 +86,34 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     def update(self, request, *args, **kwargs):
         data = dict(request.data)
         problem = self.get_object()
-        total_score = 0
-        for score in data["test_case_score"]:
-            total_score += score
-        data["total_score"] = total_score
-        problem.tags.clear()
-        tags = data.pop("tags")
-        data.pop("created_by")
-        for item in tags:
-            try:
-                tag = ProblemTag.objects.get(name=item)
-            except ProblemTag.DoesNotExist:
-                tag = ProblemTag.objects.create(name=item)
-            problem.tags.add(tag)
+        if data.get("test_case_score", None):
+            total_score = 0
+            for score in data["test_case_score"]:
+                total_score += score
+            data["total_score"] = total_score
+        if data.get("tags", None):
+            problem.tags.clear()
+            tags = data.pop("tags")
+            data.pop("created_by")
+            for item in tags:
+                try:
+                    tag = ProblemTag.objects.get(name=item)
+                except ProblemTag.DoesNotExist:
+                    tag = ProblemTag.objects.create(name=item)
+                problem.tags.add(tag)
         for k, v in data.items():
             setattr(problem, k, v)
         problem.save()
         return Response(problem.ID, status=HTTP_200_OK)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # 删除样例
+        test_case_dir = os.path.join(TEST_CASE_DIR, str(instance.ID))
+        if os.path.exists(test_case_dir):
+            shutil.rmtree(test_case_dir)
+        self.perform_destroy(instance)
+        return Response(status=HTTP_204_NO_CONTENT)
 
 
 class ProblemTagView(viewsets.ModelViewSet):
@@ -151,7 +163,8 @@ class TestCaseUploadAPI(APIView):
             return Response(info, status=HTTP_400_BAD_REQUEST)
         else:
             test_case_dir = os.path.join(TEST_CASE_DIR, str(problem.ID))
-            shutil.rmtree(test_case_dir)
+            if os.path.exists(test_case_dir):
+                shutil.rmtree(test_case_dir)
             for fileM in file.namelist():
                 file.extract(fileM, test_case_dir)
             file.close()
@@ -159,7 +172,7 @@ class TestCaseUploadAPI(APIView):
 
 
 class TestCaseDownloadAPI(APIView):
-    # permission_classes = (ManagerOnly,)
+    permission_classes = (ManagerOnly,)
     throttle_scope = "download"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -201,6 +214,7 @@ class FPSProblemImport(APIView):
             output_description=problem_data["output"],
             hint=problem_data["hint"],
             test_case_score=problem_data["test_case_score"],
+            total_score=len(problem_data["test_case_score"]) * 10,
             time_limit=time_limit,
             memory_limit=problem_data["memory_limit"]["value"],
             samples=problem_data["samples"],
@@ -226,7 +240,8 @@ class FPSProblemImport(APIView):
         with transaction.atomic():
             for _problem in problems:
                 if _problem["spj"]:
-                    info.append("Special judge not supported yet")
+                    # Special judge not supported yet
+                    info.append([])
                     cnt += 1
                     continue
                 score = [10 for _ in range(len(_problem["test_cases"]))]

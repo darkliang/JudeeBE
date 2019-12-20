@@ -22,7 +22,7 @@ class ProblemListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
         exclude = ['contest', 'description', 'input_description', 'output_description', 'samples', 'test_case_score',
-                   'hint', 'languages', 'template', 'time_limit', 'memory_limit', 'source', 'statistic_info']
+                   'hint', 'languages', 'template', 'time_limit', 'memory_limit', 'statistic_info']
 
 
 class FPSProblemSerializer(serializers.Serializer):
@@ -36,8 +36,8 @@ class FPSProblemSerializer(serializers.Serializer):
 
     title = serializers.CharField(max_length=128)
     description = serializers.CharField()
-    input = serializers.CharField()
-    output = serializers.CharField()
+    input = serializers.CharField(allow_null=True,)
+    output = serializers.CharField(allow_null=True,)
     hint = serializers.CharField(allow_blank=True, allow_null=True)
     time_limit = UnitSerializer()
     memory_limit = UnitSerializer()

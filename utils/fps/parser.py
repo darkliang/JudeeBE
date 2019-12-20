@@ -65,11 +65,11 @@ class FPSParser(object):
                 if value <= 0:
                     raise ValueError("Invalid memory limit value")
                 problem["memory_limit"]["value"] = value
-            elif tag in ["template", "append", "prepend", "solution"]:
-                lang = item.attrib.get("language")
-                if not lang:
-                    raise ValueError("Invalid " + tag + ", language name is missed")
-                problem[tag].append({"language": lang, "code": item.text})
+            # elif tag in ["template", "append", "prepend", "solution"]:
+            #     lang = item.attrib.get("language")
+            #     if not lang:
+            #         raise ValueError("Invalid " + tag + ", language name is missed")
+            #     problem[tag].append({"language": lang, "code": item.text})
             elif tag == "spj":
                 lang = item.attrib.get("language")
                 if not lang:
@@ -128,7 +128,6 @@ class FPSHelper:
 
 
 if __name__ == "__main__":
-    import pprint
 
     parser = FPSParser(".xml")
     helper = FPSHelper()

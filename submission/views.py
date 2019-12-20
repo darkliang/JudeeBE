@@ -113,7 +113,7 @@ class SubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.R
 
 
 class ContestSubmissionGetView(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModelMixin):
-    queryset = Submission.objects.filter(contest_id__isnull=False)
+    queryset = Submission.objects.all()
     permission_classes = (SubmissionCheck,)
     pagination_class = LimitOffsetPagination
     filter_backends = (DjangoFilterBackend,)

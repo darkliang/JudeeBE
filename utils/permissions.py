@@ -105,7 +105,6 @@ class SubmissionCheck(permissions.BasePermission):
 
     def has_object_permission(self, request, view, submission):
         if hasattr(view, 'action') and view.action == 'retrieve':
-
             try:
                 if request.user.type == (AdminType.ADMIN or AdminType.SUPER_ADMIN):
                     return True

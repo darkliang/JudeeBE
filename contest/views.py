@@ -1,7 +1,6 @@
 from ipaddress import ip_network
 import dateutil.parser
 from django.core.cache import cache
-from django.db import transaction
 from django.db.models.query_utils import Q
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
@@ -9,8 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
-    HTTP_500_INTERNAL_SERVER_ERROR
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 from contest.models import Contest, ACMContestRank, OIContestRank, ContestAnnouncement
@@ -116,13 +114,14 @@ class ContestAddProblemAPIView(APIView):
         problem_not_exist = []
         for problem_id in data.pop("problems"):
             try:
-                problem = Problem.objects.get(ID=problem_id['problem'])
-                contest_problem = ContestProblem(problem=problem, contest=contest, name=problem_id['name'])
+                problem = Problem.objects.get(ID=problem_id)
+                contest_problem = ContestProblem(problem=problem, contest=contest)
                 contest_problem.save()
                 # contest.problem_set.add(problem)
             except Problem.DoesNotExist:
                 problem_not_exist.append(problem_id)
-            except IntegrityError:
+            except IntegrityError as e:
+                print(e)
                 continue
 
         if len(problem_not_exist) > 0:
@@ -149,17 +148,18 @@ class ContestDeleteProblemAPIView(APIView):
 
 
 class ContestListProblemAPIView(APIView):
-    permission_classes = (UserLoginOnly,)
+    # permission_classes = (UserLoginOnly,)
 
     def get(self, request, contest_id):
         try:
             contest = Contest.objects.get(id=contest_id)
         except Contest.DoesNotExist:
             return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
-        queryset = contest.problem_set.all()
+        queryset = contest.problem_set.all().order_by('contestproblem__id')
+
         return Response(
             queryset.values('ID', 'title', 'total_score', 'submission_number', 'accepted_number', 'created_by',
-                            'contestproblem__name', 'contestproblem__first_ac'),
+                            'contestproblem__id', 'contestproblem__first_ac', 'is_public'),
             status=HTTP_200_OK)
 
 
@@ -202,33 +202,42 @@ class ContestRankView(APIView):
         contest = request.GET.get('contest', None)
         try:
             contest = Contest.objects.get(id=contest)
-        except Contest.DoesNotExist:
-            return Response(status=HTTP_204_NO_CONTENT)
+        except (Contest.DoesNotExist, ValueError):
+            return Response(status=HTTP_404_NOT_FOUND)
         # OI赛制 只有比赛中的查询才会查数据库 不然直接获取缓存
+        problems = contest.problem_set.all().order_by('contestproblem__id').values('ID', 'contestproblem__id')
         if contest.rule_type == RuleType.OI:
             if contest.status == ContestStatus.CONTEST_UNDERWAY:
-                return Response(self.get_rank_list(contest), status=HTTP_200_OK)
-            cache_key = 'oi-rank:{}'.format(contest.id)
+                return Response(
+                    {'rule_type': contest.rule_type, 'problems': problems, 'rank_list': self.get_rank_list(contest)},
+                    status=HTTP_200_OK)
+            cache_key = 'contest-rank:{}'.format(contest.id)
             rank_list = cache.get(cache_key)
             if not rank_list:
-                rank_list = self.get_rank_list(contest)
+                rank_list = {'rule_type': contest.rule_type, 'problems': problems,
+                             'rank_list': self.get_rank_list(contest)}
                 # 设置缓存7天过期
                 cache.set(cache_key, rank_list, 60 * 60 * 24 * 7)
-            return Response(rank_list, status=HTTP_200_OK)
+            return Response(rank_list,
+                            status=HTTP_200_OK)
         elif contest.rule_type == RuleType.ACM:
             if contest.status == ContestStatus.CONTEST_UNDERWAY:
-                return Response(self.get_rank_list(contest), status=HTTP_200_OK)
+                return Response(
+                    {'rule_type': contest.rule_type, 'problems': problems, 'rank_list': self.get_rank_list(contest)},
+                    status=HTTP_200_OK)
             else:
-                cache_key = 'oi-rank:{}'.format(contest.id)
+                cache_key = 'contest-rank:{}'.format(contest.id)
                 rank_list = cache.get(cache_key)
                 if not rank_list:
-                    rank_list = self.get_rank_list(contest)
+                    rank_list = {'rule_type': contest.rule_type, 'problems': problems,
+                                 'rank_list': self.get_rank_list(contest)}
                     # 封榜状态 1小时后cache过期,否则7天过期
                     if contest.status == ContestStatus.CONTEST_LOCK_RANK:
                         cache.set(cache_key, rank_list, 60 * 60)
                     else:
                         cache.set(cache_key, rank_list, 60 * 60 * 24 * 7)
-                return Response(rank_list, status=HTTP_200_OK)
+                return Response(rank_list,
+                                status=HTTP_200_OK)
 
     def get_rank_list(self, contest):
         if contest.rule_type == RuleType.OI:
