@@ -19,27 +19,58 @@ from utils.redis_util import RedisQueue
 from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
 
 
-class SubmissionRejudgeAPI(APIView):
+class ManagerSubmissionView(viewsets.ModelViewSet):
+    queryset = Submission.objects.all()
     permission_classes = (ManagerOnly,)
+    pagination_class = LimitOffsetPagination
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('username', 'result', 'language', 'problem', 'contest')
 
-    def get(self, request):
-        id = request.GET.get("id")
-        if not id:
-            return Response("Parameter error, id is required", status=HTTP_400_BAD_REQUEST)
-        try:
-            submission = Submission.objects.select_related("problem").get(id=id, contest_id__isnull=True)
-        except Submission.DoesNotExist:
-            return Response("Submission does not exists", status=HTTP_404_NOT_FOUND)
-        submission.info = []
-        submission.compile_error_info = None
-        submission.time_cost = None
-        submission.memory_cost = None
-        submission.score = None
-        submission.save()
+    def get_serializer_class(self):
+        if hasattr(self, 'action') and self.action == 'list':
+            return SubmissionListSerializer
+        if hasattr(self, 'action') and self.action == 'retrieve':
+            return SubmissionSerializer
 
-        # SUBMISSION_QUEUE.produce(submission.ID)
-        RedisQueue.put('queue:submission', submission.ID)
+    # 用于rejudge
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+        RedisQueue.put('queue:submission', serializer.data.ID)
+
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+#
+# class SubmissionRejudgeAPI(APIView):
+#     permission_classes = (ManagerOnly,)
+#
+#     def get(self, request):
+#         submission_id = request.GET.get("submission")
+#         if not id:
+#             return Response("Parameter error, id is required", status=HTTP_400_BAD_REQUEST)
+#         try:
+#             submission = Submission.objects.get(id=submission_id)
+#         except Submission.DoesNotExist:
+#             return Response("Submission does not exists", status=HTTP_404_NOT_FOUND)
+#         submission.info = []
+#         submission.compile_error_info = None
+#         submission.time_cost = None
+#         submission.memory_cost = None
+#         submission.score = None
+#         submission.save()
+#
+#         # SUBMISSION_QUEUE.produce(submission.ID)
+#         RedisQueue.put('queue:submission', submission.ID)
+#         return Response(status=HTTP_204_NO_CONTENT)
 
 
 def check_contest_permission(submission_data):

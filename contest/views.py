@@ -241,6 +241,7 @@ class ContestRankView(APIView):
                     {'rule_type': contest.rule_type, 'problems': problems, 'rank_list': self.get_rank_list(contest)},
                     status=HTTP_200_OK)
             cache_key = 'contest-rank:{}'.format(contest.id)
+            # cache.delete(cache_key)
             rank_list = cache.get(cache_key)
             if not rank_list:
                 rank_list = {'rule_type': contest.rule_type, 'problems': problems,
@@ -270,7 +271,7 @@ class ContestRankView(APIView):
 
     def get_rank_list(self, contest):
         if contest.rule_type == RuleType.OI:
-            queryset = OIContestRank.objects.filter(contest=contest).order_by('-total_score')
+            queryset = OIContestRank.objects.filter(contest=contest).order_by('-total_score', 'user__username')
             return OIContestRankSerializer(queryset, many=True).data
         elif contest.rule_type == RuleType.ACM:
             queryset = ACMContestRank.objects.filter(contest=contest).order_by('-accepted_number', 'total_time')

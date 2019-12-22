@@ -31,7 +31,7 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
     pagination_class = LimitOffsetPagination
     filter_fields = ('is_public', 'created_by')
     search_fields = ('title', 'ID', 'source')
-    # permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -91,10 +91,10 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
             for score in data["test_case_score"]:
                 total_score += score
             data["total_score"] = total_score
+        data.pop("created_by")
         if data.get("tags", None):
             problem.tags.clear()
             tags = data.pop("tags")
-            data.pop("created_by")
             for item in tags:
                 try:
                     tag = ProblemTag.objects.get(name=item)
