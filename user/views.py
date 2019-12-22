@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import collections
 import os
 import re
 import xlsxwriter
@@ -26,7 +25,7 @@ from utils.shortcuts import rand_str
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
     UserLoginDataSerializer, RankUserDataSerializer
-from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired, UserLoginOnly
+from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired
 from django.db.models import Q
 from datetime import timedelta
 from django.core.cache import cache
@@ -65,9 +64,10 @@ class UserChangeView(viewsets.GenericViewSet, mixins.UpdateModelMixin):
 
 # 管理员的功能
 class UserChangeAllView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    # 不能修改超管
+    queryset = User.objects.exclude(type=3)
     serializer_class = UserSerializer
-    permission_classes = (ManagerOnly,)
+    permission_classes = (SuperAdminRequired,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -79,7 +79,7 @@ class UserChangePwdAPIView(APIView):
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
-    def put(self, request, format=None):
+    def put(self, request):
         data = request.data
         password = data.get('password', None)
         new_password = data.get('new_password', None)
@@ -146,8 +146,9 @@ class UserLoginAPIView(APIView):
             user.save()
             if user.type == AdminType.USER:
                 user_data = UserData.objects.get(username__exact=user.username)
+                ranking = RedisRank.record_score({user_data.username.username: user_data.score})
                 new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
-                            'nickname': user.nickname, 'email': user.email, 'type': user.type}
+                            'nickname': user.nickname, 'email': user.email, 'type': user.type, 'ranking': ranking}
             else:
                 new_data = {'token': token, 'username': user.username, 'type': user.type, 'email': user.email,
                             'nickname': user.nickname}
@@ -191,7 +192,6 @@ class UserRegisterAPIView(APIView):
 class UserBulkRegistration(APIView):
     permission_classes = (SuperAdminRequired,)
 
-    # serializer_classes = GenerateUserSerializer
     def get(self, request):
         """
         download users excel
@@ -301,7 +301,6 @@ class UserStatisticsAPIVIEW(APIView):
             return Response(status=HTTP_204_NO_CONTENT)
         offset = int(request.GET.get('offset', 7))
         cache_key = 'statistic:{}:{}'.format(username, offset)
-        # cache.delete(cache_key)
         date_list = cache.get(cache_key)
         if not date_list:
             now = datetime.now()
@@ -324,6 +323,6 @@ class UserStatisticsAPIVIEW(APIView):
                     continue
                 date['rate'] = date['ac'] / date['submit']
                 # 默认缓存一天
-            cache.set(cache_key, date_list, 60 * 60 * 24)
+            cache.set(cache_key, date_list, 60 * 60 * 8)
 
         return Response(date_list, status=HTTP_200_OK)

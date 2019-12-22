@@ -8,7 +8,7 @@ routers = routers.DefaultRouter()
 routers.register('userdata', views.UserDataView)
 routers.register('user', views.UserView)
 routers.register('change_profile', views.UserChangeView)
-routers.register('change_all', views.UserChangeAllView)
+routers.register('change-all', views.UserChangeAllView)
 routers.register('userlogindata', views.UserLoginDataView)
 # routers.register('change_pwd', views.UserChangePwdAPIView)
 

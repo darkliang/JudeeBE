@@ -8,7 +8,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
+    HTTP_403_FORBIDDEN
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 from contest.models import Contest, ACMContestRank, OIContestRank, ContestAnnouncement
@@ -101,7 +102,7 @@ class ContestView(viewsets.ModelViewSet):
 
 
 class ContestAddProblemAPIView(APIView):
-    # permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerPostOnly,)
     throttle_scope = "post"
     throttle_classes = [ScopedRateThrottle, ]
 
@@ -148,7 +149,7 @@ class ContestDeleteProblemAPIView(APIView):
 
 
 class ContestListProblemAPIView(APIView):
-    # permission_classes = (UserLoginOnly,)
+    permission_classes = (UserLoginOnly,)
 
     def get(self, request, contest_id):
         try:
@@ -195,8 +196,36 @@ class JoinContestWithPwd(APIView):
             return Response("Wrong password", status=HTTP_400_BAD_REQUEST)
 
 
+class JoinContest(APIView):
+    permission_classes = (UserLoginOnly,)
+
+    def post(self, request, contest_id):
+        try:
+            contest = Contest.objects.get(id=contest_id)
+        except Contest.DoesNotExist:
+            return Response("Contest does not exist", status=HTTP_404_NOT_FOUND)
+        if contest.password:
+            return Response("Password required", status=HTTP_403_FORBIDDEN)
+        if contest.status == ContestStatus.CONTEST_ENDED:
+            return Response("Contest is ended", status=HTTP_403_FORBIDDEN)
+        if contest.rule_type == RuleType.OI:
+            try:
+                OIContestRank.objects.create(user=request.user, contest=contest)
+                return Response(ContestSerializer(contest).data, status=HTTP_200_OK)
+
+            except IntegrityError:
+                return Response(status=HTTP_204_NO_CONTENT)
+        elif contest.rule_type == RuleType.ACM:
+            try:
+                ACMContestRank.objects.create(user=request.user, contest=contest)
+                return Response(ContestSerializer(contest).data, status=HTTP_200_OK)
+            except IntegrityError:
+                return Response(status=HTTP_204_NO_CONTENT)
+        return Response(status=HTTP_204_NO_CONTENT)
+
+
 class ContestRankView(APIView):
-    # permission_classes = (UserLoginOnly,)
+    permission_classes = (UserLoginOnly,)
 
     def get(self, request):
         contest = request.GET.get('contest', None)
@@ -216,8 +245,8 @@ class ContestRankView(APIView):
             if not rank_list:
                 rank_list = {'rule_type': contest.rule_type, 'problems': problems,
                              'rank_list': self.get_rank_list(contest)}
-                # 设置缓存7天过期
-                cache.set(cache_key, rank_list, 60 * 60 * 24 * 7)
+                # 设置缓存1天过期
+                cache.set(cache_key, rank_list, 60 * 60 * 24)
             return Response(rank_list,
                             status=HTTP_200_OK)
         elif contest.rule_type == RuleType.ACM:
@@ -231,11 +260,11 @@ class ContestRankView(APIView):
                 if not rank_list:
                     rank_list = {'rule_type': contest.rule_type, 'problems': problems,
                                  'rank_list': self.get_rank_list(contest)}
-                    # 封榜状态 1小时后cache过期,否则7天过期
+                    # 封榜状态 1小时后cache过期,否则1天过期
                     if contest.status == ContestStatus.CONTEST_LOCK_RANK:
                         cache.set(cache_key, rank_list, 60 * 60)
                     else:
-                        cache.set(cache_key, rank_list, 60 * 60 * 24 * 7)
+                        cache.set(cache_key, rank_list, 60 * 60 * 24 * 1)
                 return Response(rank_list,
                                 status=HTTP_200_OK)
 
@@ -250,7 +279,7 @@ class ContestRankView(APIView):
 
 class ContestAnnouncementView(viewsets.ModelViewSet):
     queryset = ContestAnnouncement.objects.all()
-    # permission_classes = (ManagerPostOnly,)
+    permission_classes = (ManagerPostOnly,)
     serializer_class = ContestAnnouncementSerializer
     throttle_classes = [ScopedRateThrottle, ]
     filter_backends = (DjangoFilterBackend,)
