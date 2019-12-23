@@ -21,15 +21,13 @@ class Submission(models.Model):
     # 从JudgeServer返回的判题详情 之前statistic info 整合进info
     info = JSONField(default=list)
     language = models.CharField(max_length=15)
-    # shared = models.BooleanField(default=False)
+    shared = models.BooleanField(default=False)
 
     # 存储该提交所用时间和内存值，方便提交列表显示
-    # {time_cost: "", memory_cost: "", err_info: "", score: 0}
     time_cost = models.IntegerField(null=True)
     memory_cost = models.IntegerField(null=True)
     score = models.IntegerField(null=True)
     compile_error_info = models.TextField(null=True)
-    # statistic_info = JSONField(default=default_statistic_info)
     ip = models.GenericIPAddressField(unpack_ipv4=False, null=True)
 
     class Meta:

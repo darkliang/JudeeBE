@@ -1,6 +1,4 @@
 from rest_framework import serializers
-
-from problem.models import ContestProblem
 from submission.models import Submission
 
 
@@ -11,8 +9,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
 
 class SubmissionListSerializer(serializers.ModelSerializer):
-    problem = serializers.SlugRelatedField(read_only=True, slug_field="ID")
-
     class Meta:
         model = Submission
-        exclude = ("info", "contest", "code", "ip",)
+        exclude = ("info", "code", "ip",)

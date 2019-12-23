@@ -6,7 +6,6 @@ from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from django.db.utils import IntegrityError
 from django.http import HttpResponse
-from django.utils.datetime_safe import datetime
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, mixins
 from rest_framework.permissions import AllowAny
@@ -21,7 +20,7 @@ from JudeeBE.settings import GENERATED_USER_DIR
 from submission.models import Submission
 from utils.constants import AdminType
 from utils.redis_util import RedisRank
-from utils.shortcuts import rand_str
+from utils.shortcuts import rand_str, submission_aggregate
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
     UserLoginDataSerializer, RankUserDataSerializer
@@ -29,6 +28,7 @@ from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, Super
 from django.db.models import Q
 from datetime import timedelta
 from django.core.cache import cache
+from django.utils.timezone import now
 
 
 class UserDataView(viewsets.ModelViewSet):
@@ -142,7 +142,7 @@ class UserLoginAPIView(APIView):
         if user.check_password(password):
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
-            user.last_login = str(datetime.today())
+            user.last_login = now()
             user.save()
             if user.type == AdminType.USER:
                 user_data = UserData.objects.get(username__exact=user.username)
@@ -300,29 +300,17 @@ class UserStatisticsAPIVIEW(APIView):
         if not username:
             return Response(status=HTTP_204_NO_CONTENT)
         offset = int(request.GET.get('offset', 7))
-        cache_key = 'statistic:{}:{}'.format(username, offset)
+        cache_key = 'statistics:{}:{}'.format(username, offset)
+        # cache.delete(cache_key)
         date_list = cache.get(cache_key)
         if not date_list:
-            now = datetime.now()
-            days = now - timedelta(days=offset)
+            cur = now()
+            days = cur - timedelta(days=offset)
 
             submissions = Submission.objects.filter(username=username, create_time__gte=days).values('create_time',
                                                                                                      'result')
-            date_list = [{'date': str((now - timedelta(days=i)).date()), 'ac': 0, 'submit': 0, 'rate': 0.0} for i in
-                         range(offset, 0, -1)]
-
-            for submission in submissions:
-                off = (now - submission['create_time']).days
-                date_list[-(off + 1)]['submit'] += 1
-
-                if submission['result'] == 0:
-                    date_list[-(off + 1)]['ac'] += 1
-
-            for date in date_list:
-                if date['submit'] == 0:
-                    continue
-                date['rate'] = date['ac'] / date['submit']
-                # 默认缓存一天
+            date_list = submission_aggregate(submissions, cur, offset)
+            # 默认缓存一天
             cache.set(cache_key, date_list, 60 * 60 * 8)
 
         return Response(date_list, status=HTTP_200_OK)

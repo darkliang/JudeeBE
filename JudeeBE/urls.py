@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from django.contrib import admin
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
@@ -22,6 +21,7 @@ urlpatterns = [
     url(r'', include('submission.urls')),
     url(r'', include('user.urls')),
     url(r'', include('contest.urls')),
+    url(r'', include('administrator.urls')),
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token)
 ]

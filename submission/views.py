@@ -1,11 +1,12 @@
 import ipaddress
 import os
+from django_bulk_update.helper import bulk_update
+from django.db.models.query_utils import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK, HTTP_204_NO_CONTENT, \
-    HTTP_403_FORBIDDEN
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_403_FORBIDDEN
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
@@ -14,7 +15,7 @@ from contest.models import Contest
 from problem.models import Problem
 from submission.models import Submission
 from submission.serializers import SubmissionSerializer, SubmissionListSerializer
-from utils.constants import ContestStatus
+from utils.constants import ContestStatus, JudgeStatus
 from utils.redis_util import RedisQueue
 from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
 
@@ -32,7 +33,7 @@ class ManagerSubmissionView(viewsets.ModelViewSet):
         if hasattr(self, 'action') and self.action == 'retrieve':
             return SubmissionSerializer
 
-    # 用于rejudge
+    # 用于单个题目rejudge
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
@@ -49,28 +50,30 @@ class ManagerSubmissionView(viewsets.ModelViewSet):
         return Response(status=HTTP_204_NO_CONTENT)
 
 
-#
-# class SubmissionRejudgeAPI(APIView):
-#     permission_classes = (ManagerOnly,)
-#
-#     def get(self, request):
-#         submission_id = request.GET.get("submission")
-#         if not id:
-#             return Response("Parameter error, id is required", status=HTTP_400_BAD_REQUEST)
-#         try:
-#             submission = Submission.objects.get(id=submission_id)
-#         except Submission.DoesNotExist:
-#             return Response("Submission does not exists", status=HTTP_404_NOT_FOUND)
-#         submission.info = []
-#         submission.compile_error_info = None
-#         submission.time_cost = None
-#         submission.memory_cost = None
-#         submission.score = None
-#         submission.save()
-#
-#         # SUBMISSION_QUEUE.produce(submission.ID)
-#         RedisQueue.put('queue:submission', submission.ID)
-#         return Response(status=HTTP_204_NO_CONTENT)
+class SubmissionRejudgeAPI(APIView):
+    permission_classes = (ManagerOnly,)
+
+    def post(self, request):
+        submissions_id = request.data.copy().pop('submissions')
+        if not submissions_id:
+            return Response("Parameter error, submissions is required", status=HTTP_400_BAD_REQUEST)
+
+        submissions = Submission.objects.filter(ID__in=submissions_id).exclude(
+            Q(result=JudgeStatus.PENDING) | Q(result=JudgeStatus.JUDGING))
+        for submission in submissions:
+            submission.info = []
+            submission.compile_error_info = None
+            submission.time_cost = None
+            submission.memory_cost = None
+            submission.score = None
+            submission.result = JudgeStatus.PENDING
+        bulk_update(submissions, update_fields=['info', 'compile_error_info', 'time_cost', 'memory_cost',
+                                                'score', 'result'])
+        submissions_id = []
+        for submission in submissions:
+            submissions_id.append(submission.ID)
+            RedisQueue.put('queue:submission', submission.ID)
+        return Response(submissions_id, status=HTTP_200_OK)
 
 
 def check_contest_permission(submission_data):

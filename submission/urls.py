@@ -10,4 +10,5 @@ routers.register("contest-submission", views.ContestSubmissionGetView),
 routers.register("manager-submission", views.ManagerSubmissionView)
 urlpatterns = [
     url('', include(routers.urls)),
+    url(r'^rejudge/$', views.SubmissionRejudgeAPI.as_view())
 ]

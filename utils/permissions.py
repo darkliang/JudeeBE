@@ -110,7 +110,8 @@ class SubmissionCheck(permissions.BasePermission):
                     return True
             except AttributeError:
                 return False
-
+            if submission.shared:
+                return True
             if request.user == submission.username:
                 return True
             else:
