@@ -23,11 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@x8t=y8%*+y1#=%15=01dh@$8hqh0%&&2f1ntk&e$olprw1fkq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
-
-# Application definition
+# deploying settings
+ALLOWED_HOSTS = ["snail.leeeung.com","judee.leeeung.com","oj.leeeung.com"]
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_SSL_REDIRECT = False
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -73,7 +78,7 @@ JWT_AUTH = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://10.20.1.155:6379/0",
+        "LOCATION": "redis://localhost:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PASSWORD": "123456"
@@ -118,10 +123,10 @@ WSGI_APPLICATION = 'JudeeBE.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Judee_dev',
+        'NAME': 'Judee_prod',
         'USER': 'postgres',
         'PASSWORD': 'ljh123456',
-        'HOST': 'cs308.leeeung.com',
+        'HOST': 'localhost',
         'PORT': '54321',
     }
 }
@@ -167,7 +172,15 @@ CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_AGE = 60 * 60 * 24
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-TEST_CASE_DIR = '\\\\HOMEDISK\\homes\\h2s\\test_cases\\'
-GENERATED_USER_DIR = '\\\\HOMEDISK\\homes\\h2s\\user_list\\'
+TEST_CASE_DIR = 'test_cases/'
+GENERATED_USER_DIR = 'user_list/'
+# setting for email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.exmail.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = '11710911@mail.sustech.edu.cn.com'
+EMAIL_HOST_PASSWORD = 'Ljh123456'
+DEFAULT_FROM_EMAIL = 'JudeeBE<11710911>'
 
 # SUBMISSION_QUEUE = get_producer_from_single_pool("submission")
