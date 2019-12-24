@@ -63,12 +63,14 @@ class UserAuthOnly(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         user = request.user
+        # print(user.username == obj.username)
         try:
             if user.type == (AdminType.ADMIN or AdminType.SUPER_ADMIN):
                 return True
         except AttributeError:
             return False
-        if user.username == obj.username:
+        # print(user.username == obj.username)
+        if user.username == obj.username or user == obj.username:
             return True
         return False
 
