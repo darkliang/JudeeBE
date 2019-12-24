@@ -14,10 +14,10 @@ from JudeeBE.settings import TEST_CASE_DIR
 from contest.models import Contest
 from problem.models import Problem
 from submission.models import Submission
-from submission.serializers import SubmissionSerializer, SubmissionListSerializer
+from submission.serializers import SubmissionSerializer, SubmissionListSerializer, SubmissionSharingSerializer
 from utils.constants import ContestStatus, JudgeStatus
 from utils.redis_util import RedisQueue
-from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck
+from utils.permissions import ManagerOnly, UserLoginOnly, SubmissionCheck, UserAuthOnly
 
 
 class ManagerSubmissionView(viewsets.ModelViewSet):
@@ -48,6 +48,12 @@ class ManagerSubmissionView(viewsets.ModelViewSet):
         RedisQueue.put('queue:submission', serializer.data.ID)
 
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+class SubmissionSharing(viewsets.GenericViewSet, mixins.UpdateModelMixin):
+    permission_classes = (UserAuthOnly,)
+    queryset = Submission.objects.all()
+    serializer_class = SubmissionSharingSerializer
 
 
 class SubmissionRejudgeAPI(APIView):

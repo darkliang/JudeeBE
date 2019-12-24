@@ -14,7 +14,7 @@ from django.utils.timezone import now
 
 
 class OverallAPI(APIView):
-    # permission_classes = (SuperAdminRequired,)
+    permission_classes = (SuperAdminRequired,)
 
     def get(self, request):
         resp = dict()
@@ -75,7 +75,7 @@ class UserLoginStatisticsAPI(APIView):
             days = cur - timedelta(days=offset)
             all_data = UserLoginData.objects.filter(login_time__gte=days).values('username').annotate(
                 count=Count('username')).order_by('-count')
-            login_data = {'week_activists': all_data.count(), 'most_active': all_data[:10]}
+            login_data = {'week_activists': all_data.count(), 'most_active': all_data[:50]}
 
             cache.set(cache_key, login_data, 60 * 60)
 

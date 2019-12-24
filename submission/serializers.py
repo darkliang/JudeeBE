@@ -12,3 +12,9 @@ class SubmissionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
         exclude = ("info", "code", "ip",)
+
+
+class SubmissionSharingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Submission
+        fields = ('shared',)
