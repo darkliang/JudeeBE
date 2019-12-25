@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/permissions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -298,7 +300,27 @@
       <list>
         <serviceView>
           <treeState>
-            <expand />
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@32165f42" type="9fbbdea:ServiceModel$ServiceNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@63e58659" type="9fbbdea:ServiceModel$ServiceNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="com.intellij.database.console.session.MessageBusSession@1945b898" type="9fbbdea:ServiceModel$ServiceNode" />
+              </path>
+            </expand>
             <select />
           </treeState>
         </serviceView>
@@ -405,7 +427,8 @@
       <workItem from="1576981759355" duration="13150000" />
       <workItem from="1577085549720" duration="12118000" />
       <workItem from="1577114534339" duration="6843000" />
-      <workItem from="1577152727260" duration="6684000" />
+      <workItem from="1577152727260" duration="14197000" />
+      <workItem from="1577243042523" duration="7993000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -715,7 +738,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577169866905</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="fix: UserAuthOnly的bug">
+      <created>1577188779677</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1577188779677</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -753,7 +783,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="add: 删除竞赛题目的api" />
     <MESSAGE value="update: 修改题目测试样例的api" />
     <MESSAGE value="add: 竞赛-&gt;(加题目，删题目，获取题目列表)" />
     <MESSAGE value="update: 同一个view多serializer，根据需求返回精简数据" />
@@ -778,7 +807,8 @@
     <MESSAGE value="add: 管理员的submission view" />
     <MESSAGE value="add: submission shared字段&#10;add: 管理员的统计数据api" />
     <MESSAGE value="add: submission shared更新api" />
-    <option name="LAST_COMMIT_MESSAGE" value="add: submission shared更新api" />
+    <MESSAGE value="fix: UserAuthOnly的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: UserAuthOnly的bug" />
   </component>
   <component name="WindowStateProjectService">
     <state x="617" y="214" key="#Deployment" timestamp="1576936825781">
@@ -798,11 +828,12 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="302" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384334" />
-    <state x="90" y="0" key="CommitChangelistDialog2" timestamp="1577169866116">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="565" y="47" key="CommitChangelistDialog2" timestamp="1577273625287">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1577169866116" />
-    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1577122114666" />
+    <state x="565" y="47" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577273625287" />
+    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1577188778982" />
     <state x="0" y="20" key="DiffContextDialog" timestamp="1577169842669">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -814,30 +845,30 @@
     <state x="503" y="190" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1576658577819" />
     <state x="755" y="291" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1576824769447" />
     <state x="805" y="311" key="FileChooserDialogImpl/0.0.2048.1112@0.0.2048.1112" timestamp="1576899036281" />
-    <state width="2004" height="286" key="GridCell.Tab.0.bottom" timestamp="1577122125884">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1876" height="358" key="GridCell.Tab.0.bottom" timestamp="1577244008719">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
-    <state width="1876" height="173" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886242" />
-    <state width="2004" height="286" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1577122125884" />
-    <state width="2004" height="286" key="GridCell.Tab.0.center" timestamp="1577122125884">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1876" height="358" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1577244008719" />
+    <state width="2004" height="390" key="GridCell.Tab.0.bottom/0.0.2048.1112@0.0.2048.1112" timestamp="1577207282297" />
+    <state width="1876" height="358" key="GridCell.Tab.0.center" timestamp="1577244008718">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
-    <state width="1876" height="173" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886242" />
-    <state width="2004" height="286" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1577122125884" />
-    <state width="2004" height="286" key="GridCell.Tab.0.left" timestamp="1577122125884">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1876" height="358" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1577244008718" />
+    <state width="2004" height="390" key="GridCell.Tab.0.center/0.0.2048.1112@0.0.2048.1112" timestamp="1577207282297" />
+    <state width="1876" height="358" key="GridCell.Tab.0.left" timestamp="1577244008718">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
-    <state width="1876" height="173" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886241" />
-    <state width="2004" height="286" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1577122125884" />
-    <state width="2004" height="286" key="GridCell.Tab.0.right" timestamp="1577122125884">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state width="1876" height="358" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1577244008718" />
+    <state width="2004" height="390" key="GridCell.Tab.0.left/0.0.2048.1112@0.0.2048.1112" timestamp="1577207282297" />
+    <state width="1876" height="358" key="GridCell.Tab.0.right" timestamp="1577244008718">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1236" height="238" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1576722737905" />
-    <state width="1876" height="173" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1576827886242" />
-    <state width="2004" height="286" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1577122125884" />
+    <state width="1876" height="358" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1577244008718" />
+    <state width="2004" height="390" key="GridCell.Tab.0.right/0.0.2048.1112@0.0.2048.1112" timestamp="1577207282297" />
     <state width="218" height="539" key="HiddenNamespacesPopup" timestamp="1576500037523">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -851,31 +882,31 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1577105432615" />
-    <state x="233" y="69" key="Vcs.Push.Dialog.v2" timestamp="1577169869185">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1577188780855">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1577169869185" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1577122117451" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1577188780855" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576071129591" />
-    <state x="324" y="164" key="com.intellij.ide.util.TipDialog" timestamp="1577152728056">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="486" y="251" key="com.intellij.ide.util.TipDialog" timestamp="1577243043108">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="324" y="164" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1577152728056" />
-    <state x="486" y="251" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1576808715662" />
+    <state x="486" y="251" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577243043108" />
     <state x="518" y="268" key="com.intellij.ide.util.TipDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1577114542435" />
     <state x="698" y="412" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1576742480309">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="436" y="252" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1576125341045" />
     <state x="698" y="412" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2048.1112@0.0.2048.1112" timestamp="1576742480309" />
-    <state x="693" y="278" width="662" height="566" key="find.popup" timestamp="1577181839707">
+    <state x="693" y="278" width="662" height="566" key="find.popup" timestamp="1577193891790">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="650" y="260" width="667" height="566" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1577159899963" />
-    <state x="693" y="278" width="662" height="566" key="find.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1577181839707" />
+    <state x="693" y="278" width="662" height="566" key="find.popup/0.0.2048.1112@0.0.2048.1112" timestamp="1577193891790" />
     <state x="687" y="243" width="672" height="678" key="search.everywhere.popup" timestamp="1576858778286">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

@@ -91,7 +91,10 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
             for score in data["test_case_score"]:
                 total_score += score
             data["total_score"] = total_score
-        data.pop("created_by")
+        try:
+            data.pop("created_by")
+        except KeyError:
+            pass
         if data.get("tags", None):
             problem.tags.clear()
             tags = data.pop("tags")

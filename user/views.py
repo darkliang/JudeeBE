@@ -24,7 +24,7 @@ from utils.shortcuts import rand_str, submission_aggregate
 from .models import User, UserData, UserLoginData
 from .serializers import UserSerializer, UserDataSerializer, UserNoPassSerializer, UserProfileSerializer, \
     UserLoginDataSerializer, RankUserDataSerializer
-from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired
+from utils.permissions import UserSafePostOnly, ManagerOnly, UserAuthOnly, SuperAdminRequired, UserLoginOnly
 from django.db.models import Q
 from datetime import timedelta
 from django.core.cache import cache
@@ -280,6 +280,7 @@ class UserRankingAPIView(APIView):
 
 class UserUpdateRankingAPIView(APIView):
     throttle_classes = [ScopedRateThrottle, ]
+    permission_classes = (UserLoginOnly,)
 
     def get(self, request):
         username = request.GET.get('username', None)
@@ -287,7 +288,8 @@ class UserUpdateRankingAPIView(APIView):
             res = RedisRank.get_ranking(username)
         else:
             user_data = UserData.objects.get(username=request.user.username)
-            res = RedisRank.record_score({user_data.username.username: user_data.score})
+            res = {'ranking': RedisRank.record_score({user_data.username.username: user_data.score}),
+                   'ac_prob': user_data.ac_prob}
         return Response(res, HTTP_200_OK)
 
 
