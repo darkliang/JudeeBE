@@ -16,6 +16,7 @@ urlpatterns = [
     url('', include(routers.urls)),
     url(r'^register', views.UserRegisterAPIView.as_view()),
     url(r'^login', views.UserLoginAPIView.as_view()),
+    url(r'^admin-login', views.AdminLoginAPI.as_view()),
     url(r'^update-ranking', views.UserUpdateRankingAPIView.as_view()),
     url(r'^get-ranking', views.UserRankingAPIView.as_view()),
     url(r'^setlogindata', views.UserLoginDataAPIView.as_view()),

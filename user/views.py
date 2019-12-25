@@ -123,9 +123,31 @@ class UserLoginDataAPIView(APIView):
 
 
 #   登录API
+class AdminLoginAPI(APIView):
+    permission_classes = (AllowAny,)
+    throttle_scope = "login"
+    throttle_classes = [ScopedRateThrottle, ]
+
+    def post(self, request, format=None):
+        data = request.data
+        username = data.get('username')
+        password = data.get('password')
+        try:
+            user = User.objects.exclude(type=AdminType.USER).get(Q(username__exact=username) | Q(email__exact=username))
+        except User.DoesNotExist:
+            return Response('userError', HTTP_200_OK)
+
+        if user.check_password(password):
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            user.last_login = now()
+            user.save()
+            new_data = {'token': token, 'username': user.username, 'type': user.type}
+            return Response(new_data, status=HTTP_200_OK)
+        return Response('pwdError', HTTP_200_OK)
+
+
 class UserLoginAPIView(APIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
     permission_classes = (AllowAny,)
     throttle_scope = "login"
     throttle_classes = [ScopedRateThrottle, ]
@@ -144,14 +166,10 @@ class UserLoginAPIView(APIView):
             token = jwt_encode_handler(payload)
             user.last_login = now()
             user.save()
-            if user.type == AdminType.USER:
-                user_data = UserData.objects.get(username__exact=user.username)
-                ranking = RedisRank.record_score({user_data.username.username: user_data.score})
-                new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
-                            'nickname': user.nickname, 'email': user.email, 'type': user.type, 'ranking': ranking}
-            else:
-                new_data = {'token': token, 'username': user.username, 'type': user.type, 'email': user.email,
-                            'nickname': user.nickname}
+            user_data = UserData.objects.get(username__exact=user.username)
+            ranking = RedisRank.record_score({user_data.username.username: user_data.score})
+            new_data = {'token': token, 'username': user_data.username_id, 'ac_prob': user_data.ac_prob,
+                        'nickname': user.nickname, 'email': user.email, 'type': user.type, 'ranking': ranking}
             return Response(new_data, status=HTTP_200_OK)
         return Response('pwdError', HTTP_200_OK)
 

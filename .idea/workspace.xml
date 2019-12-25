@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -315,11 +314,6 @@
                 <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
                 <item name="com.intellij.database.console.session.MessageBusSession@63e58659" type="9fbbdea:ServiceModel$ServiceNode" />
               </path>
-              <path>
-                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-                <item name="root:Django default2" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="com.intellij.database.console.session.MessageBusSession@1945b898" type="9fbbdea:ServiceModel$ServiceNode" />
-              </path>
             </expand>
             <select />
           </treeState>
@@ -428,7 +422,7 @@
       <workItem from="1577085549720" duration="12118000" />
       <workItem from="1577114534339" duration="6843000" />
       <workItem from="1577152727260" duration="14197000" />
-      <workItem from="1577243042523" duration="7993000" />
+      <workItem from="1577243042523" duration="9513000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -745,7 +739,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577188779677</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="fix: 改题目详情 created_by KeyError">
+      <created>1577273714021</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1577273714021</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -783,7 +784,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="update: 修改题目测试样例的api" />
     <MESSAGE value="add: 竞赛-&gt;(加题目，删题目，获取题目列表)" />
     <MESSAGE value="update: 同一个view多serializer，根据需求返回精简数据" />
     <MESSAGE value="update: 给提交评测添加contest验证" />
@@ -808,7 +808,8 @@
     <MESSAGE value="add: submission shared字段&#10;add: 管理员的统计数据api" />
     <MESSAGE value="add: submission shared更新api" />
     <MESSAGE value="fix: UserAuthOnly的bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: UserAuthOnly的bug" />
+    <MESSAGE value="fix: 改题目详情 created_by KeyError" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: 改题目详情 created_by KeyError" />
   </component>
   <component name="WindowStateProjectService">
     <state x="617" y="214" key="#Deployment" timestamp="1576936825781">
@@ -828,11 +829,11 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="302" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384334" />
-    <state x="565" y="47" key="CommitChangelistDialog2" timestamp="1577273625287">
+    <state x="565" y="47" key="CommitChangelistDialog2" timestamp="1577273713388">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1577169866116" />
-    <state x="565" y="47" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577273625287" />
+    <state x="565" y="47" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577273713388" />
     <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1577188778982" />
     <state x="0" y="20" key="DiffContextDialog" timestamp="1577169842669">
       <screen x="0" y="0" width="1280" height="680" />
@@ -882,10 +883,11 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1577105432615" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1577188780855">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="350" y="106" key="Vcs.Push.Dialog.v2" timestamp="1577273715623">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1577169869185" />
+    <state x="350" y="106" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1577273715623" />
     <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1577188780855" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
@@ -915,11 +917,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/user/views.py</url>
-          <line>141</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/user/models.py</url>
           <line>2</line>
