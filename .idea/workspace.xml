@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="db262ee3-d76c-4de0-8276-d04b168fae9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contest/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contest/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/problem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/problem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -440,7 +438,7 @@
       <workItem from="1577152727260" duration="14197000" />
       <workItem from="1577243042523" duration="12140000" />
       <workItem from="1577286557943" duration="1210000" />
-      <workItem from="1577323803809" duration="7940000" />
+      <workItem from="1577323803809" duration="9955000" />
     </task>
     <task id="LOCAL-00001" summary="register功能完成">
       <created>1573376738547</created>
@@ -771,7 +769,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577275168799</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="fix: 加入竞赛500的bug">
+      <created>1577361496916</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1577361496916</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -809,7 +814,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="update: 同一个view多serializer，根据需求返回精简数据" />
     <MESSAGE value="update: 给提交评测添加contest验证" />
     <MESSAGE value="fix: 管理员权限bug&#10;add: 获取递交列表的api retrieve本人递交的api" />
     <MESSAGE value="delete: judge server" />
@@ -834,7 +838,8 @@
     <MESSAGE value="fix: UserAuthOnly的bug" />
     <MESSAGE value="fix: 改题目详情 created_by KeyError" />
     <MESSAGE value="update: 将普通用户登录和管理员用户登录的api分开" />
-    <option name="LAST_COMMIT_MESSAGE" value="update: 将普通用户登录和管理员用户登录的api分开" />
+    <MESSAGE value="fix: 加入竞赛500的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: 加入竞赛500的bug" />
   </component>
   <component name="WindowStateProjectService">
     <state x="617" y="214" key="#Deployment" timestamp="1576936825781">
@@ -854,12 +859,12 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="755" y="302" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2048.1112@0.0.2048.1112" timestamp="1576770384334" />
-    <state x="565" y="47" key="CommitChangelistDialog2" timestamp="1577275168240">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="603" y="64" key="CommitChangelistDialog2" timestamp="1577361496306">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="90" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1577169866116" />
     <state x="565" y="47" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1577275168240" />
-    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1577188778982" />
+    <state x="603" y="64" key="CommitChangelistDialog2/0.0.2048.1112@0.0.2048.1112" timestamp="1577361496306" />
     <state x="0" y="20" key="DiffContextDialog" timestamp="1577169842669">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -908,12 +913,12 @@
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1576033109428" />
     <state x="227" y="0" key="SettingsEditor/0.0.2048.1112@0.0.2048.1112" timestamp="1577105432615" />
-    <state x="350" y="106" key="Vcs.Push.Dialog.v2" timestamp="1577275775540">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2" timestamp="1577361498424">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="233" y="69" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1577169869185" />
     <state x="350" y="106" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1577275775540" />
-    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1577188780855" />
+    <state x="373" y="113" key="Vcs.Push.Dialog.v2/0.0.2048.1112@0.0.2048.1112" timestamp="1577361498424" />
     <state x="93" y="93" width="1862" height="926" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576071129591">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

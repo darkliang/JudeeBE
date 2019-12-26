@@ -95,15 +95,19 @@ class ProblemView(viewsets.GenericViewSet, mixins.DestroyModelMixin, mixins.Crea
             data.pop("created_by")
         except KeyError:
             pass
-        if data.get("tags", None):
-            problem.tags.clear()
+        try:
             tags = data.pop("tags")
-            for item in tags:
-                try:
-                    tag = ProblemTag.objects.get(name=item)
-                except ProblemTag.DoesNotExist:
-                    tag = ProblemTag.objects.create(name=item)
-                problem.tags.add(tag)
+            if tags is not None:
+                problem.tags.clear()
+                for item in tags:
+                    try:
+                        tag = ProblemTag.objects.get(name=item)
+                    except ProblemTag.DoesNotExist:
+                        tag = ProblemTag.objects.create(name=item)
+                    problem.tags.add(tag)
+        except KeyError:
+            pass
+
         for k, v in data.items():
             setattr(problem, k, v)
         problem.save()
