@@ -289,10 +289,6 @@ class UserRankingAPIView(APIView):
             return Response("Argument error", HTTP_400_BAD_REQUEST)
         count, get_res = RedisRank.get_top_n_users(limit, offset)
         res = RankUserDataSerializer(get_res, many=True).data
-        # res = []
-        # for user_data in get_res:
-        #     # userdata =
-        #     res.append(UserDataSerializer(user_data).data)
         return Response({'count': count, 'results': res}, HTTP_200_OK)
 
 
@@ -330,7 +326,7 @@ class UserStatisticsAPIVIEW(APIView):
             submissions = Submission.objects.filter(username=username, create_time__gte=days).values('create_time',
                                                                                                      'result')
             date_list = submission_aggregate(submissions, cur, offset)
-            # 默认缓存一天
+            # 默认缓存8小时
             cache.set(cache_key, date_list, 60 * 60 * 8)
 
         return Response(date_list, status=HTTP_200_OK)

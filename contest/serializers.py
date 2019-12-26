@@ -12,13 +12,13 @@ class ContestSerializer(serializers.ModelSerializer):
         if obj.rule_type == RuleType.ACM:
             try:
                 ACMContestRank.objects.get(user=self.context['request'].user, contest=obj)
-            except ACMContestRank.DoesNotExist:
+            except (ACMContestRank.DoesNotExist, KeyError):
                 return False
             return True
         elif obj.rule_type == RuleType.OI:
             try:
                 OIContestRank.objects.get(user=self.context['request'].user, contest=obj)
-            except OIContestRank.DoesNotExist:
+            except (OIContestRank.DoesNotExist, KeyError):
                 return False
             return True
         return False

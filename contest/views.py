@@ -211,16 +211,13 @@ class JoinContest(APIView):
         if contest.rule_type == RuleType.OI:
             try:
                 OIContestRank.objects.create(user=request.user, contest=contest)
-                return Response(ContestSerializer(contest).data, status=HTTP_200_OK)
-
             except IntegrityError:
-                return Response(status=HTTP_204_NO_CONTENT)
+                pass
         elif contest.rule_type == RuleType.ACM:
             try:
                 ACMContestRank.objects.create(user=request.user, contest=contest)
-                return Response(ContestSerializer(contest).data, status=HTTP_200_OK)
             except IntegrityError:
-                return Response(status=HTTP_204_NO_CONTENT)
+                pass
         return Response(status=HTTP_204_NO_CONTENT)
 
 
