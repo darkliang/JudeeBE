@@ -36,8 +36,8 @@ class FPSProblemSerializer(serializers.Serializer):
 
     title = serializers.CharField(max_length=128)
     description = serializers.CharField()
-    input = serializers.CharField(allow_null=True,)
-    output = serializers.CharField(allow_null=True,)
+    input = serializers.CharField(allow_null=True, allow_blank=True, )
+    output = serializers.CharField(allow_null=True, allow_blank=True, )
     hint = serializers.CharField(allow_blank=True, allow_null=True)
     time_limit = UnitSerializer()
     memory_limit = UnitSerializer()

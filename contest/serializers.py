@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from contest.models import Contest, OIContestRank, ACMContestRank, ContestAnnouncement
-from user.serializers import UserProfileSerializer
+from user.serializers import UserSerializer
 from utils.constants import RuleType
 
 
@@ -35,7 +35,7 @@ class ContestListSerializer(ContestSerializer):
 
 
 class ContestAdminSerializer(serializers.ModelSerializer):
-    created_by = UserProfileSerializer()
+    created_by = UserSerializer()
     status = serializers.CharField()
     contest_type = serializers.CharField()
 

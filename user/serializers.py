@@ -34,6 +34,12 @@ class UserPwdSerializer(serializers.Serializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    nickname = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)  # 名称
+    phone_number = serializers.CharField(max_length=15, allow_blank=True, allow_null=True)
+    qq_number = serializers.CharField(max_length=13, allow_blank=True, allow_null=True)
+    github_username = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
+    desc = serializers.CharField(max_length=50, allow_blank=True, allow_null=True)
+
     class Meta:
         model = User
         exclude = ['type', 'password', 'email', 'username', 'last_login']
