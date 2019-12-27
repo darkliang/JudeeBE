@@ -24,8 +24,6 @@
 
 3. 修改`/JudeeBE/settings.py`，配置数据库HOST为`10.20.1.255`
 
-4. 管理员账户为`admin`       `ljh123456`
-
 ## （optional）使用服务器的interpreter
 
 使用服务器的interpreter（解释器），则不需要第2步。以下为`Pycharm`配置步骤
