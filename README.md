@@ -1,3 +1,8 @@
+[前端仓库](https://github.com/Cal027/JudeeFE)
+[评测机仓库](https://github.com/wht-github/JudeeJudger)
+
+# 网站展示
+
 # 后端开发环境配置
 
 ## 一般配置
@@ -19,17 +24,4 @@
    
    pip install django-cors-headers
    ```
-
-   
-
-3. 修改`/JudeeBE/settings.py`，配置数据库HOST为`10.20.1.255`
-
-## （optional）使用服务器的interpreter
-
-使用服务器的interpreter（解释器），则不需要第2步。以下为`Pycharm`配置步骤
-
-1. 在File->Settings->Project->Project interpreter, add一个新的interpreter
-2. 选择SSH Interpreter->New server configuration, 输入用户名密码
-3. 选择interpreter路径，一般在 `/home/1171xxxx_cs308/anaconda3/envs/cs309/bin/python3.7` 
-4. （optional）选择 `mapping` 路径，会将本地的项目实时同步到远程服务器上
 
